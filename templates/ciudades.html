@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block titulo%}
+    Ciudades
+{% endblock titulo%}
+{% block body %}
+    {% if ciudades %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th></th>
+                    <th>Ciudad</th>
+                    <th>Provincia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ciudad in ciudades %}
+                    <tr>
+                        <td>{{ ciudad.id_ciudad }}</td>
+                        <td></td>
+                        <td>{{ ciudad.ciudad }}</td>
+                        <td>{{ ciudad.id_provincia }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h1>No existen ciudades registradas</h1>
+    {% endif %}
+{% endblock body %}

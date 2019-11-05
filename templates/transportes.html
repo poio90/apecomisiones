@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% block titulo%}
+    Transportes
+{% endblock titulo%}
+{% block body %}
+    {% if transportes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th></th>
+                    <th>Legajo</th>
+                    <th>Patente</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transporte in transportes %}
+                    <tr>
+                        <td>{{ transporte.id_transporte }}</td>
+                        <td></td>
+                        <td>{{ transporte.num_legajo }}</td>
+                        <td>{{ transporte.patente }}</td>
+                        <td>
+                            <a href="{% url 'edit_transporte' transporte.id_transporte %}">Editar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h1>No existen ciudades registradas</h1>
+    {% endif %}
+{% endblock body %}
