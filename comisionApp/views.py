@@ -24,7 +24,7 @@ def altaTrasnporte(request):
         transporte_form = TransporteForm(request.POST)
         if transporte_form.is_valid():
             transporte_form.save()
-            return redirect('index')
+            return redirect('comision:transportes')
     else:
         transporte_form = TransporteForm()
     return render(request, 'alta_transporte.html', {'transporte_form': transporte_form})
@@ -46,3 +46,11 @@ def editarTransporte(request, id):
         error = e
 
     return render(request,'alta_transporte.html', {'transporte_form': transporte_form, 'error':error})
+
+def eliminarTransporte(request,id):
+    transporte = Transporte.objects.get(id_transporte=id)
+    if request.method == 'POST':
+        transporte.delete()
+        return redirect('comision:transportes')
+    return render(request,'eliminar_transporte.html',{'transporte':transporte})
+

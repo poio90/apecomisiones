@@ -22,13 +22,18 @@
                         <td>{{ transporte.num_legajo }}</td>
                         <td>{{ transporte.patente }}</td>
                         <td>
-                            <a href="{% url 'edit_transporte' transporte.id_transporte %}">Editar</a>
+                            <a href="{% url 'comision:edit_transporte' transporte.id_transporte %}">Editar</a>
+                            <a href="{% url 'comision:eliminar_transporte' transporte.id_transporte %}">Eliminar</a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <h2>¿Dar de alta nuevo transporte?</h2>
+        <a href="{% url 'comision:alta_trasnporte' %}">Dar de Alta</a>
     {% else %}
-        <h1>No existen ciudades registradas</h1>
+        <h1>No existen transportes registrados</h1>
+        <h2>¿Desea dar de alta uno nuevo?</h2>
+        <a href="{% url 'comision:alta_trasnporte' %}">Dar de Alta</a>
     {% endif %}
 {% endblock body %}

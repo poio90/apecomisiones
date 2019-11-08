@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block titulo%}
+Baja Transporte
+{% endblock titulo%}
+{% block body %}
+<form method="POST">
+    {% csrf_token %}
+        <h2>¿Seguro que desea elimiar {{ transporte.num_legajo }}?</h2>
+        <button tipe="submit">Eliminar</button>
+        <a href="{% url 'comision:transportes' %}">Cancelar</a>
+</form>
+{% endblock body %}

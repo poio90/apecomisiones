@@ -1,16 +1,15 @@
 {% extends 'index.html' %}
 {% block titulo%}
-    Alta Transporte
+Alta Transporte
 {% endblock titulo%}
 {% block body %}
-    <form method="POST">
-        {% csrf_token %}
-        {% if error %}
-            <h2>{{ error }}</h2>
-        {% else %}
-            {{ transporte_form.as_p }}
-            <button tipe="submit">Crear</button>
-        {% endif %}
-
-    </form>
+<form method="POST">
+    {% csrf_token %}
+    {% if error %}
+    <h2>{{ error }}</h2>
+    {% else %}
+    {{ transporte_form.as_p }}
+    <button tipe="submit">Crear</button>
+    {% endif %}
+</form>
 {% endblock body %}
