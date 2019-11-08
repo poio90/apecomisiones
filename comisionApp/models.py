@@ -9,7 +9,7 @@ from django.db import models
 
 
 class Agente(models.Model):
-    id_agente = models.AutoField(primary_key=True)
+    num_afiliado = models.AutoField(primary_key=True)
     apellido = models.CharField(max_length=45)
     nombre = models.CharField(max_length=45)
     fecha_nacimiento = models.DateField()
@@ -47,7 +47,7 @@ class Ciudad(models.Model):
 class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
     id_ciudad = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciudad')
-    id_agente = models.ForeignKey(Agente, models.DO_NOTHING, db_column='id_agente')
+    num_afiliado = models.ForeignKey(Agente, models.DO_NOTHING, db_column='num_afiliado')
     id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='id_transporte')
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
@@ -119,3 +119,4 @@ class Transporte(models.Model):
 
     def __str__(self):
         return self.num_legajo
+        

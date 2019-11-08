@@ -44,7 +44,6 @@ def editarTransporte(request, id):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-
     return render(request,'alta_transporte.html', {'transporte_form': transporte_form, 'error':error})
 
 def eliminarTransporte(request,id):
