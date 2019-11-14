@@ -9,11 +9,11 @@ from django.db import models
 
 
 class Agente(models.Model):
-    num_afiliado = models.AutoField(primary_key=True)
-    apellido = models.CharField(max_length=45)
-    nombre = models.CharField(max_length=45)
+    num_afiliado = models.AutoField('Numero de Afiliado',primary_key=True)
+    apellido = models.CharField('Apellido',max_length=45)
+    nombre = models.CharField('Nombre',max_length=45)
     fecha_nacimiento = models.DateField()
-    num_tel = models.CharField(max_length=11)
+    num_tel = models.CharField('Numero de Telefono',max_length=11)
     email = models.CharField(max_length=45)
     dni = models.IntegerField()
 
@@ -25,7 +25,7 @@ class Agente(models.Model):
         db_table = 'agente'
 
     def __str__(self):
-        return self.apellido
+        return "{0},{1}".format(self.apellido,self.nombre)
 
 
 class Ciudad(models.Model):

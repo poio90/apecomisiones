@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
-from .models import Ciudad,Transporte
+from .models import Ciudad,Transporte, Comision
 
 
 # Create your views here.
@@ -13,6 +13,9 @@ def listarCiudades(request):
     ciudades = Ciudad.objects.all()
     return render(request, 'ciudades.html', {'ciudades': ciudades})
 
+def listarComisiones(request):
+    comisiones = Comision.objects.all()
+    return render(request,'comisiones.html',{'comisiones':comisiones})
 
 def listarTransportes(request):
     transportes = Transporte.objects.all()
