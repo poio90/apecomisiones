@@ -39,10 +39,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="{% url 'comision:index' %}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contactos</a>
+        <a href="{% url 'comision:index' %}" class="nav-link">Contactos</a>
       </li>
     </ul>
 
@@ -120,13 +120,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{% url 'comision:listarComisiones' %}" class="nav-link">
                   <i class="nav-icon fas fa-edit"></i>
                   <p>Confeccionar</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
+                <a href="{% url 'comision:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-file"></i>
                   <p>Comisiones Rendidas</p>
                 </a>
@@ -144,13 +144,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="{% url 'comision:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-edit"></i>
                   <p>Solicitar</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
+                <a href="{% url 'comision:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-book"></i>
                   <p>Registro</p>
                 </a>
@@ -167,13 +167,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="pages/UI/general.html" class="nav-link">
+                  <a href="{% url 'comision:index' %}" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="pages/UI/icons.html" class="nav-link">
+                  <a href="{% url 'comision:index' %}" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>
@@ -200,7 +200,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'comision:index' %}">Home</a></li>
               <li class="breadcrumb-item active">Administrativo</li>
             </ol>
           </div><!-- /.col -->
