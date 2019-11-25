@@ -1,0 +1,13 @@
+Django=2.2.6
+django-ckeditor>=5.8.0  
+django-jet=1.0.8
+django-js-asset>=1.2.2
+google-api-python-client>= 1.4.1
+httplib2>=0.14.0
+isort>=4.3.21
+lazy-object-proxy>=1.4.3
+mccabe>=0.6.1
+mypy>=0.740
+mypy-extensions>=0.4.3
+mysqlclient>=1.4.4
+oauth2client>=4.1.3
