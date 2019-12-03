@@ -81,8 +81,8 @@
             
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a href="#" class="btn btn-default btn-flat">Profile</a>
-              <a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+              <a href="#" class="btn btn-default btn-flat">Perfil</a>
+              <a href="#" class="btn btn-default btn-flat float-right">Serrar Sesión</a>
             </li>
           </ul>
         </li>
@@ -120,7 +120,8 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{% url 'comision:listarComisiones' %}" class="nav-link">
+                <!--<a href="{% url 'comision:listarComisiones' %}" class="nav-link">-->
+                  <a href="{% url 'comision:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-edit"></i>
                   <p>Confeccionar</p>
                 </a>
@@ -211,17 +212,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Comisiones</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div id="jsGrid1"></div>
-            </div>
-            <!-- /.card-body -->
-          </div>
-      </div><!-- /.card -->
+      
     </section>
     <!-- /.content -->
   </div>

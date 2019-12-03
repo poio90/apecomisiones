@@ -8,7 +8,6 @@ from .models import Ciudad,Transporte, Comision
 def home(request):
     return render(request, 'index.html')
 
-
 def listarCiudades(request):
     ciudades = Ciudad.objects.all()
     return render(request, 'ciudades.html', {'ciudades': ciudades})
@@ -21,7 +20,6 @@ def listarTransportes(request):
     transportes = Transporte.objects.all()
     return render(request, 'transportes.html', {'transportes': transportes})
 
-
 def altaTrasnporte(request):
     if request.method == 'POST':
         transporte_form = TransporteForm(request.POST)
@@ -31,7 +29,6 @@ def altaTrasnporte(request):
     else:
         transporte_form = TransporteForm()
     return render(request, 'alta_transporte.html', {'transporte_form': transporte_form})
-
 
 def editarTransporte(request, id):
     transporte_form= None

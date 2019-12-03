@@ -10,13 +10,13 @@ from ckeditor.fields import RichTextField
 
 class Agente(models.Model):
     id_agente = models.AutoField(primary_key=True)
-    num_afiliado = models.CharField('Número de Afiliado',max_length=45)
+    num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45)
     apellido = models.CharField('Apellido',max_length=45)
     nombre = models.CharField('Nombre',max_length=45)
     fecha_nacimiento = models.DateField()
     num_tel = models.CharField('Número de Telefono',max_length=11)
     email = models.CharField(max_length=45)
-    dni = models.IntegerField()
+    dni = models.CharField('DNI',max_length=45)
 
     class Meta:
         verbose_name = 'Agente'
@@ -47,7 +47,7 @@ class Ciudad(models.Model):
 
 class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
-    num_comision = models.CharField('Número de Comisión',max_length=45)
+    num_comision = models.CharField('Número de Comisión',unique=True,max_length=45)
     id_ciudad = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciudad')
     num_afiliado = models.ForeignKey(Agente, models.DO_NOTHING, db_column='num_afiliado')
     id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='id_transporte')

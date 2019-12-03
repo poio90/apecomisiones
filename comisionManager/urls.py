@@ -16,11 +16,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include,path
+from django.contrib.auth.views import LoginView, logout_then_login
 from comisionApp.views import home
+
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
-    path('', include(('comisionApp.urls','comision'))),
+    path('inicio/', include(('comisionApp.urls','comision'))),
+    path('', LoginView.as_view(template_name = 'login.html'), name = 'login'),
 ]
