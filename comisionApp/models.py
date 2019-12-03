@@ -7,21 +7,19 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
 
 class Agente(models.Model):
-    id_agente = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE),
     num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45)
-    apellido = models.CharField('Apellido',max_length=45)
-    nombre = models.CharField('Nombre',max_length=45)
     fecha_nacimiento = models.DateField()
     num_tel = models.CharField('Número de Telefono',max_length=11)
-    email = models.CharField(max_length=45)
     dni = models.CharField('DNI',max_length=45)
 
     class Meta:
         verbose_name = 'Agente'
         verbose_name_plural = 'Agentes'
-        ordering = ['apellido','nombre']
+        ordering = ['last','nombre']
         managed = False
         db_table = 'agente'
 
@@ -48,9 +46,13 @@ class Ciudad(models.Model):
 class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
     num_comision = models.CharField('Número de Comisión',unique=True,max_length=45)
-    id_ciudad = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='id_ciudad')
-    num_afiliado = models.ForeignKey(Agente, models.DO_NOTHING, db_column='num_afiliado')
-    id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='id_transporte')
+    id_ciudad = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, db_column='id_ciudad')
+    id_user = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='id') 
+    '''SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
+    cuando elimina un usuario, es posible que desee conservar los comentarios que publicó en las 
+    publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
+    Equivalente de SQL: SET NULL.'''
+    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte')
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
     gasto = models.FloatField()
@@ -124,4 +126,6 @@ class Transporte(models.Model):
 
     def __str__(self):
         return self.num_legajo
-        
+
+
+'''https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication'''
