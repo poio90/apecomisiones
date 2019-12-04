@@ -27,4 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login_required(include(('comisionApp.urls','comision')))),
     path('login/', LoginView.as_view(template_name = 'login.html'), name = 'login'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

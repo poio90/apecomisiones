@@ -10,7 +10,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 
 class Agente(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE),
+    id_agente = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
     num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45)
     fecha_nacimiento = models.DateField()
     num_tel = models.CharField('Número de Telefono',max_length=11)
@@ -24,7 +24,7 @@ class Agente(models.Model):
         db_table = 'agente'
 
     def __str__(self):
-        return "{0},{1}".format(self.apellido,self.nombre)
+        return "{0},{1}".format(self.last_name,self.first_name)
 
 
 class Ciudad(models.Model):
@@ -56,8 +56,8 @@ class Comision(models.Model):
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
     gasto = models.FloatField()
-    #motivo
-    #duracion_prevista
+    motivo = RichTextField()
+    duracion_prevista = models.CharField(max_length=45)
 
     class Meta:
         verbose_name = 'Comision'
