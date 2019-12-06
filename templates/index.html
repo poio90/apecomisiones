@@ -39,10 +39,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{% url 'comision:index' %}" class="nav-link">Home</a>
+        <a href="{% url 'index' %}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{% url 'comision:index' %}" class="nav-link">Contactos</a>
+        <a href="{% url 'index' %}" class="nav-link">Contactos</a>
       </li>
     </ul>
 
@@ -65,7 +65,7 @@
       <li class="nav-item dropdown user-menu">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
             <img src="{% static 'dist/img/imagesworker.jpg' %}" class="user-image img-circle elevation-2" alt="User Image">
-            <span class="d-none d-md-inline">Germán Vargas</span>
+            <span class="d-none d-md-inline">{{ user.get_short_name }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <!-- User image -->
@@ -73,7 +73,7 @@
               <img src="{% static 'dist/img/imagesworker.jpg' %}" class="img-circle elevation-2" alt="User Image">
   
               <p>
-                  Germán Vargas - Web Developer
+                  {{ user.get_full_name }} - Web Developer
                 <small>Miembre desde May. 2019</small>
               </p>
             </li>
@@ -82,7 +82,7 @@
             <!-- Menu Footer-->
             <li class="user-footer">
               <a href="#" class="btn btn-default btn-flat">Perfil</a>
-              <a href="{% url 'login' %}" class="btn btn-default btn-flat float-right">Serrar Sesión</a>
+              <a href="{% url 'logout' %}" class="btn btn-default btn-flat float-right">Serrar Sesión</a>
             </li>
           </ul>
         </li>
@@ -120,14 +120,14 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <!--<a href="{% url 'comision:listarComisiones' %}" class="nav-link">-->
-                  <a href="{% url 'comision:index' %}" class="nav-link">
+                <!--<a href="#" class="nav-link">-->
+                  <a href="{% url 'index' %}" class="nav-link">
                   <i class="nav-icon fas fa-edit"></i>
                   <p>Confeccionar</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'comision:index' %}" class="nav-link">
+                <a href="{% url 'index' %}" class="nav-link">
                   <i class="nav-icon fas fa-file"></i>
                   <p>Comisiones Rendidas</p>
                 </a>
@@ -145,13 +145,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{% url 'comision:index' %}" class="nav-link">
+                <a href="{% url 'index' %}" class="nav-link">
                   <i class="nav-icon fas fa-edit"></i>
                   <p>Solicitar</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'comision:index' %}" class="nav-link">
+                <a href="{% url 'index' %}" class="nav-link">
                   <i class="nav-icon fas fa-book"></i>
                   <p>Registro</p>
                 </a>
@@ -168,13 +168,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{% url 'comision:index' %}" class="nav-link">
+                  <a href="{% url 'index' %}" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'comision:index' %}" class="nav-link">
+                  <a href="{% url 'index' %}" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>
@@ -201,7 +201,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{% url 'comision:index' %}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
               <li class="breadcrumb-item active">Administrativo</li>
             </ol>
           </div><!-- /.col -->

@@ -10,8 +10,8 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 
 class Agente(models.Model):
-    id_agente = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
-    num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45)
+    id_agente = models.OneToOneField(User, on_delete=models.CASCADE)
+    num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45,primary_key=True)
     fecha_nacimiento = models.DateField()
     num_tel = models.CharField('Número de Telefono',max_length=11)
     dni = models.CharField('DNI',max_length=45)
@@ -19,40 +19,65 @@ class Agente(models.Model):
     class Meta:
         verbose_name = 'Agente'
         verbose_name_plural = 'Agentes'
-        ordering = ['last','nombre']
-        managed = False
+        managed = True
         db_table = 'agente'
 
     def __str__(self):
-        return "{0},{1}".format(self.last_name,self.first_name)
+        return self.num_afiliado
 
+class Provincia(models.Model):
+    id_provincia = models.AutoField(primary_key=True)
+    provincia = models.CharField(max_length=45)
+
+    class Meta:
+        verbose_name = 'Provincia'
+        verbose_name_plural = 'Provincias'
+        managed = True
+        db_table = 'provincia'
+
+    def __str__(self):
+        return self.provincia
 
 class Ciudad(models.Model):
     id_ciudad = models.AutoField(primary_key=True)
     ciudad = models.CharField(max_length=45)
-    id_provincia = models.ForeignKey('Provincia', models.DO_NOTHING, db_column='id_provincia')
+    id_provincia = models.ForeignKey('Provincia',on_delete=models.CASCADE, db_column='id_provincia')
 
     class Meta:
         verbose_name = 'Ciudad'
         verbose_name_plural = 'Ciudades'
         ordering = ['ciudad']
-        managed = False
+        managed = True
         db_table = 'ciudad'
 
     def __str__(self):
         return self.ciudad
 
+class Transporte(models.Model):
+    id_transporte = models.AutoField(primary_key=True)
+    num_legajo = models.CharField('Numero de Legajo',max_length=45)
+    patente = models.CharField('Patente',max_length=45)
+
+    class Meta:
+        verbose_name = 'Transporte'
+        verbose_name_plural = 'Transportes'
+        managed = True
+        db_table = 'transporte'
+
+    def __str__(self):
+        return self.num_legajo
+
 
 class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
     num_comision = models.CharField('Número de Comisión',unique=True,max_length=45)
-    id_ciudad = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, db_column='id_ciudad')
-    id_user = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='id') 
+    id_ciudad = models.ForeignKey(Ciudad,on_delete=models.SET_NULL,null=True, db_column='id_ciudad')
+    num_afiliado = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, db_column='num_afiliado') 
     '''SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
     cuando elimina un usuario, es posible que desee conservar los comentarios que publicó en las 
     publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
     Equivalente de SQL: SET NULL.'''
-    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte')
+    id_transporte = models.ForeignKey('Transporte',on_delete=models.SET_NULL,null=True, db_column='id_transporte')
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
     gasto = models.FloatField()
@@ -62,7 +87,7 @@ class Comision(models.Model):
     class Meta:
         verbose_name = 'Comision'
         verbose_name_plural = 'Comisiones'
-        managed = False
+        managed = True
         db_table = 'comision'
 
     def __str__(self):
@@ -76,11 +101,11 @@ class Itineraio(models.Model):
     hora_llegada = models.DateTimeField()
     salida = models.CharField(max_length=45)
     llegada = models.CharField(max_length=45)
-    id_comision = models.ForeignKey(Comision, models.DO_NOTHING, db_column='id_comision')
+    id_comision = models.ForeignKey(Comision, on_delete=models.DO_NOTHING, db_column='id_comision')
 
     class Meta:
         verbose_name = 'Itinerario'
-        managed = False
+        managed = True
         db_table = 'detalle_recorrido'
 
     def __str__(self):
@@ -91,7 +116,7 @@ class DetalleTrabajo(models.Model):
     km_salida = models.IntegerField()
     km_llegada = models.IntegerField()
     detalle_trabajo = RichTextField()
-    id_comision = models.ForeignKey(Comision, models.DO_NOTHING, db_column='id_comision')
+    id_comision = models.ForeignKey(Comision, on_delete=models.DO_NOTHING, db_column='id_comision')
 
     class Meta:
         managed = False
@@ -99,33 +124,5 @@ class DetalleTrabajo(models.Model):
 
     def __str__(self):
         return self.id_det_trabajo
-
-class Provincia(models.Model):
-    id_provincia = models.AutoField(primary_key=True)
-    provincia = models.CharField(max_length=45)
-
-    class Meta:
-        verbose_name = 'Provincia'
-        verbose_name_plural = 'Provincias'
-        managed = False
-        db_table = 'provincia'
-
-    def __str__(self):
-        return self.provincia
-
-class Transporte(models.Model):
-    id_transporte = models.AutoField(primary_key=True)
-    num_legajo = models.CharField('Numero de Legajo',max_length=45)
-    patente = models.CharField('Patente',max_length=45)
-
-    class Meta:
-        verbose_name = 'Transporte'
-        verbose_name_plural = 'Transportes'
-        managed = False
-        db_table = 'transporte'
-
-    def __str__(self):
-        return self.num_legajo
-
 
 '''https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication'''

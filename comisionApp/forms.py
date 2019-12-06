@@ -5,15 +5,12 @@ from .models import Agente,Comision,Transporte
 class AgenteForm(forms.ModelForm):
     class Meta:
         model = Agente
-        fields = ['num_afiliado','nombre', 'apellido', 'dni', 'fecha_nacimiento', 'num_tel', 'email']
+        fields = ['num_afiliado', 'dni', 'fecha_nacimiento', 'num_tel']
         labels = {
             'num_afiliado': 'Número de afiliado',
-            'nombre': 'Nombre',
-            'apellido': 'Apellido',
             'dni': 'DNI',
             'fecha_nacimiento': 'Fecha de nacimiento',
             'num_tel': 'Numero de telefono',
-            'email': 'Email',
         }
 
 class ComisionForm(forms.ModelForm):

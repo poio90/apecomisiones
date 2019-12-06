@@ -15,17 +15,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include,path
+from django.urls import path,include
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, logout_then_login
-from comisionApp.views import home
+from usuarios.views import Inicio, Login, logoutUsuario
 
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
-    path('', login_required(include(('comisionApp.urls','comision')))),
-    path('login/', LoginView.as_view(template_name = 'login.html'), name = 'login'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', login_required(Inicio.as_view()), name='index'),
+    path('accounts/login/', Login.as_view(), name='login'),
+    path('logout',login_required(logoutUsuario), name='logout'),
 ]

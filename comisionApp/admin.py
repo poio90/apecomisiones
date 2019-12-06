@@ -4,8 +4,8 @@ from .models import Agente, Ciudad, Transporte,Comision, DetalleTrabajo, Itinera
 # Register your models here.
 
 class AgenteAdmin(admin.ModelAdmin):
-    search_fields = ['apellido','nombre']
-    list_display = ('num_afiliado','apellido','nombre','dni','email','num_tel')
+    #search_fields = ['apellido','nombre']
+    list_display = ('num_afiliado','dni','num_tel')
 
 class ComisionAdmin(admin.ModelAdmin):
     search_fields = ['id_comision']

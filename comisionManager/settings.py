@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'comisionApp.apps.ComisionappConfig',
+    'usuarios.apps.UsuariosConfig',
     'ckeditor',
 ]
 
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'comisionManager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'comisiones',
+        'NAME': 'comision',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
