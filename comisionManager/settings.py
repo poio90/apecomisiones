@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'comisionManager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'comision',
+        'NAME': 'comisiones',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

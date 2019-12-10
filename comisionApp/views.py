@@ -5,9 +5,6 @@ from .models import Ciudad,Transporte, Comision
 
 
 # Create your views here.
-def home(request):
-    return render(request, 'index.html')
-
 def listarCiudades(request):
     ciudades = Ciudad.objects.all()
     return render(request, 'ciudades.html', {'ciudades': ciudades})
@@ -52,4 +49,3 @@ def eliminarTransporte(request,id):
         transporte.delete()
         return redirect('comision:transportes')
     return render(request,'eliminar_transporte.html',{'transporte':transporte})
-

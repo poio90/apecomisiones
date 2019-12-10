@@ -9,22 +9,6 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 
-class Agente(models.Model):
-    id_agente = models.OneToOneField(User, on_delete=models.CASCADE)
-    num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45,primary_key=True)
-    fecha_nacimiento = models.DateField()
-    num_tel = models.CharField('Número de Telefono',max_length=11)
-    dni = models.CharField('DNI',max_length=45)
-
-    class Meta:
-        verbose_name = 'Agente'
-        verbose_name_plural = 'Agentes'
-        managed = True
-        db_table = 'agente'
-
-    def __str__(self):
-        return self.num_afiliado
-
 class Provincia(models.Model):
     id_provincia = models.AutoField(primary_key=True)
     provincia = models.CharField(max_length=45)
@@ -55,7 +39,7 @@ class Ciudad(models.Model):
 
 class Transporte(models.Model):
     id_transporte = models.AutoField(primary_key=True)
-    num_legajo = models.CharField('Numero de Legajo',max_length=45)
+    num_legajo = models.CharField('Numero de Legajo',unique=True,max_length=45)
     patente = models.CharField('Patente',max_length=45)
 
     class Meta:
@@ -72,11 +56,7 @@ class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
     num_comision = models.CharField('Número de Comisión',unique=True,max_length=45)
     id_ciudad = models.ForeignKey(Ciudad,on_delete=models.SET_NULL,null=True, db_column='id_ciudad')
-    num_afiliado = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, db_column='num_afiliado') 
-    '''SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
-    cuando elimina un usuario, es posible que desee conservar los comentarios que publicó en las 
-    publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
-    Equivalente de SQL: SET NULL.'''
+    id_usuario = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, db_column='id')
     id_transporte = models.ForeignKey('Transporte',on_delete=models.SET_NULL,null=True, db_column='id_transporte')
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
@@ -93,6 +73,10 @@ class Comision(models.Model):
     def __str__(self):
         return self.num_comision
 
+'''SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
+    cuando elimina un usuario, es posible que desee conservar los comentarios que publicó en las 
+    publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
+    Equivalente de SQL: SET NULL.'''
 
 class Itineraio(models.Model):
     id_itinerario = models.AutoField(primary_key=True)
@@ -106,7 +90,7 @@ class Itineraio(models.Model):
     class Meta:
         verbose_name = 'Itinerario'
         managed = True
-        db_table = 'detalle_recorrido'
+        db_table = 'itinerario'
 
     def __str__(self):
         return self.id_det_recorrido
@@ -125,4 +109,5 @@ class DetalleTrabajo(models.Model):
     def __str__(self):
         return self.id_det_trabajo
 
-'''https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication'''
+''' https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication
+    https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone'''

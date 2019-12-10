@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.db import transaction
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.edit import FormView, View
+from django.views.generic.edit import View, FormView, UpdateView
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .forms import FormularioLogin
+from .forms import FormularioLogin, UserForm, AgenteForm
 
 class Inicio(View):
     def get(self, request, *args, **kwargs):
@@ -35,3 +38,25 @@ class Login(FormView):
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('accounts/login/')
+
+
+@login_required
+@transaction.atomic
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = AgenteForm(request.POST, instance=request.user.agente)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, ('Su perfil fue actualizado con éxito!'))
+            return redirect('perfil')
+        else:
+            messages.error(request, ('Por favor corrija el error a continuación.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = AgenteForm(instance=request.user.agente)
+    return render(request, 'perfil.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })

@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Agente{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>List of books by publisher:</h1>
+  {% regroup book_list|dictsort:"publisher.name" by publisher as books_by_publisher %}
+  {% for publisher in books_by_publisher %}
+    <h3>{{ publisher.grouper }}</h3>
+    <ul>
+      {% for book in publisher.list|dictsort:"title" %}
+        <li>{{ book }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</div>
+{% endblock %}

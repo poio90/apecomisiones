@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth.decorators import login_required
-from usuarios.views import Inicio, Login, logoutUsuario
+from usuarios.views import Inicio, Login, logoutUsuario, update_profile
 
 
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     path('', login_required(Inicio.as_view()), name='index'),
     path('accounts/login/', Login.as_view(), name='login'),
     path('logout',login_required(logoutUsuario), name='logout'),
+    path('perfil',login_required(update_profile), name='perfil'),
 ]

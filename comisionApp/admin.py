@@ -1,11 +1,7 @@
 from django.contrib import admin
-from .models import Agente, Ciudad, Transporte,Comision, DetalleTrabajo, Itineraio
+from .models import Ciudad, Transporte,Comision, DetalleTrabajo, Itineraio
 
 # Register your models here.
-
-class AgenteAdmin(admin.ModelAdmin):
-    #search_fields = ['apellido','nombre']
-    list_display = ('num_afiliado','dni','num_tel')
 
 class ComisionAdmin(admin.ModelAdmin):
     search_fields = ['id_comision']
@@ -17,7 +13,6 @@ class TransporteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comision,ComisionAdmin)
-admin.site.register(Agente,AgenteAdmin)
 admin.site.register(Ciudad)
 admin.site.register(Transporte,TransporteAdmin)
 admin.site.register(DetalleTrabajo)
