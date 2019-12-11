@@ -12,6 +12,11 @@ class FormularioLogin(AuthenticationForm):
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
 class UserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+    
     class Meta:
         model = User
         fields = ['last_name','first_name','email']
@@ -23,27 +28,27 @@ class UserForm(forms.ModelForm):
         widget= {
             'last_name': forms.TextInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'Apellido'
                 }
 
             ),
             'first_name': forms.TextInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'Nombre'
                 }
             ),
-            'email': forms.TextInput(
+            'email': forms.EmailInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'Email'
                 }
-
             )
         }
 
 class AgenteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
     class Meta:
         model = Agente
         fields = ['num_afiliado','fecha_nacimiento','num_tel','dni']
@@ -53,23 +58,19 @@ class AgenteForm(forms.ModelForm):
             'num_tel':'Número de telefono',
             'dni':'DNI'
         }
-        widget= {
+        widget = {
             'num_afiliado': forms.TextInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'Numero de afiliado'
                 }
-
             ),
-            'fecha_nacimiento': forms.TextInput(
+            'fecha_nacimiento': forms.DateInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'Fecha nacimiento'
                 }
             ),
             'dni': forms.TextInput(
                 attrs = {
-                    'class':'form-control',
                     'placeholder':'DNI'
                 }
             )

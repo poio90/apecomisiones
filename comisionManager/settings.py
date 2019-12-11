@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'comisionApp.apps.ComisionappConfig',
     'usuarios.apps.UsuariosConfig',
+    #django tweaks
+    'widget_tweaks',
     'ckeditor',
 ]
 

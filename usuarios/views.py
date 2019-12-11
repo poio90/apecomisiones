@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.edit import View, FormView, UpdateView
+from django.views.generic.edit import View, FormView, UpdateView, CreateView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -45,18 +45,18 @@ def logoutUsuario(request):
 def update_profile(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = AgenteForm(request.POST, instance=request.user.agente)
-        if user_form.is_valid() and profile_form.is_valid():
+        agente_form = AgenteForm(request.POST, instance=request.user.agente)
+        if user_form.is_valid() and agente_form.is_valid():
             user_form.save()
-            profile_form.save()
+            agente_form.save()
             messages.success(request, ('Su perfil fue actualizado con éxito!'))
-            return redirect('perfil')
+            return redirect('perfil_agente')
         else:
             messages.error(request, ('Por favor corrija el error a continuación.'))
     else:
         user_form = UserForm(instance=request.user)
-        profile_form = AgenteForm(instance=request.user.agente)
-    return render(request, 'perfil.html', {
+        agente_form = AgenteForm(instance=request.user.agente)
+    return render(request, 'profile.html', {
         'user_form': user_form,
-        'profile_form': profile_form
+        'agente_form': agente_form
     })

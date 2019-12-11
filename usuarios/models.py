@@ -7,9 +7,9 @@ from django.dispatch import receiver
 class Agente(models.Model):
     id_agente = models.OneToOneField(User, on_delete=models.CASCADE)
     num_afiliado = models.CharField('Número de Afiliado',unique=True, max_length=45)
-    fecha_nacimiento = models.DateField()
-    num_tel = models.CharField('Número de Telefono',max_length=11)
-    dni = models.CharField('DNI',max_length=45)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    num_tel = models.CharField('Número de Telefono',max_length=11,blank=True, null=True)
+    dni = models.CharField('DNI',max_length=45,blank=True, null=True)
 
     class Meta:
         verbose_name = 'Agente'

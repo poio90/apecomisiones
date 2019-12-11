@@ -81,7 +81,7 @@
             
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a href="{% url 'perfil' %}" class="btn btn-default btn-flat">Perfil</a>
+              <a href="{% url 'perfil_agente' %}" class="btn btn-default btn-flat">Perfil</a>
               <a href="{% url 'logout' %}" class="btn btn-default btn-flat float-right">Serrar Sesión</a>
             </li>
           </ul>
@@ -98,7 +98,7 @@
     <a href="https://ape.lapampa.gob.ar/" class="brand-link navbar-warning">
       <img src="{% static 'dist/img/LogoApe.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">APE</span>
+      <span class="brand-text font-weight-light"><b>APE</b> Comisiones</span>
     </a>
 
     <!-- Sidebar -->
@@ -180,9 +180,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
-          
-          
+            </li>          
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
