@@ -32,7 +32,7 @@ $(function () {
 
   $('#boton_cargar_comisiones').click(function() {  
     $.ajax({  
-        url: 'comisiones.html',  
+        url: 'confecion_comision.html',  
         success: function(data) {  
             $('#div_dinamico_anim').html(data);  
             $('#div_dinamico_anim div').slideDown(1000);  
