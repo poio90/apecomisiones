@@ -1,18 +1,196 @@
-{% extends "admin/base_site.html" %}
+{% extends "index.html" %}
 
 {% block title %}Agente{% endblock %}
 
 {% block content %}
-<div id="content-main">
-  <h1>List of books by publisher:</h1>
-  {% regroup book_list|dictsort:"publisher.name" by publisher as books_by_publisher %}
-  {% for publisher in books_by_publisher %}
-    <h3>{{ publisher.grouper }}</h3>
-    <ul>
-      {% for book in publisher.list|dictsort:"title" %}
-        <li>{{ book }}</li>
-      {% endfor %}
-    </ul>
-  {% endfor %}
-</div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Comfeccionar comisión</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Comfeccionar comisión</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Rendicón de Comisión N°</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-row">
+                <div class="col">
+                  <input class="form-control" placeholder="Apellido y nombre">
+                </div>
+                <div class="col">
+                  <input class="form-control" placeholder="Número de afiliado">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <div class="col">
+                  <input class="form-control" placeholder="Fecha de inicio">
+                </div>
+                <div class="col">
+                  <input class="form-control" placeholder="Fecha de finalización">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="Lugar de residencia durante la comisión">
+            </div>
+            <div class="form-group row">
+              <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
+              <div class="col">
+                <!--<input class="form-control" placeholder="Unidad de legajo">-->
+                <select class="browser-default custom-select">
+                  <option value="" disabled selected>Unidad de legajo</option>
+                  <option value="1">USA</option>
+                  <option value="2">Germany</option>
+                  <option value="3">France</option>
+                  <option value="3">Poland</option>
+                  <option value="3">Japan</option>
+                </select>
+              </div>
+              <div class="col">
+                <!--<input class="form-control" placeholder="Patente">-->
+                <select class="browser-default custom-select">
+                  <option value="" disabled selected>Patente</option>
+                  <option value="1">USA</option>
+                  <option value="2">Germany</option>
+                  <option value="3">France</option>
+                  <option value="3">Poland</option>
+                  <option value="3">Japan</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="Gastos">
+            </div>
+
+            <!--- Tabla para el armado del itinenario--->
+            <div class="form-group">
+              <div class="card-body">
+                <div id="table" class="table-editable">
+                  <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
+                        class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
+                  <table class="table table-bordered table-responsive-md table-striped text-center">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Apellido y Nombre</th>
+                        <th class="text-center">Día</th>
+                        <th class="text-center">Mes</th>
+                        <th class="text-center">Salida de:</th>
+                        <th class="text-center">horario</th>
+                        <th class="text-center">Llegada a:</th>
+                        <th class="text-center">horario</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="pt-3-half" contenteditable="true">Aurelia Vega</td>
+                        <td class="pt-3-half" contenteditable="true">30</td>
+                        <td class="pt-3-half" contenteditable="true">Deepends</td>
+                        <td class="pt-3-half" contenteditable="true">Spain</td>
+                        <td class="pt-3-half" contenteditable="true">Madrid</td>
+                        <td class="pt-3-half">
+                          <span class="table-up"><a href="#!" class="indigo-text"><i
+                                class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a></span>
+                          <span class="table-down"><a href="#!" class="indigo-text"><i
+                                class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a></span>
+                        </td>
+                        <td>
+                          <span class="table-remove"><button type="button"
+                              class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>
+                      </tr>
+                      <!-- This is our clonable table line -->
+                      <tr>
+                        <td class="pt-3-half" contenteditable="true">Guerra Cortez</td>
+                        <td class="pt-3-half" contenteditable="true">45</td>
+                        <td class="pt-3-half" contenteditable="true">Insectus</td>
+                        <td class="pt-3-half" contenteditable="true">USA</td>
+                        <td class="pt-3-half" contenteditable="true">San Francisco</td>
+                        <td class="pt-3-half">
+                          <span class="table-up"><a href="#!" class="indigo-text"><i
+                                class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a></span>
+                          <span class="table-down"><a href="#!" class="indigo-text"><i
+                                class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a></span>
+                        </td>
+                        <td>
+                          <span class="table-remove"><button type="button"
+                              class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>
+                      </tr>
+                      <!-- This is our clonable table line -->
+
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputAfiliado" class="col-sm-4 col-form-label"><h4>Informe de la Comisión:</h4></label>
+              </div>
+              <div class="form-group">
+                <div class="form-row">
+                  <div class="col">
+                    <input class="form-control" placeholder="Km de salida:">
+                  </div>
+                  <div class="col">
+                    <input class="form-control" placeholder="Kn de llegada">
+                  </div>
+                  <div class="col">
+                    <input class="form-control" placeholder="Total kms recorridos">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <textarea id="compose-textarea" class="form-control" style="height: 300px">
+              </textarea>
+              </div>
+              <div class="form-group">
+                <div class="btn btn-default btn-file">
+                  <i class="fas fa-paperclip"></i> Attachment
+                  <input type="file" name="attachment">
+                </div>
+                <p class="help-block">Max. 32MB</p>
+              </div>
+        </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <div class="float-right">
+                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Draft</button>
+                <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
+              </div>
+              <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
 {% endblock %}

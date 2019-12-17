@@ -720,14 +720,21 @@
                 <div class="card-body">
                   <div class="form-group">
                     <div class="form-row">
-                      <div class="col">
+                      <div class="col-md-6">
                         <input class="form-control" placeholder="Apellido y nombre">
                       </div>
+                      <div class="col-md-5">
+                        <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                      </div>
                       <div class="col">
-                        <input class="form-control" placeholder="Número de afiliado">
+                        <button class="btn btn-success" type="button"  onclick="education_fields();"> 
+                          <i class="fas fa-plus" aria-hidden="true"></i> 
+                        </button>
                       </div>
                     </div>
+                    
                   </div>
+                  
                   <div class="form-group">
                     <div class="form-row">
                       <div class="col">
@@ -836,8 +843,19 @@
                   <div class="form-group">
                       <label for="inputAfiliado" class="col-sm-4 col-form-label"><h4>Informe de la Comisión:</h4></label>
                     </div>
-
-
+                    <div class="form-group">
+                      <div class="form-row">
+                        <div class="col">
+                          <input class="form-control" placeholder="Km de salida:">
+                        </div>
+                        <div class="col">
+                          <input class="form-control" placeholder="Kn de llegada">
+                        </div>
+                        <div class="col">
+                          <input class="form-control" placeholder="Total kms recorridos">
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-group">
                       <textarea id="compose-textarea" class="form-control" style="height: 300px">
                     </textarea>
@@ -899,14 +917,38 @@
   <!-- Page Script -->
   <script>
     $(function () {
+      var room = 1;
+      function education_fields() {
+        room++;
+        var objTo = document.getElementById('education_fields')
+        var divtest = document.createElement("div");
+	      divtest.setAttribute("class", "form-group removeclass"+room);
+	      var rdiv = 'removeclass'+room;
+        divtest.innerHTML = `<div class="form-row">
+                              <div class="col-md-6">
+                                <input class="form-control" placeholder="Apellido y nombre">
+                              </div>
+                              <div class="col-md-5">
+                                <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                              </div>
+                              <div class="col">
+                                <button class="btn btn-danger" type="button" onclick="remove_education_fields('+ room +');"> 
+                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </button>
+                              </div>
+                            </div>`;
+        objTo.appendChild(divtest)
+      }
+      function remove_education_fields(rid) {
+	      $('.removeclass'+rid).remove();
+      }
       //Add text editor
       $('#compose-textarea').summernote();
+
       const $tableID = $('#table');
       const $BTN = $('#export-btn');
       const $EXPORT = $('#export');
-
-      const newTr = `
-                    <tr class="hide">
+      const newTr = `<tr class="hide">
                       <td class="pt-3-half" contenteditable="true">{{ user.get_full_name }}</td>
                       <td class="pt-3-half" contenteditable="true">Example</td>
                       <td class="pt-3-half" contenteditable="true">Example</td>
@@ -917,7 +959,7 @@
                         <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a></span>
                       </td>
                       <td>
-                         <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light">Remove</button></span>
+                        <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light">Remove</button></span>
                       </td>
                     </tr>`;
 

@@ -12,4 +12,5 @@ urlpatterns = [
     path('accounts/login/', Login.as_view(), name='login'),
     path('logout',login_required(logoutUsuario), name='logout'),
     path('perfil_agente',login_required(update_profile), name='perfil_agente'),
+    #path('confeccion_comision',login_required(update_profile), name='confeccion_comision'),
 ]

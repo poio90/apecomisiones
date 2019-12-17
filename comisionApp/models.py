@@ -56,7 +56,6 @@ class Comision(models.Model):
     id_comision = models.AutoField(primary_key=True)
     num_comision = models.CharField('Número de Comisión',unique=True,max_length=45)
     id_ciudad = models.ForeignKey(Ciudad,on_delete=models.SET_NULL,null=True, db_column='id_ciudad')
-    id_usuario = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, db_column='id')
     id_transporte = models.ForeignKey('Transporte',on_delete=models.SET_NULL,null=True, db_column='id_transporte')
     fech_inicio = models.DateField()
     fech_fin = models.DateField()
@@ -77,6 +76,18 @@ class Comision(models.Model):
     cuando elimina un usuario, es posible que desee conservar los comentarios que publicó en las 
     publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
     Equivalente de SQL: SET NULL.'''
+
+class Comision_x_Usuario(models.Model):
+    id_comision = models.ForeignKey(Comision,on_delete=models.SET_NULL,null=True, db_column='id_comision')
+    id_user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    fecha_de_registro = models.DateField()
+    
+    class Meta:
+        verbose_name = 'Comision por Afiliado'
+        verbose_name_plural = 'Comisiones por Afiliados'
+        managed = True
+        db_table = 'comision_x_usuario'
+
 
 class Itineraio(models.Model):
     id_itinerario = models.AutoField(primary_key=True)
@@ -110,4 +121,5 @@ class DetalleTrabajo(models.Model):
         return self.id_det_trabajo
 
 ''' https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication
-    https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone'''
+    https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+    https://www.youtube.com/watch?v=TWYPq_AGVjQ'''

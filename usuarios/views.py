@@ -45,7 +45,7 @@ def logoutUsuario(request):
 def update_profile(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        agente_form = AgenteForm(request.POST, instance=request.user.agente)
+        agente_form = AgenteForm(request.POST, instance=request.user.afiliado)
         if user_form.is_valid() and agente_form.is_valid():
             user_form.save()
             agente_form.save()
@@ -55,7 +55,7 @@ def update_profile(request):
             messages.error(request, ('Por favor corrija el error a continuación.'))
     else:
         user_form = UserForm(instance=request.user)
-        agente_form = AgenteForm(instance=request.user.agente)
+        agente_form = AgenteForm(instance=request.user.afiliado)
     return render(request, 'profile.html', {
         'user_form': user_form,
         'agente_form': agente_form

@@ -1,9 +1,5 @@
 from django.contrib import admin
-from .models import Agente
+from .models import Afiliado
 # Register your models here.
 
-class AgenteAdmin(admin.ModelAdmin):
-    search_fields = ['num_afiliado']
-    list_display = ('num_afiliado')
-
-admin.site.register(Agente)
+admin.site.register(Afiliado)
