@@ -60,3 +60,8 @@ def update_profile(request):
         'user_form': user_form,
         'agente_form': agente_form
     })
+
+@login_required
+@transaction.atomic
+def confeccionComision(request):
+    return render(request, 'confeccion_comision.html')

@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 
-{% block title %}Agente{% endblock %}
+{% block title %}Confeccion{% endblock %}
 
 {% block content %}
 <!-- Content Header (Page header) -->
@@ -32,18 +32,50 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <div class="form-group">
+
+            <div class="form-group after-add-more">
               <div class="form-row">
-                <div class="col">
+                {% csrf_token %}
+                <div class="col-md-6">
                   <input class="form-control" placeholder="Apellido y nombre">
                 </div>
+                <div class="col-md-5">
+                  <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                </div>
                 <div class="col">
-                  <input class="form-control" placeholder="Número de afiliado">
+                  <span class="table-add float-right mb-3 mr-2">
+                    <a style="cursor:pointer;" class="text-success add-more">
+                      <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
+                    </a>
+                  </span>
                 </div>
               </div>
             </div>
+            <!-- div que se muestra luego de agregar usuario -->
+            <div class="copy d-none d-print-block">
+              <div class="form-group">
+                <div class="form-row">
+                  {% csrf_token %}
+                  <div class="col-md-6">
+                    <input class="form-control" placeholder="Apellido y nombre">
+                  </div>
+                  <div class="col-md-5">
+                    <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                  </div>
+                  <div class="col">
+                    <span class="table-add float-right mb-3 mr-2">
+                      <a style="cursor:pointer;" class="text-danger remove">
+                        <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="form-row">
+                {% csrf_token %}
                 <div class="col">
                   <input class="form-control" placeholder="Fecha de inicio">
                 </div>
@@ -53,9 +85,11 @@
               </div>
             </div>
             <div class="form-group">
+              {% csrf_token %}
               <input class="form-control" placeholder="Lugar de residencia durante la comisión">
             </div>
             <div class="form-group row">
+              {% csrf_token %}
               <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
               <div class="col">
                 <!--<input class="form-control" placeholder="Unidad de legajo">-->
@@ -81,11 +115,13 @@
               </div>
             </div>
             <div class="form-group">
+              {% csrf_token %}
               <input class="form-control" placeholder="Gastos">
             </div>
 
             <!--- Tabla para el armado del itinenario--->
             <div class="form-group">
+              {% csrf_token %}
               <div class="card-body">
                 <div id="table" class="table-editable">
                   <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
@@ -148,49 +184,55 @@
             </div>
 
             <div class="form-group">
-                <label for="inputAfiliado" class="col-sm-4 col-form-label"><h4>Informe de la Comisión:</h4></label>
-              </div>
-              <div class="form-group">
-                <div class="form-row">
-                  <div class="col">
-                    <input class="form-control" placeholder="Km de salida:">
-                  </div>
-                  <div class="col">
-                    <input class="form-control" placeholder="Kn de llegada">
-                  </div>
-                  <div class="col">
-                    <input class="form-control" placeholder="Total kms recorridos">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <textarea id="compose-textarea" class="form-control" style="height: 300px">
-              </textarea>
-              </div>
-              <div class="form-group">
-                <div class="btn btn-default btn-file">
-                  <i class="fas fa-paperclip"></i> Attachment
-                  <input type="file" name="attachment">
-                </div>
-                <p class="help-block">Max. 32MB</p>
-              </div>
-        </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-              <div class="float-right">
-                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Draft</button>
-                <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
-              </div>
-              <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
+              {% csrf_token %}
+              <label for="inputAfiliado" class="col-sm-4 col-form-label">
+                <h4>Informe de la Comisión:</h4>
+              </label>
             </div>
-            <!-- /.card-footer -->
+            <div class="form-group">
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="col">
+                  <input class="form-control" placeholder="Km de salida:">
+                </div>
+                <div class="col">
+                  <input class="form-control" placeholder="Kn de llegada">
+                </div>
+                <div class="col">
+                  <input class="form-control" placeholder="Total kms recorridos">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              {% csrf_token %}
+              <textarea id="compose-textarea" class="form-control" style="height: 300px">
+              </textarea>
+            </div>
+            <div class="form-group">
+              {% csrf_token %}
+              <div class="btn btn-default btn-file">
+                <i class="fas fa-paperclip"></i> Attachment
+                <input type="file" name="attachment">
+              </div>
+              <p class="help-block">Max. 32MB</p>
+            </div>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <div class="float-right">
+              <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Draft</button>
+              <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
+            </div>
+            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
+          </div>
+          <!-- /.card-footer -->
         </div>
-        <!-- /.col -->
+        <!-- /.card -->
       </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 {% endblock %}

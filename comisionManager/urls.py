@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth.decorators import login_required
-from usuarios.views import Inicio, Login, logoutUsuario, update_profile
+from usuarios.views import Inicio, Login, logoutUsuario, update_profile, confeccionComision
 
 
 urlpatterns = [
@@ -12,5 +12,5 @@ urlpatterns = [
     path('accounts/login/', Login.as_view(), name='login'),
     path('logout',login_required(logoutUsuario), name='logout'),
     path('perfil_agente',login_required(update_profile), name='perfil_agente'),
-    #path('confeccion_comision',login_required(update_profile), name='confeccion_comision'),
+    path('confeccion_comision',login_required(confeccionComision), name='confeccion_comision'),
 ]
