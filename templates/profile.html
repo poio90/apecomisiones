@@ -1,104 +1,112 @@
 {% extends "index.html" %}
-{% load widget_tweaks %}
 
-{% block title %}Agente{% endblock %}
 {% block content %}
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Perfil de usuario</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-            <li class="breadcrumb-item active">Perfil de usuario</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <!-- /.col -->
-        <div class="col-md-12">
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class ="card-title">Configuraciones</h3>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-              <div class="tab-content">
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Perfil de usuario</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item active">Perfil de usuario</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- /.col -->
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Configuraciones</h3>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div class="tab-content">
 
-                <!-- /.tab-pane -->
+              <!-- /.tab-pane -->
 
-                <!-- /.tab-pane -->
+              <!-- /.tab-pane -->
 
-                <div id="settings">
-                  <form class="form-horizontal" method="post">
-                    {% csrf_token %}
-                    <div class="form-group row">
-                      <label for="inputAfiliado" class="col-sm-2 col-form-label">Número de afiliado</label>
-                      <div class="col-sm-10">
-                          {{ agente_form.num_afiliado }}
-                      </div>
+              <div id="settings">
+                <form class="form-horizontal" method="post">
+                  {% csrf_token %}
+                  <div class="form-group row">
+                    <label for="inputAfiliado" class="col-sm-2 col-form-label">Número de afiliado</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.num_afiliado }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
-                      <div class="col-sm-10">
-                          {{ user_form.last_name }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.last_name }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
-                      <div class="col-sm-10">
-                        {{ user_form.first_name }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.first_name }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inputDni" class="col-sm-2 col-form-label">DNI</label>
-                      <div class="col-sm-10">
-                          {{ agente_form.dni }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputDni" class="col-sm-2 col-form-label">DNI</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.dni }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inputFechNac" class="col-sm-2 col-form-label">Fecha de nacimiento</label>
-                      <div class="col-sm-10">
-                          {{ agente_form.fecha_nacimiento }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputFechNac" class="col-sm-2 col-form-label">Fecha de nacimiento</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.fecha_nacimiento }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                      <div class="col-sm-10">
-                          {{ user_form.email }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.email }}
                     </div>
-                    <div class="form-group row">
-                      <label for="inpuTel" class="col-sm-2 col-form-label">Número de tel.</label>
-                      <div class="col-sm-10">
-                          {{ agente_form.num_tel }}
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inpuTel" class="col-sm-2 col-form-label">Número de tel.</label>
+                    <div class="col-sm-10">
+                      {{ agente_form.num_tel }}
                     </div>
-                    <div class="form-group row">
-                      <div class="offset-sm-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button type="submit" class="btn btn-success">Guardar</button>
                     </div>
-                  </form>
-                </div>
-                <!-- /.tab-pane -->
+                  </div>
+                  <div class="form-group row">
+                    {% if messages %}
+                      {% for message in messages %}
+                        <script>
+                          alert("{{ message }}")
+                          $('.alert').alert()
+                        </script>
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                </form>
               </div>
-              <!-- /.tab-content -->
-            </div><!-- /.card-body -->
-          </div>
-          <!-- /.nav-tabs-custom -->
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div><!-- /.card-body -->
         </div>
-        <!-- /.col -->
+        <!-- /.nav-tabs-custom -->
       </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </section>
-  {% endblock %}
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "index.html" %}
+
+{% block content %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Confeccionar solicitud de comisión</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                    <li class="breadcrumb-item active">Confeccionar solicitud de comisión</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Solicitud de comisión de servicios</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                {% csrf_token %}
+                                <div class="col-md-2">
+                                    <label for="inputAfiliado" class="col-form-label">Fecha de pedido</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group after-add-more">
+                            <div class="form-row">
+                                {% csrf_token %}
+                                <div class="col-md-6">
+                                    <input class="form-control" placeholder="Apellido y nombre">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" placeholder="Número de afiliado a SEMPRE">
+                                </div>
+                                <div class="col-md-1">
+                                    <span class="float-right mb-3 mr-2">
+                                        <a style="cursor:pointer;" class="text-success add-more">
+                                            <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- div que se muestra luego de agregar usuario -->
+                        <div class="copy d-none d-print-block">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    {% csrf_token %}
+                                    <div class="col-md-6">
+                                        <input class="form-control" placeholder="Apellido y nombre">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input class="form-control" placeholder="Número de afiliado s SEMPRE">
+                                    </div>
+                                    <div class="col">
+                                        <span class="float-right mb-3 mr-2">
+                                            <a style="cursor:pointer;" class="text-danger remove">
+                                                <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAfiliado" class="col-sm-4 col-form-label">
+                                <h4>Motivo de la Comición</h4>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <textarea id="compose-textarea" class="form-control">
+                                </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                {% csrf_token %}
+                                <div class="col">
+                                    <input class="form-control" placeholder="Fecha de iniciación">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" placeholder="Duración prevista">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <input class="form-control" placeholder="Lugar de residencia durante la comisión">
+                        </div>
+                        <div class="form-group row">
+                            {% csrf_token %}
+                            <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
+                            <div class="col">
+                                <!--<input class="form-control" placeholder="Unidad de legajo">-->
+                                <select class="browser-default custom-select">
+                                    <option value="" disabled selected>Unidad de legajo</option>
+                                    <option value="1">USA</option>
+                                    <option value="2">Germany</option>
+                                    <option value="3">France</option>
+                                    <option value="3">Poland</option>
+                                    <option value="3">Japan</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <!--<input class="form-control" placeholder="Patente">-->
+                                <select class="browser-default custom-select">
+                                    <option value="" disabled selected>Patente</option>
+                                    <option value="1">USA</option>
+                                    <option value="2">Germany</option>
+                                    <option value="3">France</option>
+                                    <option value="3">Poland</option>
+                                    <option value="3">Japan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <input class="form-control" placeholder="Gastos a solicitar">
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-default"><i class="fas fa-file-pdf"></i>
+                                Imprimir</button>
+                            <button type="submit" class="btn btn-primary"><i
+                                    class="fas fa-archive"></i>Archivar</button>
+                        </div>
+                        <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Descartar</button>
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+{% endblock %}

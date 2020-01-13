@@ -43,10 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'comisionApp.apps.ComisionappConfig',
     'usuarios.apps.UsuariosConfig',
+    'crispy_forms',
+    'bootstrap_datepicker_plus',
     #django tweaks
-    'widget_tweaks',
     'ckeditor',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

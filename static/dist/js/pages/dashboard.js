@@ -5,7 +5,7 @@
  *      This is a demo file used only for the main dashboard (index.html)
  **/
 
-$(function () {
+$(document).ready(function () {
 
   'use strict'
 
@@ -28,7 +28,9 @@ $(function () {
   })
 
   // bootstrap WYSIHTML5 - text editor
-  $('.textarea').summernote()
+  $('.textarea').summernote({
+    height:300,
+  })
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
   $(".add-more").click(function () {
@@ -50,7 +52,7 @@ $(function () {
   const $BTN = $('#export-btn');
   const $EXPORT = $('#export');
   const newTr = `<tr class="hide">
-                  <td class="pt-3-half" contenteditable="true">{{ user.get_full_name }}</td>
+                  <td class="pt-3-half" contenteditable="true">Apellido y Nombre</td>
                   <td class="pt-3-half" contenteditable="true">Día</td>
                   <td class="pt-3-half" contenteditable="true">Mes</td>
                   <td class="pt-3-half" contenteditable="true">Salida de:</td>

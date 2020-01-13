@@ -1,57 +1,56 @@
 {% extends "loginPrincipal.html" %}
 
-{% block title %}Agente{% endblock %}
 {% block content %}
 <div class="card-body login-card-body">
-    <p class="login-box-msg">Inicia sesión para comenzar</p>
-    <form method="post" >
-      {% csrf_token %}
-      {% if form.error_messages %}
-      <div class="alert alert-danger" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-          <i class="icon fas fa-exclamation-triangle"></i>
-          {{ form.get_invalid_login_error }}
-        </div>
-      {% endif %}
-      <div class="input-group mb-3">
-        {{ form.username }}
-        <div class="input-group-append">
-          <div class="input-group-text">
-            <span class="fas fa-envelope"></span>
-          </div>
-        </div>
-      </div>
-      <div class="input-group mb-3">
-        {{ form.password }}
-        <div class="input-group-append">
-          <div class="input-group-text">
-            <span class="fas fa-lock"></span>
-          </div>
+  <p class="login-box-msg">Inicia sesión para comenzar</p>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.error_messages %}
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <i class="icon fas fa-exclamation-triangle"></i>
+      {{ form.get_invalid_login_error }}
+    </div>
+    {% endif %}
+    <div class="input-group mb-3">
+      {{ form.username }}
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-envelope"></span>
         </div>
       </div>
-      <div class="row">
-        <div class="col-8">
-          <div class="icheck-primary">
-            <input type="checkbox" id="remember">
-            <label for="remember">
-              Recordarme
-            </label>
-          </div>
+    </div>
+    <div class="input-group mb-3">
+      {{ form.password }}
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-lock"></span>
         </div>
-        <!-- /.col -->
-        <div class="col-4">
-          <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-        </div>
-        <!-- /.col -->
       </div>
-    </form>
-    <!-- /.social-auth-links -->
-    <p class="mb-1">
-      <a href="#">Olvidé mí contraseña</a>
-    </p>
-    <p class="mb-0">
-      <a href="#" class="text-center">Registrarme</a>
-    </p>
-  </div>
-  <!-- /.login-card-body -->
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <div class="icheck-primary">
+          <input type="checkbox" id="remember">
+          <label for="remember">
+            Recordarme
+          </label>
+        </div>
+      </div>
+      <!-- /.col -->
+      <div class="col-4">
+        <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+      </div>
+      <!-- /.col -->
+    </div>
+  </form>
+  <!-- /.social-auth-links -->
+  <p class="mb-1">
+    <a href="#">Olvidé mí contraseña</a>
+  </p>
+  <p class="mb-0">
+    <a href="{% url 'register' %}" class="text-center">Registrarme</a>
+  </p>
+</div>
+<!-- /.login-card-body -->
 {% endblock %}

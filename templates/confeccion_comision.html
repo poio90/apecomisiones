@@ -1,19 +1,17 @@
 {% extends "index.html" %}
 
-{% block title %}Confeccion{% endblock %}
-
 {% block content %}
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Comfeccionar comisión</h1>
+        <h1>Confeccionar rendición de comisión</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Comfeccionar comisión</li>
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item active">Confeccionar rendición de comisión</li>
         </ol>
       </div>
     </div>
@@ -28,7 +26,7 @@
       <div class="col-md-12">
         <div class="card card-primary card-outline">
           <div class="card-header">
-            <h3 class="card-title">Rendicón de Comisión N°</h3>
+            <h3 class="card-title">Rendición de Comisión N°</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -40,10 +38,10 @@
                   <input class="form-control" placeholder="Apellido y nombre">
                 </div>
                 <div class="col-md-5">
-                  <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                  <input class="form-control" placeholder="Número de afiliado a SEMPRE">
                 </div>
                 <div class="col">
-                  <span class="table-add float-right mb-3 mr-2">
+                  <span class="float-right mb-3 mr-2">
                     <a style="cursor:pointer;" class="text-success add-more">
                       <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
                     </a>
@@ -63,7 +61,7 @@
                     <input class="form-control" placeholder="Número de afiliado SEMPRE">
                   </div>
                   <div class="col">
-                    <span class="table-add float-right mb-3 mr-2">
+                    <span class="float-right mb-3 mr-2">
                       <a style="cursor:pointer;" class="text-danger remove">
                         <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
                       </a>
@@ -124,7 +122,7 @@
               {% csrf_token %}
               <div class="card-body">
                 <div id="table" class="table-editable">
-                  <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
+                  <span class="table-add float-right mb-3 mr-2"><a style="cursor:pointer;" class="text-success"><i
                         class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
                   <table class="table table-bordered table-responsive-md table-striped text-center">
                     <thead>
@@ -172,7 +170,7 @@
               {% csrf_token %}
               <div class="form-row">
                 <div class="col">
-                  <input class="form-control" placeholder="Km de salida:">
+                  <input class="form-control" placeholder="Km de salida">
                 </div>
                 <div class="col">
                   <input class="form-control" placeholder="Kn de llegada">
@@ -187,22 +185,16 @@
               <textarea id="compose-textarea" class="form-control" style="height: 300px">
               </textarea>
             </div>
-            <div class="form-group">
-              {% csrf_token %}
-              <div class="btn btn-default btn-file">
-                <i class="fas fa-paperclip"></i> Attachment
-                <input type="file" name="attachment">
-              </div>
-              <p class="help-block">Max. 32MB</p>
-            </div>
+            
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
             <div class="float-right">
-              <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Draft</button>
-              <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
-            </div>
-            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
+              <button type="button" class="btn btn-default"><i class="fas fa-file-pdf"></i>
+                  Imprimir</button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-archive"></i>Archivar</button>
+          </div>
+          <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Descartar</button>
           </div>
           <!-- /.card-footer -->
         </div>
