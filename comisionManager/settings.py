@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'comisionApp.apps.ComisionappConfig',
     'usuarios.apps.UsuariosConfig',
-    'crispy_forms',
     'bootstrap_datepicker_plus',
     #django tweaks
     'ckeditor',
