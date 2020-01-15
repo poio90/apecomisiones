@@ -51,7 +51,6 @@ class AgenteForm(forms.ModelForm):
         self.fields['num_afiliado'].widget.attrs['placeholder'] = 'Numero de afiliado'
         self.fields['fecha_nacimiento'].widget.attrs['placeholder'] = 'Fecha nacimiento'
         self.fields['num_tel'].widget.attrs['placeholder'] = 'Número de telefono'
-        self.fields['fecha_nacimiento'].widget.attrs['placeholder'] = 'Fecha nacimiento'
         self.fields['dni'].widget.attrs['placeholder'] = 'DNI'
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
 

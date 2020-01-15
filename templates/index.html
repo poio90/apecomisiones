@@ -138,7 +138,7 @@
                 <li class="nav-item">
                   <a href="{% url 'index' %}" class="nav-link">
                     <i class="nav-icon fas fa-file"></i>
-                    <p>Comisiones Rendidas</p>
+                    <p>Histórico</p>
                   </a>
                 </li>
 
@@ -218,10 +218,13 @@
   </div>
   <!-- ./wrapper -->
 
+  
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- Ajax -->
+  <script src="{% static 'dist/js/djangoAjax.js' %}"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)

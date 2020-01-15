@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -8,13 +9,25 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import View, FormView, UpdateView, CreateView
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .forms import FormularioLogin, AgenteForm, FormularioRegistro
 
 
 class Inicio(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
+
+# Validaciones
+
+
+def validar_username(request):
+    username = request.GET.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    if data['is_taken']:
+        data['error_message'] = 'Ya existe un usuario con este nombre de usuario.'
+    return JsonResponse(data)
 
 
 def registroUsuario(request):
