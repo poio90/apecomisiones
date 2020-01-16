@@ -47,14 +47,26 @@
 <script>
   $("#id_username").change(function () {
     var form = $(this).closest("form");
-    console.log(form);
     $.ajax({
-      url: form.attr("data-validate-username-url"),
+      url: "{% url 'validate_username' %}",
       data: form.serialize(),
       dataType: 'json',
       success: function (data) {
         if (data.is_taken) {
-          $("#id_username").notify(data.error_message,{ position: 'right' });
+          $("#usuario").notify(data.error_message,{ position: 'right' });
+        }
+      }
+    });
+  });
+  $("#id_num_afiliado").change(function () {
+    var form = $(this).closest("form");
+    $.ajax({
+      url: "{% url 'validate_afiliado' %}",
+      data: form.serialize(),
+      dataType: 'json',
+      success: function (data) {
+        if (data.is_taken) {
+          $("#afiliado").notify(data.error_message,{ position: 'right' });
         }
       }
     });

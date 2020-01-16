@@ -2,6 +2,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from .models import Afiliado
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -17,9 +18,7 @@ class Inicio(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
-# Validaciones
-
-
+# ------------------------------Validaciones----------------------------------------#
 def validar_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -29,6 +28,16 @@ def validar_username(request):
         data['error_message'] = 'Ya existe un usuario con este nombre de usuario.'
     return JsonResponse(data)
 
+
+def validar_afiliado(request):
+    num_afiliado = request.GET.get('num_afiliado', None)
+    data = {
+        'is_taken': Afiliado.objects.filter(num_afiliado__iexact=num_afiliado).exists()
+    }
+    if data['is_taken']:
+        data['error_message'] = 'Ya existe un usuario con este número de afiliado.'
+    return JsonResponse(data)
+#----------------------------------------------------------------------------------------#
 
 def registroUsuario(request):
     if request.method == 'POST':

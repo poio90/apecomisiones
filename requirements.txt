@@ -3,7 +3,3 @@ django-ckeditor>=5.8.0
 django-jet==1.0.8
 django-js-asset>=1.2.2
 django-bootstrap-datepicker-plus==3.0.5
-<<<<<<< HEAD
-=======
-pymysql
->>>>>>> 41ad501222e26da71afc98d18d761bcd04107855

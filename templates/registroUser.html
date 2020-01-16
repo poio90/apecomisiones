@@ -5,9 +5,9 @@
 <div class="card-body register-card-body">
     <p class="login-box-msg">Registrarme</p>
 
-    <form method="post" data-validate-username-url="{% url 'validate_username' %}">
+    <form method="post">
         {% csrf_token %}
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" id="usuario">
             {{ form.username }}
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" id="afiliado">
             {{ form.num_afiliado }}
             <div class="input-group-append">
                 <div class="input-group-text">
