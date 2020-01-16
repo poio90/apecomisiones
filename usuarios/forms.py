@@ -49,20 +49,18 @@ class AgenteForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'Apellido'
         self.fields['first_name'].widget.attrs['placeholder'] = 'Nombre'
         self.fields['num_afiliado'].widget.attrs['placeholder'] = 'Numero de afiliado'
-        self.fields['fecha_nacimiento'].widget.attrs['placeholder'] = 'Fecha nacimiento'
+        self.fields['num_afiliado'].widget.attrs['readonly'] = 'readonly'
         self.fields['num_tel'].widget.attrs['placeholder'] = 'Número de telefono'
         self.fields['dni'].widget.attrs['placeholder'] = 'DNI'
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
 
     class Meta:
         model = Afiliado
-        fields = ['last_name', 'first_name', 'num_afiliado',
-                  'fecha_nacimiento', 'num_tel', 'dni', 'email']
+        fields = ['last_name', 'first_name', 'num_afiliado', 'num_tel', 'dni', 'email']
         widget = {
             'last_name': forms.TextInput(),
             'first_name': forms.TextInput(),
             'num_afiliado': forms.TextInput(),
-            'fecha_nacimiento':  DatePickerInput(options={'format': 'YYYY-MM-DD', 'debug': True}).start_of('event active days'),
             'dni': forms.TextInput(),
             'email': forms.EmailInput()
         }

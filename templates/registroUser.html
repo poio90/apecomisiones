@@ -7,7 +7,7 @@
 
     <form method="post">
         {% csrf_token %}
-        <div class="input-group mb-3" id="usuario">
+        <div class="input-group mb-3" id="usuario" data-validate-username-url="{% url 'validate_username' %}">
             {{ form.username }}
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="input-group mb-3" id="afiliado">
+        <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'validate_afiliado' %}">
             {{ form.num_afiliado }}
             <div class="input-group-append">
                 <div class="input-group-text">

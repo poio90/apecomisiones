@@ -1,6 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,59 +20,33 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
 <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>Administración Povincial de Energía</b></a>
-  </div>
-  
-  <!-- /.login-logo -->
-  <div class="card">
-    {% block content %}
-    {% endblock %}
-  </div>
-</div>
-<!-- /.login-box -->
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="#"><b>Administración Povincial de Energía</b></a>
+    </div>
 
-<!-- jQuery -->
-<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-<!-- Ajax -->
-<script src="{% static 'dist/js/djangoAjax.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<!-- Notify -->
-<script src="{% static 'dist/js/notify.min.js' %}"></script>
+    <!-- /.login-logo -->
+    <div class="card">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+  <!-- /.login-box -->
 
-<script>
-  $("#id_username").change(function () {
-    var form = $(this).closest("form");
-    $.ajax({
-      url: "{% url 'validate_username' %}",
-      data: form.serialize(),
-      dataType: 'json',
-      success: function (data) {
-        if (data.is_taken) {
-          $("#usuario").notify(data.error_message,{ position: 'right' });
-        }
-      }
-    });
-  });
-  $("#id_num_afiliado").change(function () {
-    var form = $(this).closest("form");
-    $.ajax({
-      url: "{% url 'validate_afiliado' %}",
-      data: form.serialize(),
-      dataType: 'json',
-      success: function (data) {
-        if (data.is_taken) {
-          $("#afiliado").notify(data.error_message,{ position: 'right' });
-        }
-      }
-    });
-  });
-</script>
+  <!-- jQuery -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Ajax -->
+  <script src="{% static 'dist/js/djangoAjax.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <!-- Notify -->
+  <script src="{% static 'dist/js/notify.min.js' %}"></script>
+
+  <script src="{% static 'dist/js/pages/loginregister.js'%}"></script>
 
 </body>
 </html>

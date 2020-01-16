@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
-from usuarios.views import Inicio, Login, logoutUsuario, update_profile, registroUsuario, confeccionComision, confeccionSolicitudComision, validar_username, validar_afiliado
+from usuarios.views import Inicio, Login, logoutUsuario, update_profile, registroUsuario, confeccionComision, confeccionSolicitudComision, validar_username, validar_afiliado, validar_dni
 
 
 urlpatterns = [
@@ -20,4 +20,5 @@ urlpatterns = [
         confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
     path('ajax/validate_username/$', validar_username, name='validate_username'),
     path('ajax/validate_afiliado/$', validar_afiliado, name='validate_afiliado'),
+    path('ajax/validate_dni/$', validar_dni, name='validate_dni'),
 ]

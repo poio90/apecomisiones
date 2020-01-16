@@ -19,6 +19,8 @@ class Inicio(View):
         return render(request, 'index.html')
 
 # ------------------------------Validaciones----------------------------------------#
+
+
 def validar_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -37,7 +39,19 @@ def validar_afiliado(request):
     if data['is_taken']:
         data['error_message'] = 'Ya existe un usuario con este número de afiliado.'
     return JsonResponse(data)
+
+
+def validar_dni(request):
+    dni = request.GET.get('dni', None)
+    data = {
+        'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
+    }
+    print(data)
+    if data['is_taken']:
+        data['error_message'] = 'Ya existe un usuario con este número de documento.'
+    return JsonResponse(data)
 #----------------------------------------------------------------------------------------#
+
 
 def registroUsuario(request):
     if request.method == 'POST':
@@ -92,11 +106,10 @@ def update_profile(request):
         agente_form = AgenteForm(request.POST, instance=request.user.afiliado)
         if agente_form.is_valid():
             agente_form.save()
-            messages.success(request, ('Su perfil fue actualizado con éxito!'))
-            return redirect('perfil_agente')
+            data = {'message': 'Su perfil fue actualizado con éxito!'}
+            return JsonResponse(data)
         else:
-            messages.error(
-                request, ('Por favor corrija el error a continuación.'))
+            data = {'message': 'Por favor corrija el error a continuación.'}
     else:
         agente_form = AgenteForm(instance=request.user.afiliado)
     return render(request, 'profile.html', {
