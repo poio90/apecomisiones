@@ -46,7 +46,6 @@ def validar_dni(request):
     data = {
         'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
     }
-    print(data)
     if data['is_taken']:
         data['error_message'] = 'Ya existe un usuario con este número de documento.'
     return JsonResponse(data)
@@ -64,7 +63,7 @@ def registroUsuario(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('perfil_agente')
+            return redirect('usuarios:perfil_agente')
         else:
             messages.error(
                 request, ('Por favor corrija el error a continuación.'))
@@ -76,7 +75,7 @@ def registroUsuario(request):
 class Login(FormView):
     template_name = 'login.html'
     form_class = FormularioLogin
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('usuarios:index')
 
     # medidas de seguridad
     @method_decorator(csrf_protect)  # evita bulneravilidades comunes
