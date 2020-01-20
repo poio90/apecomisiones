@@ -15,6 +15,11 @@
                 </div>
             </div>
         </div>
+        <!--<div class="input-group mb-3 invalid-feedback">
+            {% for error in form.username.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>-->
         <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'validate_afiliado' %}">
             {{ form.num_afiliado }}
             <div class="input-group-append">
@@ -23,6 +28,11 @@
                 </div>
             </div>
         </div>
+        <!--<div class="input-group mb-3 invalid-feedback">
+            {% for error in form.num_afiliado.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>-->
         <div class="input-group mb-3">
             {{ form.email }}
             <div class="input-group-append">

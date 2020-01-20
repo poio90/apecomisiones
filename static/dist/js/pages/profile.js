@@ -10,8 +10,14 @@ $(document).ready(function () {
             data: form.serialize(),
             dataType: 'json',
             success: function (data) {
-                $.notify.defaults({ globalPosition: 'bottom right', autoHideDelay: 3000 });
-                $.notify(data.message, "success");
+                if (data.is_taken) {
+                    $.notify.defaults({ globalPosition: 'bottom right', autoHideDelay: 3000 });
+                    $.notify(data.error_message);
+
+                }else{
+                    $.notify.defaults({ globalPosition: 'bottom right', autoHideDelay: 3000 });
+                    $.notify(data.success_message, "success");
+                }
             }
         });
     });

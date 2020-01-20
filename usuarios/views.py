@@ -46,7 +46,6 @@ def validar_dni(request):
     data = {
         'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
     }
-    print(data)
     if data['is_taken']:
         data['error_message'] = 'Ya existe un usuario con este número de documento.'
     return JsonResponse(data)
@@ -103,13 +102,19 @@ def logoutUsuario(request):
 @transaction.atomic
 def update_profile(request):
     if request.method == 'POST':
-        agente_form = AgenteForm(request.POST, instance=request.user.afiliado)
-        if agente_form.is_valid():
-            agente_form.save()
-            data = {'message': 'Su perfil fue actualizado con éxito!'}
-            return JsonResponse(data)
+        dni = request.POST.get('dni', None)
+        data = {
+            'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
+        }
+        if data['is_taken']:
+            data['error_message'] = 'Ya existe un usuario con este número de documento.'
         else:
-            data = {'message': 'Por favor corrija el error a continuación.'}
+            agente_form = AgenteForm(
+                request.POST, instance=request.user.afiliado)
+            if agente_form.is_valid():
+                agente_form.save()
+                data['success_message'] = 'Su perfil fue actualizado con éxito!'
+        return JsonResponse(data)
     else:
         agente_form = AgenteForm(instance=request.user.afiliado)
     return render(request, 'profile.html', {

@@ -18,7 +18,7 @@ urlpatterns = [
         confeccionComision), name='confeccion_comisión'),
     path('confeccion_solicitud_comisión', login_required(
         confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
-    path('ajax/validate_username/$', validar_username, name='validate_username'),
-    path('ajax/validate_afiliado/$', validar_afiliado, name='validate_afiliado'),
-    path('ajax/validate_dni/$', validar_dni, name='validate_dni'),
+    path('ajax/validate_username/', validar_username, name='validate_username'),
+    path('ajax/validate_afiliado/', validar_afiliado, name='validate_afiliado'),
+    path('ajax/validate_dni/', validar_dni, name='validate_dni'),
 ]
