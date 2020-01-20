@@ -57,6 +57,7 @@ class AgenteForm(forms.ModelForm):
     class Meta:
         model = Afiliado
         fields = ['last_name', 'first_name', 'num_afiliado', 'num_tel', 'dni', 'email']
+
         widget = {
             'last_name': forms.TextInput(),
             'first_name': forms.TextInput(),

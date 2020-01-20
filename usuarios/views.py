@@ -63,7 +63,7 @@ def registroUsuario(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('perfil_agente')
+            return redirect('usuarios:perfil_agente')
         else:
             messages.error(
                 request, ('Por favor corrija el error a continuación.'))
@@ -75,7 +75,7 @@ def registroUsuario(request):
 class Login(FormView):
     template_name = 'login.html'
     form_class = FormularioLogin
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('usuarios:index')
 
     # medidas de seguridad
     @method_decorator(csrf_protect)  # evita bulneravilidades comunes

@@ -7,7 +7,7 @@
 
     <form method="post">
         {% csrf_token %}
-        <div class="input-group mb-3" id="usuario" data-validate-username-url="{% url 'validate_username' %}">
+        <div class="input-group mb-3" id="usuario" data-validate-username-url="{% url 'usuarios:validate_username' %}">
             {{ form.username }}
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -15,12 +15,16 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
         <!--<div class="input-group mb-3 invalid-feedback">
             {% for error in form.username.errors %}
                 {{ error }}
             {% endfor %}
         </div>-->
         <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'validate_afiliado' %}">
+=======
+        <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'usuarios:validate_afiliado' %}">
+>>>>>>> b9829ef364a6b1d17dfa7c7e847f6d29d30a5ded
             {{ form.num_afiliado }}
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -67,7 +71,7 @@
             <!-- /.col -->
         </div>
     </form>
-    <a href="{% url 'login' %}" class="text-center">Ya tengo una cuenta</a>
+    <a href="{% url 'usuarios:login' %}" class="text-center">Ya tengo una cuenta</a>
 </div>
 <!-- /.form-box -->
 {% endblock %}

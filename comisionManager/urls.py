@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
-from usuarios.views import Inicio, Login, logoutUsuario, update_profile, registroUsuario, confeccionComision, confeccionSolicitudComision, validar_username, validar_afiliado, validar_dni
+
 
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('jet/dashboard/', include('jet.dashboard.urls',
                                    'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('', login_required(Inicio.as_view()), name='index'),
     path('accounts/register/', registroUsuario, name='register'),
     path('accounts/login/', Login.as_view(), name='login'),
@@ -21,4 +22,7 @@ urlpatterns = [
     path('ajax/validate_username/', validar_username, name='validate_username'),
     path('ajax/validate_afiliado/', validar_afiliado, name='validate_afiliado'),
     path('ajax/validate_dni/', validar_dni, name='validate_dni'),
+=======
+    path('',include(('usuarios.urls','usuarios'), namespace='usuarios')),
+>>>>>>> b9829ef364a6b1d17dfa7c7e847f6d29d30a5ded
 ]
