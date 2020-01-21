@@ -41,10 +41,10 @@
           <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="{% url 'usuarios:index' %}" class="nav-link">Home</a>
+          <a href="#" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="{% url 'usuarios:index' %}" class="nav-link">Contactos</a>
+          <a href="#" class="nav-link">Contactos</a>
         </li>
       </ul>
 
@@ -68,14 +68,14 @@
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
             <img src="{% static 'dist/img/imagesworker.jpg' %}" class="user-image img-circle elevation-2"
               alt="User Image">
-            <span class="d-none d-md-inline">{{ user.username }}</span>
+            <span class="d-none d-md-inline">{{ request.user.username }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <!-- User image -->
             <li class="user-header bg-primary">
               <img src="{% static 'dist/img/imagesworker.jpg' %}" class="img-circle elevation-2" alt="User Image">
               <p>
-                {{ user.get_full_name }}
+                {{ request.user.get_full_name }}
                 <!--<small></small>-->
               </p>
             </li>
@@ -83,7 +83,7 @@
 
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a href="{% url 'usuarios:perfil_agente' %}" class="btn btn-default btn-flat">Perfil</a>
+              <a {# href="{% url 'usuarios:perfil_agente' %}" #} class="btn btn-default btn-flat">Perfil</a>
               <a href="{% url 'usuarios:logout' %}" class="btn btn-default btn-flat float-right">Cerrar Sesión</a>
             </li>
           </ul>
@@ -123,20 +123,20 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <!--<a href="#" class="nav-link">-->
-                  <a href="{% url 'usuarios:confeccion_solicitud_comisión' %}" class="nav-link">
+                  <a {# href="{% url 'usuarios:confeccion_solicitud_comisión' %}" #} class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar solicitud</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <!--<a href="#" class="nav-link">-->
-                  <a href="{% url 'usuarios:confeccion_comisión' %}" class="nav-link">
+                  <a {# href="{% url 'usuarios:confeccion_comisión' %}" #} class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar rendición</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'usuarios:index' %}" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-file"></i>
                     <p>Histórico</p>
                   </a>
@@ -154,13 +154,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{% url 'usuarios:index' %}" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Solicitar</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'usuarios:index' %}" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>
@@ -177,13 +177,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{% url 'usuarios:index' %}" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'usuarios:index' %}" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>

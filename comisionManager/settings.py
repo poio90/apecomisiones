@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'comisionApp.apps.ComisionappConfig',
     'usuarios.apps.UsuariosConfig',
     'bootstrap_datepicker_plus',
-    #django tweaks
     'ckeditor',
 ]
 

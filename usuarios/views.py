@@ -7,16 +7,59 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.edit import View, FormView, UpdateView, CreateView
-from django.contrib.auth import login, logout, authenticate
+from django.views.generic.edit import View, FormView, UpdateView, CreateView, TemplateResponseMixin
+from django.views.generic import DetailView
+from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
-from .forms import FormularioLogin, AgenteForm, FormularioRegistro
+from .forms import FormularioLogin, FormRegistro
+""", AgenteForm, """
 
 
 class Inicio(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
+
+
+class RegistroUsuario(FormView):
+    template_name = 'login.html'
+    form_class = FormRegistro
+    success_url = reverse_lazy('usuarios:login')
+
+class LoginUsuario(FormView):
+    template_name = 'registroUser.html'
+    form_class = FormularioLogin
+    success_url = reverse_lazy('usuarios:index')
+
+    # medidas de seguridad
+    @method_decorator(csrf_protect)  # evita bulneravilidades comunes
+    # no se almacena en cache la informacion correspondiente
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super(LoginUsuario, self).dispatch(request, *args, **kwargs)
+
+    # llega el formulario y antes de llamar al metodo POST pasa por form_valid y se valida lo que deseamos
+    def form_valid(self, form):
+        login(self.request, form.get_user())
+        return super(LoginUsuario, self).form_valid(form)
+
+
+def logoutUsuario(request):
+    logout(request)
+    return HttpResponseRedirect('accounts/login/')
+
+
+class PerfilUsuario(DetailView):
+    template_name = 'profile.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+    queryset = User.objects.all()
+
+
+"""
 
 # ------------------------------Validaciones----------------------------------------#
 
@@ -72,43 +115,23 @@ def registroUsuario(request):
     return render(request, 'registroUser.html', {'form': form})
 
 
-class Login(FormView):
-    template_name = 'login.html'
-    form_class = FormularioLogin
-    success_url = reverse_lazy('usuarios:index')
-
-    # medidas de seguridad
-    @method_decorator(csrf_protect)  # evita bulneravilidades comunes
-    # no se almacena en cache la informacion correspondiente
-    @method_decorator(never_cache)
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return super(Login, self).dispatch(request, *args, **kwargs)
-
-    # llega el formulario y antes de llamar al metodo POST pasa por form_valid y se valida lo que deseamos
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return super(Login, self).form_valid(form)
-
-
-def logoutUsuario(request):
-    logout(request)
-    return HttpResponseRedirect('accounts/login/')
-
-
 @login_required
 @transaction.atomic
 def update_profile(request):
     if request.method == 'POST':
-        agente_form = AgenteForm(request.POST, instance=request.user.afiliado)
-        if agente_form.is_valid():
-            agente_form.save()
-            data = {'message': 'Su perfil fue actualizado con éxito!'}
-            return JsonResponse(data)
+        dni = request.POST.get('dni', None)
+        data = {
+            'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
+        }
+        if data['is_taken']:
+            data['error_message'] = 'Ya existe un usuario con este número de documento.'
         else:
-            data = {'message': 'Por favor corrija el error a continuación.'}
+            agente_form = AgenteForm(
+                request.POST, instance=request.user.afiliado)
+            if agente_form.is_valid():
+                agente_form.save()
+                data['success_message'] = 'Su perfil fue actualizado con éxito!'
+        return JsonResponse(data)
     else:
         agente_form = AgenteForm(instance=request.user.afiliado)
     return render(request, 'profile.html', {
@@ -125,4 +148,4 @@ def confeccionComision(request):
 @login_required
 @transaction.atomic
 def confeccionSolicitudComision(request):
-    return render(request, 'confeccion_sol_comision.html')
+    return render(request, 'confeccion_sol_comision.html')"""
