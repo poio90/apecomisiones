@@ -58,6 +58,7 @@ $(document).ready(function () {
                   <td class="pt-3-half" contenteditable="true">Salida de:</td>
                   <td class="pt-3-half" contenteditable="true">horario</td>
                   <td class="pt-3-half" contenteditable="true">Llegada a:</td>
+                  <td class="pt-3-half" contenteditable="true">horario</td>
                   <td>
                     <span class="table-remove">
                       <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
