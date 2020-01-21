@@ -7,7 +7,7 @@
 
     <form method="post">
         {% csrf_token %}
-        <div class="input-group mb-3" id="usuario" data-validate-username-url="{% url 'usuarios:validate_username' %}">
+        <div class="input-group mb-3" id="usuario" {# data-validate-username-url="{% url 'usuarios:validate_username' %}" #}>
             {{ form.username }}
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -15,17 +15,14 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
         <!--<div class="input-group mb-3 invalid-feedback">
             {% for error in form.username.errors %}
                 {{ error }}
             {% endfor %}
         </div>-->
-        <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'validate_afiliado' %}">
-=======
-        <div class="input-group mb-3" id="afiliado" data-validate-afiliado-url="{% url 'usuarios:validate_afiliado' %}">
->>>>>>> b9829ef364a6b1d17dfa7c7e847f6d29d30a5ded
-            {{ form.num_afiliado }}
+        <div class="input-group mb-3" id="afiliado" {# data-validate-afiliado-url="{% url 'validate_afiliado' %}" #}>
+            {# {{ form.num_afiliado }} #}
+            <input type="text" class="form-control" placeholder="Usuario">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-address-card"></span>
@@ -38,7 +35,8 @@
             {% endfor %}
         </div>-->
         <div class="input-group mb-3">
-            {{ form.email }}
+            {# {{ form.email }} #}
+            <input type="email" class="form-control" placeholder="Email">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -46,7 +44,8 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            {{ form.password1 }}
+            {# {{ form.password1 }} #}
+            <input type="password" class="form-control" placeholder="Contraseña">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>
@@ -54,7 +53,8 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            {{ form.password2 }}
+            {# {{ form.password2 }} #}
+            <input type="password" class="form-control" placeholder="Confirmar contraseña">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>

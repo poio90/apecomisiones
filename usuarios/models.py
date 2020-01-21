@@ -6,17 +6,18 @@ from django.dispatch import receiver
 # Create your models here.
 
 
-class Afiliado(User):
+class Afiliado(models.Model):
+    id_afiliado = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     num_afiliado = models.CharField(
         'Número de Afiliado', unique=True, max_length=45)
-    fecha_nacimiento = models.DateField(blank=True, null=True)
     num_tel = models.CharField(
         'Número de Telefono', max_length=11, blank=True, null=True)
-    dni = models.CharField('DNI', max_length=45, blank=True, null=True)
+    dni = models.CharField('DNI', unique=True,max_length=45, blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Agente'
-        verbose_name_plural = 'Agentes'
+        verbose_name = 'Afiliado'
+        verbose_name_plural = 'Afiliados'
         managed = True
         db_table = 'afiliado'
 
