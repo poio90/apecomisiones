@@ -16,7 +16,7 @@ class FormRegistro(forms.Form):
     def clean_num_afliado(self):
         num_afiliado = self.cleaned_data['num_afiliado']
         num_afiliado_taken = Afiliado.objects.filter(
-            num_afiliado__iexact=num_afiliado).exists()
+            num_afiliado=num_afiliado).exists()
         if num_afiliado_taken:
             raise forms.ValidationError(
                 'Ya existe un usuario con este número de afiliado.')
@@ -25,7 +25,7 @@ class FormRegistro(forms.Form):
     def clean_username(self):
         username = self.cleaned_data['username']
         username_taken = User.objects.filter(
-            username__iexact=username).exists()
+            username=username).exists()
         if username_taken:
             raise forms.ValidationError(
                 'Ya existe un usuario con este nombre de usuario.')
@@ -33,20 +33,30 @@ class FormRegistro(forms.Form):
 
     def clean_num_afliado(self):
         email = self.cleaned_data['email']
-        email_taken = User.objects.filter(email__iexact=email).exists()
+        email_taken = User.objects.filter(email=email).exists()
         if email_taken:
             raise forms.ValidationError('Ya existe un usuario con este email.')
         return email
 
 
-class FormularioLogin(AuthenticationForm):
+class FormLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):
-        super(FormularioLogin, self).__init__(*args, **kwargs)
+        super(FormLogin, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de Usuario'
         self.fields['password'].widget.attrs['class'] = 'form-control'
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
+
+class FormUpdateProfile(forms.Form):
+    num_afiliado = forms.CharField(min_length=7, max_length=7)
+    email = forms.CharField(min_length=6, max_length=70,
+                            widget=forms.EmailInput(),required=True)
+    last_name = forms.CharField(min_length=2,max_length=70,required=True)
+    first_name = forms.CharField(min_length=2,max_length=70,required=True)
+    dni = forms.CharField(max_length=8,required=True)
+    num_tel = forms.CharField(max_length=11,required=True)
+    
 
 """class DateInput(DatePickerInput):
     def __init__(self):

@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.contrib import messages
+from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Afiliado
@@ -12,8 +12,7 @@ from django.views.generic import DetailView
 from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
-from .forms import FormularioLogin, FormRegistro
-""", AgenteForm, """
+from .forms import FormLogin, FormRegistro, FormUpdateProfile
 
 
 class Inicio(View):
@@ -21,14 +20,9 @@ class Inicio(View):
         return render(request, 'index.html')
 
 
-class RegistroUsuario(FormView):
-    template_name = 'login.html'
-    form_class = FormRegistro
-    success_url = reverse_lazy('usuarios:login')
-
 class LoginUsuario(FormView):
-    template_name = 'registroUser.html'
-    form_class = FormularioLogin
+    template_name = 'login.html'
+    form_class = FormLogin
     success_url = reverse_lazy('usuarios:index')
 
     # medidas de seguridad
@@ -47,16 +41,68 @@ class LoginUsuario(FormView):
         return super(LoginUsuario, self).form_valid(form)
 
 
+def registroUsuario(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        passw = request.POST['password']
+        passw_confirmation = request.POST['password_confirmation']
+        num_afil = request.POST['num_afiliado']
+
+        num_afiliado_taken = Afiliado.objects.filter(
+            num_afiliado=num_afil).exists()
+        if num_afiliado_taken:
+            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de afiliado.'})
+
+        if passw != passw_confirmation:
+            return render(request, 'registroUser.html', {'error': 'No coincide la contraseña'})
+
+        try:
+            user = User.objects.create_user(username=username, password=passw)
+        except IntegrityError:
+            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este nombre de usuario.'})
+
+        user.email = request.POST['email']
+        user.save()
+
+        afiliado = Afiliado(user=user)
+        afiliado.num_afiliado = request.POST['num_afiliado']
+        afiliado.save()
+
+        return redirect('usuarios:login')
+
+    return render(request, 'registroUser.html')
+
+
+@login_required
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('accounts/login/')
 
 
-class PerfilUsuario(DetailView):
+"""class PerfilUsuario(DetailView):
     template_name = 'profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
-    queryset = User.objects.all()
+    queryset = User.objects.all()"""
+
+
+@login_required
+@transaction.atomic
+def update_profile(request):
+    afiliado = request.user.afiliado
+    if request.method == 'POST':
+        afiliado_form = FormUpdateProfile(request.POST)
+        print(afiliado_form.cleaned_data)
+        if afiliado_form.is_valid():
+            print(afiliado_form.cleaned_data)
+    else:
+        afiliado_form = FormUpdateProfile()
+
+    return render(request, 'profile.html', {
+        'afiliado': afiliado,
+        'user': request.user,
+        'afiliado_form': afiliado_form
+    })
 
 
 """

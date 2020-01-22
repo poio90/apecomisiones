@@ -4,11 +4,15 @@
 {% block content %}
 <div class="card-body register-card-body">
     <p class="login-box-msg">Registrarme</p>
+    {% if error %}
+        <p class="alert alert-danger">{{ error }}</p>
+    {% endif %}
 
-    <form method="post">
+    <form method="POST" action="{% url 'usuarios:register' %}">
         {% csrf_token %}
         <div class="input-group mb-3" id="usuario" {# data-validate-username-url="{% url 'usuarios:validate_username' %}" #}>
-            {{ form.username }}
+            {# {{ form.username }} #}
+            <input type="text" class="form-control" placeholder="Nombre de usuario" name="username" required="true">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-user"></span>
@@ -20,9 +24,9 @@
                 {{ error }}
             {% endfor %}
         </div>-->
-        <div class="input-group mb-3" id="afiliado" {# data-validate-afiliado-url="{% url 'validate_afiliado' %}" #}>
+        <div class="input-group mb-3">
             {# {{ form.num_afiliado }} #}
-            <input type="text" class="form-control" placeholder="Usuario">
+            <input type="text" class="form-control" placeholder="Número de afiliado" name="num_afiliado" required="true">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-address-card"></span>
@@ -36,7 +40,7 @@
         </div>-->
         <div class="input-group mb-3">
             {# {{ form.email }} #}
-            <input type="email" class="form-control" placeholder="Email">
+            <input type="email" class="form-control" placeholder="Email" name="email" required="true">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -45,7 +49,7 @@
         </div>
         <div class="input-group mb-3">
             {# {{ form.password1 }} #}
-            <input type="password" class="form-control" placeholder="Contraseña">
+            <input type="password" class="form-control" placeholder="Contraseña" name="password" required="true">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>
@@ -54,7 +58,7 @@
         </div>
         <div class="input-group mb-3">
             {# {{ form.password2 }} #}
-            <input type="password" class="form-control" placeholder="Confirmar contraseña">
+            <input type="password" class="form-control" placeholder="Confirmar contraseña" name="password_confirmation" required="true">
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>

@@ -68,14 +68,14 @@
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
             <img src="{% static 'dist/img/imagesworker.jpg' %}" class="user-image img-circle elevation-2"
               alt="User Image">
-            <span class="d-none d-md-inline">{{ request.user.username }}</span>
+            <span class="d-none d-md-inline">{{ user.username }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <!-- User image -->
             <li class="user-header bg-primary">
               <img src="{% static 'dist/img/imagesworker.jpg' %}" class="img-circle elevation-2" alt="User Image">
               <p>
-                {{ request.user.get_full_name }}
+                {{ user.get_full_name }}
                 <!--<small></small>-->
               </p>
             </li>
@@ -83,7 +83,7 @@
 
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a {# href="{% url 'usuarios:perfil_agente' %}" #} class="btn btn-default btn-flat">Perfil</a>
+              <a href="{% url 'usuarios:update_profile' %}" class="btn btn-default btn-flat">Perfil</a>
               <a href="{% url 'usuarios:logout' %}" class="btn btn-default btn-flat float-right">Cerrar Sesión</a>
             </li>
           </ul>

@@ -10,7 +10,7 @@ urlpatterns = [
          name='login'),
 
     path(route='accounts/register/',
-         view=views.RegistroUsuario.as_view(),
+         view= views.registroUsuario,
          name='register'),
 
     path(route='logout',
@@ -18,12 +18,12 @@ urlpatterns = [
          name='logout'),
 
     path(route='',
-         view=views.Inicio.as_view(),
+         view=login_required(views.Inicio.as_view()),
          name='index'),
 
-    path(route='perfil_usuario/<str:username>/',
-         view=views.PerfilUsuario.as_view(template_name='profile.html'),
-         name='perfil_agente'),
+    path(route='perfil_usuario/',
+         view=views.update_profile,
+         name='update_profile'),
 ]
 
 """path(route='accounts/register/',

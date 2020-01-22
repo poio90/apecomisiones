@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'usuarios.middleware.PerfilCompletoMiddlerware'
 ]
 
 ROOT_URLCONF = 'comisionManager.urls'
@@ -142,3 +143,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+
+LOGIN_URL = 'accounts/login/'
