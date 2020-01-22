@@ -24,15 +24,13 @@ urlpatterns = [
     path(route='perfil_usuario/',
          view=views.update_profile,
          name='update_profile'),
+         path('confeccion_comisión', login_required(
+        views.confeccionComision), name='confeccion_comisión'),
+    path('confeccion_solicitud_comisión', login_required(
+        views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
 ]
 
-"""path(route='accounts/register/',
-         view=views.registroUsuario,
-         name='register'),
-
-    path(route='logout',
-         view=login_required(views.logoutUsuario),
-         name='logout'),
+"""
 
     path(route='perfil_agente',
          view=login_required(views.update_profile),

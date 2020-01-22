@@ -104,7 +104,16 @@ def update_profile(request):
         'afiliado_form': afiliado_form
     })
 
+@login_required
+@transaction.atomic
+def confeccionComision(request):
+    return render(request, 'confeccion_comision.html')
 
+
+@login_required
+@transaction.atomic
+def confeccionSolicitudComision(request):
+    return render(request, 'confeccion_sol_comision.html')
 """
 
 # ------------------------------Validaciones----------------------------------------#
