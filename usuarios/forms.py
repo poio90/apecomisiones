@@ -31,13 +31,6 @@ class FormRegistro(forms.Form):
                 'Ya existe un usuario con este nombre de usuario.')
         return username
 
-    def clean_num_afliado(self):
-        email = self.cleaned_data['email']
-        email_taken = User.objects.filter(email=email).exists()
-        if email_taken:
-            raise forms.ValidationError('Ya existe un usuario con este email.')
-        return email
-
 
 class FormLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -49,14 +42,14 @@ class FormLogin(AuthenticationForm):
 
 
 class FormUpdateProfile(forms.Form):
-    num_afiliado = forms.CharField(min_length=7, max_length=7)
+    #num_afiliado = forms.CharField(min_length=7, max_length=7)
     email = forms.CharField(min_length=6, max_length=70,
-                            widget=forms.EmailInput(),required=True)
-    last_name = forms.CharField(min_length=2,max_length=70,required=True)
-    first_name = forms.CharField(min_length=2,max_length=70,required=True)
-    dni = forms.CharField(max_length=8,required=True)
-    num_tel = forms.CharField(max_length=11,required=True)
-    
+                            widget=forms.EmailInput(), required=True)
+    last_name = forms.CharField(min_length=2, max_length=70, required=True)
+    first_name = forms.CharField(min_length=2, max_length=70, required=True)
+    dni = forms.CharField(min_length=8, max_length=8, required=True)
+    num_tel = forms.CharField(min_length=10,max_length=10, required=True)
+
 
 """class DateInput(DatePickerInput):
     def __init__(self):

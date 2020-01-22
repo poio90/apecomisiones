@@ -87,18 +87,25 @@ def logoutUsuario(request):
 
 
 @login_required
-@transaction.atomic
 def update_profile(request):
     afiliado = request.user.afiliado
+    user = request.user
     if request.method == 'POST':
         afiliado_form = FormUpdateProfile(request.POST)
-        print(afiliado_form.cleaned_data)
         if afiliado_form.is_valid():
-            print(afiliado_form.cleaned_data)
+            data = afiliado_form.cleaned_data
+            user.last_name = data['last_name']
+            user.first_name = data['first_name']
+            afiliado.email = data['email']
+            afiliado.dni = data['dni']
+            afiliado.num_tel = data['num_tel']
+            user.save()
+            afiliado.save()
+            redirect('usuarios:update_profile')
     else:
         afiliado_form = FormUpdateProfile()
 
-    return render(request, 'profile.html', {
+    return render(request=request, template_name='profile.html', context={
         'afiliado': afiliado,
         'user': request.user,
         'afiliado_form': afiliado_form
