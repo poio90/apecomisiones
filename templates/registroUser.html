@@ -10,7 +10,7 @@
 
     <form method="POST" action="{% url 'usuarios:register' %}">
         {% csrf_token %}
-        <div class="input-group mb-3" id="usuario" {# data-validate-username-url="{% url 'usuarios:validate_username' %}" #}>
+        <div class="input-group mb-3" id="usuario">
             {# {{ form.username }} #}
             <input type="text" class="form-control" placeholder="Nombre de usuario" name="username" required="true">
             <div class="input-group-append">
@@ -19,11 +19,7 @@
                 </div>
             </div>
         </div>
-        <!--<div class="input-group mb-3 invalid-feedback">
-            {% for error in form.username.errors %}
-                {{ error }}
-            {% endfor %}
-        </div>-->
+        
         <div class="input-group mb-3">
             {# {{ form.num_afiliado }} #}
             <input type="text" class="form-control" placeholder="Número de afiliado" name="num_afiliado" required="true">
@@ -33,11 +29,7 @@
                 </div>
             </div>
         </div>
-        <!--<div class="input-group mb-3 invalid-feedback">
-            {% for error in form.num_afiliado.errors %}
-                {{ error }}
-            {% endfor %}
-        </div>-->
+        
         <div class="input-group mb-3">
             {# {{ form.email }} #}
             <input type="email" class="form-control" placeholder="Email" name="email" required="true">

@@ -1,5 +1,6 @@
 from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Afiliado
@@ -7,13 +8,17 @@ from .models import Afiliado
 
 class FormRegistro(forms.Form):
 
-    num_afiliado = forms.CharField(min_length=7, max_length=7)
     username = forms.CharField(min_length=4, max_length=50)
-    password = forms.CharField(max_length=70, widget=forms.PasswordInput())
+    num_afiliado = forms.CharField(min_length=5, max_length=7)
     email = forms.CharField(min_length=6, max_length=70,
                             widget=forms.EmailInput())
+    password = forms.CharField(max_length=70, widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(max_length=70, widget=forms.PasswordInput())
+    
 
     def clean_num_afliado(self):
+        """Número de afiliado debe ser unico"""
+        print('hola num afiliado')
         num_afiliado = self.cleaned_data['num_afiliado']
         num_afiliado_taken = Afiliado.objects.filter(
             num_afiliado=num_afiliado).exists()
@@ -23,6 +28,8 @@ class FormRegistro(forms.Form):
         return num_afiliado
 
     def clean_username(self):
+        """Nombre de usuario debe ser unico"""
+        print('hola username')
         username = self.cleaned_data['username']
         username_taken = User.objects.filter(
             username=username).exists()
@@ -30,6 +37,18 @@ class FormRegistro(forms.Form):
             raise forms.ValidationError(
                 'Ya existe un usuario con este nombre de usuario.')
         return username
+    
+    def clean(self):
+        """Verificacion del password"""
+        data = super().clean() #forma de llamar al metodo antes de ser sobre escrito, trae los datos
+        
+        print(data)
+        passw = data['password']
+        passw_confirmation = data['password_confirmation']
+        if passw != passw_confirmation:
+            raise forms.ValidationError('No coincide la contraseña')
+        return data
+
 
 
 class FormLogin(AuthenticationForm):

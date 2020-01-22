@@ -18,7 +18,7 @@ urlpatterns = [
          name='logout'),
 
     path(route='',
-         view=views.Inicio.as_view(),
+         view=login_required(views.Inicio.as_view()),
          name='index'),
 
     path(route='perfil_usuario/',

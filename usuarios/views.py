@@ -15,6 +15,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from .forms import FormLogin, FormRegistro, FormUpdateProfile
 
 
+
 class Inicio(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
