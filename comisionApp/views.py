@@ -1,13 +1,25 @@
 from django.shortcuts import render, redirect
+from django.views.generic import View
+from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
 from .models import Ciudad,Transporte, Comision
 
+from comisionManager.utils import render_pdf
+
 
 # Create your views here.
-def listarCiudades(request):
-    ciudades = Ciudad.objects.all()
-    return render(request, 'ciudades.html', {'ciudades': ciudades})
+class ReportePdf(View):
+    """Regresa Pdf"""
+    def get(self, request,*args,**kwargs):
+        datos = {
+            'nombre': 'Germán',
+            'apellido': 'Vargas',
+            'edad': 29
+        }
+        pdf = render_pdf('reporte_pdf.html', {'datos':datos})
+        
+        return HttpResponse(pdf, content_type='reporte_pdf.html')
 
 def listarComisiones(request):
     comisiones = Comision.objects.all()

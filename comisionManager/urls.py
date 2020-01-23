@@ -10,4 +10,5 @@ urlpatterns = [
                                    'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
     path('',include(('usuarios.urls','usuarios'), namespace='usuarios')),
+    path('',include(('comisionApp.urls','comisiones'), namespace='comisiones')),
 ]

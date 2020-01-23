@@ -96,11 +96,13 @@
                         </div>
                         <div class="form-group">
                             <div class="form-row">
-                                {% csrf_token %}
-                                <div class="col">
-                                    <input class="form-control" placeholder="Fecha de iniciación">
+                                <div class="col-md-5" id="sandbox-container">
+                                    <div class="input-group date">
+                                    <!---<input class="form-control" placeholder="Fecha de iniciación">-->
+                                    <input type="text" class="form-control" placeholder="Fecha de iniciación"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
-                                <div class="col">
+                                </div>
+                                <div class="col-md-7">
                                     <input class="form-control" placeholder="Duración prevista">
                                 </div>
                             </div>
@@ -135,10 +137,10 @@
                     <!-- /.card-body -->
                     <div class="card-footer">
                         <div class="float-right">
-                            <button type="button" class="btn btn-default"><i class="fas fa-file-pdf"></i>
-                                Imprimir</button>
-                            <!--<button type="submit" class="btn btn-primary"><i
-                                    class="fas fa-archive"></i>Archivar</button>-->
+                            <a type="button" class="btn btn-default" href="{% url 'comisiones:reporte_pdf' %}" target="_blank"><i class="fas fa-file-pdf"></i>
+                                Imprimir</a>
+                            <button type="submit" class="btn btn-primary"><i
+                                    class="fas fa-archive"></i>Archivar</button>
                         </div>
                         <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Descartar</button>
                     </div>
