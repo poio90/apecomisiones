@@ -9,6 +9,12 @@ $(document).ready(function () {
 
   'use strict'
 
+  $('#sandbox-container .input-group.date').datepicker({
+    format: "dd/mm/yy",
+    language: "es",
+    orientation: "bottom auto"
+  });
+
   // Make the dashboard widgets sortable Using jquery UI
   $('.connectedSortable').sortable({
     placeholder: 'sort-highlight',
@@ -29,7 +35,7 @@ $(document).ready(function () {
 
   // bootstrap WYSIHTML5 - text editor
   $('.textarea').summernote({
-    height:300,
+    height: 300,
   })
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
@@ -134,14 +140,4 @@ $(document).ready(function () {
     $EXPORT.text(JSON.stringify(data));
   });
   //----------------------------------------------------------------------------------//
-
-  $('#boton_cargar_comisiones').click(function () {
-    $.ajax({
-      url: 'confecion_comision.html',
-      success: function (data) {
-        $('#div_dinamico_anim').html(data);
-        $('#div_dinamico_anim div').slideDown(1000);
-      }
-    });
-  });
 })

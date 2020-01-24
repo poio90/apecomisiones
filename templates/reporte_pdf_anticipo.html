@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
+    <style type="text/css">
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+
+        body {
+            position: relative;
+            margin-right: 20px;
+            margin-left: 20px;
+            color: #001028;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-family: Arial;
+        }
+
+        header {
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.4em;
+            line-height: 1.4em;
+            font-weight: normal;
+            text-align: center;
+            margin: 20px 0 20px 0;
+        }
+
+        #project {
+            float: left;
+        }
+
+        #project span {
+            color: #5D6975;
+            text-align: right;
+            width: 52px;
+            margin-right: 10px;
+            display: inline-block;
+            font-size: 0.8em;
+        }
+
+        #company {
+            float: right;
+            text-align: right;
+        }
+
+        #project div,
+        #company div {
+            white-space: nowrap;
+        }
+
+        table {    -pdf-keep-in-frame-mode: shrink;}
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            background-color: #fff;
+        }
+
+        table th,
+        table td {
+            font-size: 1.1em;
+        }
+
+        table td {
+            padding: 0;
+            margin-bottom: 2px;
+        }
+
+        table td.service,
+        table td.desc {
+            vertical-align: top;
+        }
+
+        #notices .notice {
+            font-size: 1.1em;
+        }
+        
+        #itinerario {
+            border: 1px solid;
+        }
+        #itinerario th,
+        #itinerario th {
+            font-size: 0.5em;
+        }
+
+        #itinerario .nombre{
+            widows: 5cm;
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="clearfix">
+        <h1>SOLICITUD DE ANTICIPO DE SERVICIOS</h1>
+        <div id="company" class="clearfix">
+            <div><b>Fecha de Pedido</b> 23/1/2020</div>
+        </div>
+    </header>
+    <main>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="service"><b>Apellido y nombre</b></td>
+                    <td class="desc">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="unit"><b>Legajo N°</b></td>
+                    <td class="qty">70305/1</td>
+                </tr>
+                <tr>
+                    <td class="service"></td>
+                    <td class="desc"></td>
+                    <td class="unit"></td>
+                    <td class="qty"><b>N° Afiliado SEMPRE</b></td>
+                </tr>
+                <tr>
+                    <td class="service"><b>Apellido y nombre</b></td>
+                    <td class="desc">Formaggio Pablo</td>
+                    <td class="unit"><b>Legajo N°</b></td>
+                    <td class="qty">26483/0</td>
+                </tr>
+                <tr>
+                    <td class="service"></td>
+                    <td class="desc"></td>
+                    <td class="unit"></td>
+                    <td class="qty"><b>N° Afiliado SEMPRE</b></td>
+                </tr>
+
+                <tr>
+                    <td class="service"><b>Apellido y nombre</b></td>
+                    <td class="desc">Gorosito Juan</td>
+                    <td class="unit"><b>Legajo N°</b></td>
+                    <td class="qty">16453/0</td>
+                </tr>
+                <tr>
+                    <td class="service"></td>
+                    <td class="desc"></td>
+                    <td class="unit"></td>
+                    <td class="qty"><b>N° Afiliado SEMPRE</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td><b>Fecha de iniciación: </b>23/1/2020</td>
+                    <td><b>Fecha de finalización: </b>28/1/2020</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="notices">
+            <div class="notice">
+                <p><b>Lugar de residencia durante la comisión:</b> Miguel Cané</p>
+            </div>
+        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td><b>Medio de transporte:</b></td>
+                    <td><b>Unudad de legajo</b> (PU1522) </td>
+                    <td><b>Patente: </b>SGB664</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="notices">
+            <div class="notice">
+                <p><b>Gastos: $</b>3500</p>
+            </div>
+        </div>
+        <br>
+        <table id="itinerario" style="border: 1px solid;">
+            <thead>
+                <tr>
+                    <th class="nombre">Apellido y nombre</th>
+                    <th class="date">día</th>
+                    <th class="date">mes</th>
+                    <th class="lugar">Salida de:</th>
+                    <th class="hora">horario</th>
+                    <th class="lugar">Llegada a:</th>
+                    <th class="hora">horario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+                <tr>
+                    <td class="nombre">{{ datos.apellido }} {{ datos.nombre }}</td>
+                    <td class="date">23</td>
+                    <td class="date">1</td>
+                    <td class="lugar">G. Pico</td>
+                    <td class="hora">8:00</td>
+                    <td class="lugar">Trenel</td>
+                    <td class="hora">9:00</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
+    <footer>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="service"></td>
+                    <td class="desc"></td>
+                    <td class="unit"></td>
+                    <td class="qty"><b>FIRMA GERENTE</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </footer>
+</body>
+
+</html>

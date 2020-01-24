@@ -17,7 +17,7 @@ class ReportePdf(View):
             'apellido': 'Vargas',
             'edad': 29
         }
-        pdf = render_pdf('reporte_pdf.html', {'datos':datos})
+        pdf = render_pdf('reporte_pdf_anticipo.html', {'datos':datos})
         
         return HttpResponse(pdf, content_type='reporte_pdf.html')
 
