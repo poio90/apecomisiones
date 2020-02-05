@@ -1,10 +1,13 @@
+from io import BytesIO
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
 from .models import Ciudad,Transporte, Comision
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 from comisionManager.utils import render_pdf
 
 
@@ -17,9 +20,42 @@ class ReportePdf(View):
             'apellido': 'Vargas',
             'edad': 29
         }
-        pdf = render_pdf('reporte_pdf_anticipo.html', {'datos':datos})
+        pdf = render_pdf('reporte_pdf.html', {'datos':datos})
         
         return HttpResponse(pdf, content_type='reporte_pdf.html')
+
+class ReportePdf2(View):
+    """response = HttpResponse(content_type='reporte_pdf.html')
+    response['Content-Disposition'] = 'attachment; filename=Anticipo.pdf'
+    def get(self, request,*args,**kwargs):
+        pdf = render_pdf2(request)
+        response.write(pdf) 
+        return response"""
+    def get(self, request,*args,**kwargs):
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer, pagesize=A4)
+
+        # Header
+        c.setLineWidth(.3)
+        c.setFont('Helvetica',16)
+        c.drawString(180,800,'Rendicion de comisión N° 547982')
+
+        c.setFont('Helvetica',12)
+        c.drawString(60,770,'Apellido y Nombre')
+        c.drawString(190,770,'Vargas Germán')
+        c.drawString(320,770,'N° Afiliado a SEMPRE')
+        c.drawString(500,770,'70305/1')
+
+        c.drawString(60,745,'Apellido y Nombre')
+        c.drawString(190,745,'Vargas Germán')
+        c.drawString(320,745,'N° Afiliado a SEMPRE')
+        c.drawString(500,745,'70305/1')
+    
+        c.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        return HttpResponse(pdf,content_type='reporte_pdf.html')
+
 
 def listarComisiones(request):
     comisiones = Comision.objects.all()

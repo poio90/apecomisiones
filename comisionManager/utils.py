@@ -1,4 +1,7 @@
 from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 from django.http import HttpResponse
 from django.template.loader import get_template
 
@@ -14,3 +17,15 @@ def render_pdf(url_template, context={}):
         return HttpResponse(result.getvalue(), content_type='aplication/pdf')
     else:
         return HttpResponse("Error Rendering PDF", status=400)
+
+
+"""def render_pdf2(request):
+    ReportLab para generar PDF
+    buffer = BytesIO
+    c = canvas.Canvas(buffer, pagesize=A4)
+   
+    c.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf"""
+
