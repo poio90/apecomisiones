@@ -8,6 +8,8 @@ from .models import Ciudad,Transporte, Comision
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
+from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.rl_config import defaultPageSize
 from comisionManager.utils import render_pdf
 
 
@@ -35,21 +37,39 @@ class ReportePdf2(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
+        PAGE_WIDTH  = defaultPageSize[0]
+        PAGE_HEIGHT = defaultPageSize[1]
+
+        text = 'Rendicion de comisión N° 547982'
+
+        width = stringWidth(text, 'Helvetica',16)
+        x = (PAGE_WIDTH/2)-(width/2)
+
         # Header
         c.setLineWidth(.3)
         c.setFont('Helvetica',16)
-        c.drawString(180,800,'Rendicion de comisión N° 547982')
+        c.drawString(x,800,'Rendicion de comisión N° 547982')
 
         c.setFont('Helvetica',12)
         c.drawString(60,770,'Apellido y Nombre')
         c.drawString(190,770,'Vargas Germán')
         c.drawString(320,770,'N° Afiliado a SEMPRE')
-        c.drawString(500,770,'70305/1')
+        c.drawString(490,770,'70305/1')
 
         c.drawString(60,745,'Apellido y Nombre')
         c.drawString(190,745,'Vargas Germán')
         c.drawString(320,745,'N° Afiliado a SEMPRE')
-        c.drawString(500,745,'70305/1')
+        c.drawString(490,745,'70305/1')
+
+        c.drawString(60,720,'Apellido y Nombre')
+        c.drawString(190,720,'Vargas Germán')
+        c.drawString(320,720,'N° Afiliado a SEMPRE')
+        c.drawString(490,720,'70305/1')
+
+        c.drawString(60,695,'Apellido y Nombre')
+        c.drawString(190,695,'Vargas Germán')
+        c.drawString(320,695,'N° Afiliado a SEMPRE')
+        c.drawString(490,695,'70305/1')
     
         c.save()
         pdf = buffer.getvalue()

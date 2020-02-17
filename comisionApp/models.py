@@ -130,6 +130,7 @@ class Comision_x_Afiliado(models.Model):
     class Meta:
         verbose_name = 'Comision por Afiliado'
         verbose_name_plural = 'Comisiones por Afiliados'
+        unique_together = (('id_user','id_comision'),)
         managed = True
         db_table = 'comision_x_afiliado'
     

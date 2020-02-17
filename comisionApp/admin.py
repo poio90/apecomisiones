@@ -3,9 +3,17 @@ from .models import Ciudad, Transporte, Solicitud_Comision,Comision, DetalleTrab
 
 # Register your models here.
 
+class CAxInline(admin.TabularInline):
+    model = Comision_x_Afiliado
+    extra = 1
+    show_change_link = True
+
+
+
 class ComisionAdmin(admin.ModelAdmin):
     search_fields = ['id_comision']
     list_display = ('num_comision','fech_inicio','fech_fin')
+    inlines = (CAxInline,)
 
 class TransporteAdmin(admin.ModelAdmin):
     search_fields = ['num_legajo','patente']
