@@ -8,6 +8,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+from .utils import Comision
 
 
 class Provincia(models.Model):
@@ -70,14 +71,8 @@ class Ubicaciones(models.Model):
     def __str__(self):
         return self.ubicacion
 
-class Solicitud_Comision(models.Model):
-    id_solicitud = models.AutoField(primary_key=True)
+class Solicitud_Comision(Comision):
     fecha_pedido = models.DateField(auto_now_add=True)
-    id_ciudad = models.ForeignKey(
-        Ciudad, on_delete=models.SET_NULL, null=True, db_column='id_ciudad')
-    id_transporte = models.ForeignKey(
-        'Transporte', on_delete=models.SET_NULL, null=True, db_column='id_transporte')
-    fech_inicio = models.DateField()
     gastos_previsto = models.FloatField()
     motivo = RichTextField()
     duracion_prevista = models.CharField(max_length=20)
@@ -92,15 +87,13 @@ class Solicitud_Comision(models.Model):
         return '{}'.format(self.fecha_pedido)
 
 
-class Comision(models.Model):
-    id_comision = models.AutoField(primary_key=True)
+class Rendicion(Comision):
     num_comision = models.CharField(
-        'Número de Comisión', unique=True, max_length=45)
-    id_ciudad = models.ForeignKey(
-        Ciudad, on_delete=models.SET_NULL, null=True, db_column='id_ciudad')
-    id_transporte = models.ForeignKey(
-        'Transporte', on_delete=models.SET_NULL, null=True, db_column='id_transporte')
-    fech_inicio = models.DateField()
+        'Número de Comisión', 
+        unique=True,
+        max_length=45
+    )
+
     fech_fin = models.DateField()
     gastos = models.FloatField()
 

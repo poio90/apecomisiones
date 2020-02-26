@@ -42,6 +42,9 @@ class User(AbstractUser):
         blank=True,
     )
 
+    USERNAME_FIELD = 'dni'
+    REQUIRED_FIELD = ['username', 'num_afiliado', 'last_name', 'first_name']
+
     class Meta:
         verbose_name = 'Afiliado'
         verbose_name_plural = 'Afiliados'
