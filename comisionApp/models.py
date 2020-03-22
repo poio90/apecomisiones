@@ -157,8 +157,8 @@ class Integrantes_x_Solicitud(models.Model):
     fecha_de_registro = models.DateField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Solicitud por Afiliado'
-        verbose_name_plural = 'Solicitudes por Afiliados'
+        verbose_name = 'Integrantes de solicitud'
+        verbose_name_plural = 'Integrantes por solicitudes'
         unique_together = (('user','solicitud'),)
         managed = True
         db_table = 'integrantes_x_solicitud'
@@ -187,8 +187,8 @@ class Integrantes_x_Anticipo(models.Model):
     fecha_de_registro = models.DateField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Comision por Afiliado'
-        verbose_name_plural = 'Comisiones por Afiliados'
+        verbose_name = 'Integrantes de anticipo'
+        verbose_name_plural = 'Integrantes por anticipo'
         unique_together = (('user','rendicion'),)
         managed = True
         db_table = 'integrantes_x_anticipo'
