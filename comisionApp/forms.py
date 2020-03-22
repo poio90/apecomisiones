@@ -1,15 +1,15 @@
 from django import forms
-from .models import Comision,Transporte
+from .models import Anticipo,Transporte
 
 
-class ComisionForm(forms.ModelForm):
+class AnticipoForm(forms.ModelForm):
     class Meta:
-        model = Comision
-        fields = ['id_comision','fech_inicio','fech_fin','gastos']
+        model = Anticipo
+        fields = ['num_comision','fech_inicio','fech_fin','gastos']
 
-class RendicionComision(forms.ModelForm):
+class Anticipo(forms.ModelForm):
     class Meta:
-        model: Comision
+        model: Anticipo
 
 class TransporteForm(forms.ModelForm):
     class Meta:

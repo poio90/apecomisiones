@@ -81,6 +81,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'comisionManager.wsgi.application'
 
+AUTH_USER_MODEL = 'usuarios.User'
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -146,3 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 LOGIN_URL = 'accounts/login/'
+
+#Django-Jet
+
+JET_DEFAULT_THEME = 'green'
+JET_SIDE_MENU_COMPACT = True
+JET_CHANGE_FORM_SIBLING_LINKS = False

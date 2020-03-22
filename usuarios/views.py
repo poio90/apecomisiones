@@ -1,8 +1,7 @@
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from .models import Afiliado
+from usuarios.models import User
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -13,7 +12,6 @@ from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from .forms import FormLogin, FormRegistro, FormUpdateProfile
-
 
 
 class Inicio(View):
@@ -44,30 +42,31 @@ class LoginUsuario(FormView):
 
 def registroUsuario(request):
     if request.method == 'POST':
+        dni = request.POST['dni']
         username = request.POST['username']
         passw = request.POST['password']
         passw_confirmation = request.POST['password_confirmation']
         num_afil = request.POST['num_afiliado']
 
-        num_afiliado_taken = Afiliado.objects.filter(
+        num_afiliado_taken = User.objects.filter(
             num_afiliado=num_afil).exists()
         if num_afiliado_taken:
             return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de afiliado.'})
+        
+        dni_taken = User.objects.filter(
+            dni=dni).exists()
+        if dni_taken:
+            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de documento.'})
 
         if passw != passw_confirmation:
             return render(request, 'registroUser.html', {'error': 'No coincide la contraseña'})
 
         try:
-            user = User.objects.create_user(username=username, password=passw)
+            user = User.objects.create_user(username=username, num_afiliado=num_afil,dni=dni,password=passw)
         except IntegrityError:
             return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este nombre de usuario.'})
 
-        user.email = request.POST['email']
         user.save()
-
-        afiliado = Afiliado(user=user)
-        afiliado.num_afiliado = request.POST['num_afiliado']
-        afiliado.save()
 
         return redirect('usuarios:login')
 
@@ -89,7 +88,6 @@ def logoutUsuario(request):
 
 @login_required
 def update_profile(request):
-    afiliado = request.user.afiliado
     user = request.user
     if request.method == 'POST':
         afiliado_form = FormUpdateProfile(request.POST)
@@ -97,17 +95,15 @@ def update_profile(request):
             data = afiliado_form.cleaned_data
             user.last_name = data['last_name']
             user.first_name = data['first_name']
-            afiliado.email = data['email']
-            afiliado.dni = data['dni']
-            afiliado.num_tel = data['num_tel']
+            user.email = data['email']
+            user.dni = data['dni']
+            user.num_tel = data['num_tel']
             user.save()
-            afiliado.save()
             redirect('usuarios:update_profile')
     else:
         afiliado_form = FormUpdateProfile()
 
     return render(request=request, template_name='profile.html', context={
-        'afiliado': afiliado,
         'user': request.user,
         'afiliado_form': afiliado_form
     })

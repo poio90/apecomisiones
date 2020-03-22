@@ -1,33 +1,31 @@
 from django.contrib import admin
-from .models import Ciudad, Transporte, Solicitud_Comision,Comision, DetalleTrabajo, Itineraio, Comision_x_Afiliado
+from .models import Ciudad, Transporte, Solicitud, Anticipo, Integrantes_x_Solicitud, Integrantes_x_Anticipo, DetalleTrabajo
 
-# Register your models here.
 
 class CAxInline(admin.TabularInline):
-    model = Comision_x_Afiliado
+    model = Integrantes_x_Anticipo
     extra = 1
     show_change_link = True
 
 
-
-class ComisionAdmin(admin.ModelAdmin):
-    search_fields = ['id_comision']
-    list_display = ('num_comision','fech_inicio','fech_fin')
+class AnticipoAdmin(admin.ModelAdmin):
+    search_fields = ['num_comision']
+    list_display = ('num_comision', 'fech_inicio', 'fech_fin')
     inlines = (CAxInline,)
 
+
 class TransporteAdmin(admin.ModelAdmin):
-    search_fields = ['num_legajo','patente']
-    list_display = ('num_legajo','patente')
+    search_fields = ['num_legajo', 'patente']
+    list_display = ('num_legajo', 'patente')
+
 
 class CiudadAdmin(admin.ModelAdmin):
     search_fields = ['ciudad']
 
 
-admin.site.register(Comision,ComisionAdmin)
-admin.site.register(Comision_x_Afiliado)
-admin.site.register(Ciudad,CiudadAdmin)
-admin.site.register(Transporte,TransporteAdmin)
-admin.site.register(Solicitud_Comision)
+admin.site.register(Anticipo, AnticipoAdmin)
+admin.site.register(Ciudad, CiudadAdmin)
+admin.site.register(Transporte, TransporteAdmin)
+admin.site.register(Solicitud)
 admin.site.register(DetalleTrabajo)
-##admin.site.register(Itineraio)
-
+# admin.site.register(Itineraio)

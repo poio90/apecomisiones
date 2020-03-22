@@ -15,8 +15,7 @@ class PerfilCompletoMiddlerware:
         if not request.user.is_anonymous:
             if not request.user.is_staff:
                 user = request.user
-                afiliado = request.user.afiliado
-                if not user.last_name or not user.first_name or not afiliado.dni or not afiliado.num_tel:
+                if not user.last_name or not user.first_name or not user.dni or not user.num_tel:
                     if request.path not in [reverse('usuarios:update_profile'), reverse('usuarios:logout')]:
                         return redirect('usuarios:update_profile')
 

@@ -3,9 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
 
-# Create your models here.
-
-
 class User(AbstractUser):
 
     regex_num_af = RegexValidator(
@@ -43,11 +40,23 @@ class User(AbstractUser):
     )
 
     USERNAME_FIELD = 'dni'
-    REQUIRED_FIELD = ['username', 'num_afiliado', 'last_name', 'first_name']
+    REQUIRED_FIELDS = ['username', 'email' ,'num_afiliado', 'last_name', 'first_name']
 
     class Meta:
         verbose_name = 'Afiliado'
         verbose_name_plural = 'Afiliados'
 
     def __str__(self):
-        return '{} {} {}'.format(self.num_afiliado,self.last_name,self.first_name)
+        return '{} {} {} {} {} {} {}'.format(
+            self.username,
+            self.dni,
+            self.num_afiliado,
+            self.last_name,
+            self.first_name,
+            self.email,
+            self.num_tel
+        )
+        """field_values = []
+        for field in self._meta.get_fields():
+            field_values.append(getattr(self, field, '')) #corregir getattr
+        return ' '.join(field_values)"""

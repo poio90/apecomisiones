@@ -1,38 +1,24 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
-from .models import Afiliado
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth import get_user_model
+
+from usuarios.models import User
 
 
-class AfiliadoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'num_afiliado', 'dni', 'num_tel')
-    #list_editable = ('dni','num_tel')
-    search_fields = ['user__first_name', 'user__last_name', 'num_tel']
-    #list_filter = ('user__is_active', 'user__is_staff')
+class CustomUserAdmin(UserAdmin):
+    search_fields = ['dni','last_name','first_name']
+    list_display = ('dni','last_name','first_name','num_tel')
+    list_filter = ()
+    ordering = ['last_name','first_name']
 
-    fieldsets = (
-        ('Afiliado', {
-            'fields': (
-                'user', 'num_afiliado'),
-        }),
-        ('Datos extra', {
-            'fields': (
-                'dni', 'num_tel'
-            )
-        })
+    fieldsets = UserAdmin.fieldsets + (
+        ('Info extra', {'fields': ('dni','num_tel',)}),
+    )
+
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Info extra', {'fields': ('dni','num_tel',)}),
     )
 
 
-class AfiliadoInline(admin.StackedInline):
-    model = Afiliado
-    can_delete = False
-    verbose_name_plural = 'afiliados'
 
-
-class UsuarioAdmin(BaseUserAdmin):
-    inlines = (AfiliadoInline,)
-
-
-admin.site.unregister(User)
-admin.site.register(User, UsuarioAdmin)
+admin.site.register(User,CustomUserAdmin)

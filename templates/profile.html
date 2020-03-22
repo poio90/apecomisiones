@@ -26,7 +26,7 @@
       <div class="col-md-12">
         <div class="card card-primary card-outline">
           <div class="card-header">
-            <h3 class="card-title">Información personal</h3>
+            <h3 class="card-title">Número de afiliado <strong>{{ user.num_afiliado }}</strong></h3>
           </div><!-- /.card-header -->
           <div class="card-body">
             <div class="tab-content">
@@ -38,17 +38,17 @@
               <div id="settings">
                 <form method="POST" class="form-horizontal" action="{% url 'usuarios:update_profile' %}" enctype="multipart/form-data">
                   {% csrf_token %}
-                  <div class="form-group row">
+                  <!--<div class="form-group row">
                     <label for="inputAfiliado" class="col-sm-2 col-form-label">Número de afiliado</label>
                     <div class="col-sm-10">
                       <input type="text" 
                         class="form-control" 
                         placeholder="Número de afiliado" 
                         name="num_afiliado" 
-                        value="{{ afiliado.num_afiliado }}" 
+                        value="{{ user.num_afiliado }}" 
                         readonly="readonly">
                     </div>
-                  </div>
+                  </div>-->
 
                   <div class="form-group row">
                     <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
@@ -95,7 +95,7 @@
                         class="form-control {% if afiliado_form.dni.errors %} is-invalid {% endif %}" 
                         placeholder="DNI" 
                         name="dni" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.dni.value }}{% else %}{{ afiliado.dni }}{% endif %}">
+                        value="{% if afiliado_form.errors %}{{ afiliado_form.dni.value }}{% else %}{{ user.dni }}{% endif %}">
                     </div>
                   </div>
                   {% for error in afiliado_form.dni.errors %}
@@ -133,7 +133,7 @@
                         class="form-control {% if afiliado_form.num_tel.errors %} is-invalid {% endif %}" 
                         placeholder="Número de telefono" 
                         name="num_tel" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.num_tel.value }}{% else %}{{ afiliado.num_tel }}{% endif %}">
+                        value="{% if afiliado_form.errors %}{{ afiliado_form.num_tel.value }}{% else %}{{ user.num_tel }}{% endif %}">
                     </div>
                   </div>
                   {% for error in afiliado_form.num_tel.errors %}
