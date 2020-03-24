@@ -12,8 +12,13 @@
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  
+  <!--DataTable-->
+  <link rel="stylesheet" href="{% static 'plugins/datatables/datatables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables/DataTables-1.10.20/css/dataTables.bootstrap4.min.css' %}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
   <!-- JQVMap -->
@@ -24,10 +29,10 @@
   <link rel="stylesheet" href="{% static 'dist/css/bootstrap-datepicker.css' %}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
-  
+
   <!-- summernote -->
   <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.css' %}">
-  
+
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -43,7 +48,7 @@
           <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Home</a>
+          <a href="#" class="nav-link">Inicio</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="#" class="nav-link">Contactos</a>
@@ -132,13 +137,13 @@
                 </li>
                 <li class="nav-item">
                   <!--<a href="#" class="nav-link">-->
-                  <a  href="{% url 'usuarios:confeccion_comisión' %}"  class="nav-link">
+                  <a href="{% url 'usuarios:confeccion_comisión' %}" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Anticipo</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="{% url 'usuarios:historico_anticipo' %}" class="nav-link">
                     <i class="nav-icon fas fa-file"></i>
                     <p>Histórico</p>
                   </a>
@@ -202,8 +207,8 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       {% block content %}
-
-      
+      <!-- Content Header (Page header) -->
+      <!-- /.content -->
       {% endblock %}
     </div>
     <!-- /.content-wrapper -->
@@ -235,6 +240,10 @@
   </script>
   <!-- Bootstrap 4 -->
   <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!--DataTable-->
+  <script src="{% static 'plugins/datatables/datatables.min.js' %}"></script>
+
+  <script src="{% static 'dist/js/pages/datatable.js' %}"></script>  
   <!-- Tempusdominus Bootstrap 4 -->
   <script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
   <!-- Summernote -->
@@ -245,6 +254,7 @@
   <script src="{% static 'dist/js/adminlte.js' %}"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
   <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
+
   <script src="{% static 'dist/js/bootstrap-datepicker.min.js' %}"></script>
   <!-- Notify -->
   <script src="{% static 'dist/js/notify.min.js' %}"></script>

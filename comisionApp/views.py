@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
-from .models import Ciudad,Transporte, Comision
+from .models import Ciudad,Transporte, Anticipo
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
@@ -78,8 +78,8 @@ class ReportePdf2(View):
 
 
 def listarComisiones(request):
-    comisiones = Comision.objects.all()
-    return render(request,'comisiones.html',{'comisiones':comisiones})
+    anticipos = Anticipo.objects.all()
+    return render(request,'public/historico.html',{'anticipos':anticipos})
 
 def listarTransportes(request):
     transportes = Transporte.objects.all()

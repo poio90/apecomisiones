@@ -16,6 +16,7 @@ from .forms import FormLogin, FormRegistro, FormUpdateProfile
 
 class Inicio(View):
     def get(self, request, *args, **kwargs):
+        print(request.user.username)
         return render(request, 'index.html')
 
 
@@ -52,7 +53,7 @@ def registroUsuario(request):
             num_afiliado=num_afil).exists()
         if num_afiliado_taken:
             return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de afiliado.'})
-        
+
         dni_taken = User.objects.filter(
             dni=dni).exists()
         if dni_taken:
@@ -62,7 +63,8 @@ def registroUsuario(request):
             return render(request, 'registroUser.html', {'error': 'No coincide la contraseña'})
 
         try:
-            user = User.objects.create_user(username=username, num_afiliado=num_afil,dni=dni,password=passw)
+            user = User.objects.create_user(
+                username=username, num_afiliado=num_afil, dni=dni, password=passw)
         except IntegrityError:
             return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este nombre de usuario.'})
 
@@ -77,13 +79,6 @@ def registroUsuario(request):
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('accounts/login/')
-
-
-"""class PerfilUsuario(DetailView):
-    template_name = 'profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-    queryset = User.objects.all()"""
 
 
 @login_required
@@ -108,9 +103,10 @@ def update_profile(request):
         'afiliado_form': afiliado_form
     })
 
+
 @login_required
 @transaction.atomic
-def confeccionComision(request):
+def confeccionAnticipo(request):
     return render(request, 'confeccion_comision.html')
 
 
@@ -118,6 +114,14 @@ def confeccionComision(request):
 @transaction.atomic
 def confeccionSolicitudComision(request):
     return render(request, 'confeccion_sol_comision.html')
+
+
+@login_required
+@transaction.atomic
+def historicoAnticipos(request):
+    return render(request, 'public/historico.html')
+
+
 """
 
 # ------------------------------Validaciones----------------------------------------#

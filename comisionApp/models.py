@@ -131,7 +131,7 @@ class Anticipo(Comision):
         db_table = 'anticipo_comision'
 
     def __str__(self):
-        return self.fech_inicio
+        return '{}'.format(self.fech_inicio)
 
 
 ''' SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 

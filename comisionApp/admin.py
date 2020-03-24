@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Ciudad, Transporte, Solicitud, Anticipo, Integrantes_x_Solicitud, Integrantes_x_Anticipo, DetalleTrabajo
+from .models import *
 
 
-class CAxInline(admin.TabularInline):
+class IAxInline(admin.TabularInline):
     model = Integrantes_x_Anticipo
     extra = 1
     show_change_link = True
@@ -11,7 +11,7 @@ class CAxInline(admin.TabularInline):
 class AnticipoAdmin(admin.ModelAdmin):
     search_fields = ['num_comision']
     list_display = ('num_comision', 'fech_inicio', 'fech_fin')
-    inlines = (CAxInline,)
+    inlines = (IAxInline,)
 
 
 class TransporteAdmin(admin.ModelAdmin):
