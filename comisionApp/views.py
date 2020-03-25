@@ -77,8 +77,9 @@ class ReportePdf2(View):
         return HttpResponse(pdf,content_type='reporte_pdf.html')
 
 
-def listarComisiones(request):
-    anticipos = Anticipo.objects.all()
+def historicoAnticipos(request):
+    anticipos = Anticipo.objects.filter(integrantes_x_anticipo__user=request.user.id)
+    print(anticipos)
     return render(request,'public/historico.html',{'anticipos':anticipos})
 
 def listarTransportes(request):

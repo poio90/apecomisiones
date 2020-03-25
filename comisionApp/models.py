@@ -73,7 +73,7 @@ class Ubicaciones(models.Model):
         return self.ubicacion
 
 
-class Comision(models.Model):
+class Solicitud(models.Model):
     ciudad = models.ForeignKey(
         Ciudad,
         on_delete=models.SET_NULL,
@@ -90,14 +90,6 @@ class Comision(models.Model):
 
     fech_inicio = models.DateField()
 
-    class Meta:
-        abstract = True
-        get_latest_by = 'fech_inicio'
-        ordering = ['-fech_inicio']
-
-
-class Solicitud(Comision):
-    
     fecha_pedido = models.DateField(auto_now_add=True)
     gastos_previstos = models.FloatField()
     motivo = RichTextField()
@@ -113,10 +105,25 @@ class Solicitud(Comision):
         return '{}'.format(self.fecha_pedido)
 
 
-class Anticipo(Comision):
+class Anticipo(models.Model):
+    ciudad = models.ForeignKey(
+        Ciudad,
+        on_delete=models.SET_NULL,
+        null=True,
+        db_column='id_ciudad'
+    )
+
+    transporte = models.ForeignKey(
+        Transporte,
+        on_delete=models.SET_NULL,
+        null=True,
+        db_column='id_transporte'
+    )
+
+    fech_inicio = models.DateField()
 
     num_comision = models.CharField(
-        'Número de Comisión', 
+        'Número de Comisión',
         unique=True,
         max_length=45
     )
@@ -131,7 +138,7 @@ class Anticipo(Comision):
         db_table = 'anticipo_comision'
 
     def __str__(self):
-        return '{}'.format(self.fech_inicio)
+        return '{} {} {}'.format(self.fech_inicio, self.num_comision,self.ciudad.ciudad)
 
 
 ''' SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
@@ -139,12 +146,13 @@ class Anticipo(Comision):
     publicaciones de blog, pero digamos que fue publicado por un usuario anónimo (o eliminado). 
     Equivalente de SQL: SET NULL.'''
 
+
 class Integrantes_x_Solicitud(models.Model):
     solicitud = models.ForeignKey(
         Solicitud,
         on_delete=models.SET_NULL,
         null=True,
-        db_column = 'id_solicitud'
+        db_column='id_solicitud'
     )
 
     user = models.ForeignKey(
@@ -159,18 +167,17 @@ class Integrantes_x_Solicitud(models.Model):
     class Meta:
         verbose_name = 'Integrantes de solicitud'
         verbose_name_plural = 'Integrantes por solicitudes'
-        unique_together = (('user','solicitud'),)
+        unique_together = (('user', 'solicitud'),)
         managed = True
         db_table = 'integrantes_x_solicitud'
-    
+
     def __str__(self):
-        return '{} {} {}'.format(self.solicitud,self.user.username,self.user.num_afiliado)
-    
+        return '{} {} {}'.format(self.solicitud, self.user.username, self.user.num_afiliado)
 
 
 class Integrantes_x_Anticipo(models.Model):
 
-    rendicion = models.ForeignKey(
+    anticipo = models.ForeignKey(
         Anticipo,
         on_delete=models.SET_NULL,
         null=True,
@@ -189,12 +196,12 @@ class Integrantes_x_Anticipo(models.Model):
     class Meta:
         verbose_name = 'Integrantes de anticipo'
         verbose_name_plural = 'Integrantes por anticipo'
-        unique_together = (('user','rendicion'),)
+        unique_together = (('user', 'anticipo'),)
         managed = True
         db_table = 'integrantes_x_anticipo'
-    
+
     def __str__(self):
-        return '{} {} {}'.format(self.rendicion,self.user.username,self.user.num_afiliado)
+        return '{} {} {}'.format(self.anticipo, self.user, self.user.num_afiliado)
 
 
 class Itineraio(models.Model):
@@ -242,4 +249,14 @@ class DetalleTrabajo(models.Model):
 
 ''' https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication
     https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
-    https://www.youtube.com/watch?v=TWYPq_AGVjQ'''
+    https://www.youtube.com/watch?v=TWYPq_AGVjQ
+    
+    select anticipo_comision.num_comision,ciudad.ciudad from anticipo_comisionn JOIN ciudad ON anticipo_comision.id_ciudad=ciudad.id_ciudad IS IN (SELECT * FROM integrantes_x_anticipo WHERE integrantes_x_anticipo.id_user=1) GROUP BY 
+    select anticipo_comision.num_comision,ciudad.ciudad,integrantes_x_anticipo.fecha_de_registro from integrantes_x_anticipo,anticipo_comisionn,ciudad,usuarios_user where integrantes_x_anticipo.id_user=usuarios_user.id and integrantes_x_anticipo.id_anticipo=anticipo_comision.id and anticipo_comision.id_ciudad=ciudad.id_ciudad
+    
+    select anticipo_comision.num_comision,ciudad.ciudad from anticipo_comisionn JOIN ciudad ON anticipo_comision.id_ciudad=ciudad.id_ciudad WHERE anticipo_comision.num_comision='12345'
+    
+    SELECT anticipo_comision.fech_inicio, anticipo_comision.num_comision, ciudad.ciudad FROM anticipo_comision 
+    JOIN ciudad on anticipo_comision.id_ciudad=ciudad.id_ciudad 
+    WHERE anticipo_comision.id IN (SELECT integrantes_x_anticipo.id_anticipo FROM integrantes_x_anticipo WHERE integrantes_x_anticipo.id_user=1) 
+    GROUP BY anticipo_comision.fech_inicio, anticipo_comision.num_comision, ciudad.ciudad'''

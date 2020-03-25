@@ -2,6 +2,7 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from usuarios.models import User
+from comisionApp.models import Anticipo
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -16,7 +17,8 @@ from .forms import FormLogin, FormRegistro, FormUpdateProfile
 
 class Inicio(View):
     def get(self, request, *args, **kwargs):
-        print(request.user.username)
+        print(request.user.id)
+        print(Anticipo.objects.filter(integrantes_x_anticipo__user=request.user.id))
         return render(request, 'index.html')
 
 
@@ -114,12 +116,6 @@ def confeccionAnticipo(request):
 @transaction.atomic
 def confeccionSolicitudComision(request):
     return render(request, 'confeccion_sol_comision.html')
-
-
-@login_required
-@transaction.atomic
-def historicoAnticipos(request):
-    return render(request, 'public/historico.html')
 
 
 """

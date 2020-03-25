@@ -30,9 +30,6 @@ urlpatterns = [
 
      path('confeccion_solicitud_comisión', login_required(
         views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
-     
-     path('historico_anticipo', login_required(
-        views.historicoAnticipos), name='historico_anticipo'),
 
 ]
 
