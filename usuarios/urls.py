@@ -5,32 +5,25 @@ from usuarios import views
 
 urlpatterns = [
 
-     path(route='accounts/login/',
+    path(route='accounts/login/',
          view=views.LoginUsuario.as_view(),
          name='login'),
 
-     path(route='accounts/register/',
+    path(route='accounts/register/',
          view=views.registroUsuario,
          name='register'),
 
-     path(route='logout',
+    path(route='logout',
          view=views.logoutUsuario,
          name='logout'),
 
-     path(route='',
+    path(route='',
          view=login_required(views.Inicio.as_view()),
          name='index'),
 
-     path(route='perfil_usuario/',
+    path(route='perfil_usuario/',
          view=views.update_profile,
          name='update_profile'),
-
-     path('confeccion_comisión', login_required(
-        views.confeccionAnticipo), name='confeccion_comisión'),
-
-     path('confeccion_solicitud_comisión', login_required(
-        views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
-
 ]
 
 """

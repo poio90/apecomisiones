@@ -35,10 +35,10 @@
               <div class="form-row">
                 {% csrf_token %}
                 <div class="col-md-6">
-                  <input class="form-control" placeholder="Apellido y nombre">
+                  <label class="form-control col-form-label">{{ user.get_full_name }}</label>
                 </div>
                 <div class="col-md-5">
-                  <input class="form-control" placeholder="Número de afiliado a SEMPRE">
+                  <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
                 </div>
                 <div class="col">
                   <span class="float-right mb-3 mr-2">
@@ -55,7 +55,12 @@
                 <div class="form-row">
                   {% csrf_token %}
                   <div class="col-md-6">
-                    <input class="form-control" placeholder="Apellido y nombre">
+                    <select class="browser-default custom-select">
+                      <option value="" disabled selected>Apellido y nombre</option>
+                      {% for afiliado in users %}
+                      <option>{{ afiliado.last_name }} {{ afiliado.first_name }}</option>
+                      {% endfor %}
+                  </select>
                   </div>
                   <div class="col-md-5">
                     <input class="form-control" placeholder="Número de afiliado SEMPRE">
@@ -84,7 +89,12 @@
             </div>
             <div class="form-group">
               {% csrf_token %}
-              <input class="form-control" placeholder="Lugar de residencia durante la comisión">
+              <select class="browser-default custom-select">
+                <option value="" disabled selected>Lugar de residencia durante la comisión</option>
+                {% for ciudad in ciudades %}
+                <option>{{ ciudad.ciudad }}</option>
+                {% endfor %}
+            </select>
             </div>
             <div class="form-group row">
               {% csrf_token %}
@@ -93,11 +103,9 @@
                 <!--<input class="form-control" placeholder="Unidad de legajo">-->
                 <select class="browser-default custom-select">
                   <option value="" disabled selected>Unidad de legajo</option>
-                  <option value="1">USA</option>
-                  <option value="2">Germany</option>
-                  <option value="3">France</option>
-                  <option value="3">Poland</option>
-                  <option value="3">Japan</option>
+                  {% for transporte in transportes %}
+                  <option>{{ transporte.num_legajo }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="col">

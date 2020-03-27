@@ -1,10 +1,15 @@
+from django.db import transaction
+from datetime import date
+from datetime import datetime
 from io import BytesIO
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
-from .models import Ciudad,Transporte, Anticipo
+from .models import *
+from usuarios.models import User
+from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
@@ -13,18 +18,21 @@ from reportlab.rl_config import defaultPageSize
 from comisionManager.utils import render_pdf
 
 
+
 # Create your views here.
 class ReportePdf(View):
     """Regresa Pdf"""
-    def get(self, request,*args,**kwargs):
+
+    def get(self, request, *args, **kwargs):
         datos = {
             'nombre': 'Germán',
             'apellido': 'Vargas',
             'edad': 29
         }
-        pdf = render_pdf('reporte_pdf.html', {'datos':datos})
-        
+        pdf = render_pdf('reporte_pdf.html', {'datos': datos})
+
         return HttpResponse(pdf, content_type='reporte_pdf.html')
+
 
 class ReportePdf2(View):
     """response = HttpResponse(content_type='reporte_pdf.html')
@@ -33,58 +41,87 @@ class ReportePdf2(View):
         pdf = render_pdf2(request)
         response.write(pdf) 
         return response"""
-    def get(self, request,*args,**kwargs):
+
+    def get(self, request, *args, **kwargs):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
-        PAGE_WIDTH  = defaultPageSize[0]
+        PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
         text = 'Rendicion de comisión N° 547982'
 
-        width = stringWidth(text, 'Helvetica',16)
+        width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
 
         # Header
         c.setLineWidth(.3)
-        c.setFont('Helvetica',16)
-        c.drawString(x,800,'Rendicion de comisión N° 547982')
+        c.setFont('Helvetica', 16)
+        c.drawString(x, 800, 'Rendicion de comisión N° 547982')
 
-        c.setFont('Helvetica',12)
-        c.drawString(60,770,'Apellido y Nombre')
-        c.drawString(190,770,'Vargas Germán')
-        c.drawString(320,770,'N° Afiliado a SEMPRE')
-        c.drawString(490,770,'70305/1')
+        c.setFont('Helvetica', 12)
+        c.drawString(60, 770, 'Apellido y Nombre')
+        c.drawString(190, 770, 'Vargas Germán')
+        c.drawString(320, 770, 'N° Afiliado a SEMPRE')
+        c.drawString(490, 770, '70305/1')
 
-        c.drawString(60,745,'Apellido y Nombre')
-        c.drawString(190,745,'Vargas Germán')
-        c.drawString(320,745,'N° Afiliado a SEMPRE')
-        c.drawString(490,745,'70305/1')
+        c.drawString(60, 745, 'Apellido y Nombre')
+        c.drawString(190, 745, 'Vargas Germán')
+        c.drawString(320, 745, 'N° Afiliado a SEMPRE')
+        c.drawString(490, 745, '70305/1')
 
-        c.drawString(60,720,'Apellido y Nombre')
-        c.drawString(190,720,'Vargas Germán')
-        c.drawString(320,720,'N° Afiliado a SEMPRE')
-        c.drawString(490,720,'70305/1')
+        c.drawString(60, 720, 'Apellido y Nombre')
+        c.drawString(190, 720, 'Vargas Germán')
+        c.drawString(320, 720, 'N° Afiliado a SEMPRE')
+        c.drawString(490, 720, '70305/1')
 
-        c.drawString(60,695,'Apellido y Nombre')
-        c.drawString(190,695,'Vargas Germán')
-        c.drawString(320,695,'N° Afiliado a SEMPRE')
-        c.drawString(490,695,'70305/1')
-    
+        c.drawString(60, 695, 'Apellido y Nombre')
+        c.drawString(190, 695, 'Vargas Germán')
+        c.drawString(320, 695, 'N° Afiliado a SEMPRE')
+        c.drawString(490, 695, '70305/1')
+
         c.save()
         pdf = buffer.getvalue()
         buffer.close()
-        return HttpResponse(pdf,content_type='reporte_pdf.html')
+        return HttpResponse(pdf, content_type='reporte_pdf.html')
+
+@login_required
+@transaction.atomic
+def confeccionSolicitudComision(request):
+    users = User.objects.all()
+    ciudades = Ciudad.objects.all()
+    transportes = Transporte.objects.all()
+    dia = date.today()
+    return render(request, 'confeccion_sol_comision.html',{
+        'users':users,
+        'ciudades':ciudades,
+        'transportes':transportes,
+        'dia':dia,
+    })
+
+@login_required
+@transaction.atomic
+def confeccionAnticipo(request):
+    users = User.objects.all()
+    ciudades = Ciudad.objects.all()
+    transportes = Transporte.objects.all()
+    return render(request, 'confeccion_comision.html',{
+        'users':users,
+        'ciudades':ciudades,
+        'transportes':transportes,
+    })
 
 
 def historicoAnticipos(request):
-    anticipos = Anticipo.objects.filter(integrantes_x_anticipo__user=request.user.id)
-    print(anticipos)
-    return render(request,'public/historico.html',{'anticipos':anticipos})
+    anticipos = Anticipo.objects.filter(
+        integrantes_x_anticipo__user=request.user.id)   
+    return render(request, 'public/historico.html', {'anticipos': anticipos})
+
 
 def listarTransportes(request):
     transportes = Transporte.objects.all()
     return render(request, 'transportes.html', {'transportes': transportes})
+
 
 def altaTrasnporte(request):
     if request.method == 'POST':
@@ -96,8 +133,9 @@ def altaTrasnporte(request):
         transporte_form = TransporteForm()
     return render(request, 'alta_transporte.html', {'transporte_form': transporte_form})
 
+
 def editarTransporte(request, id):
-    transporte_form= None
+    transporte_form = None
     error = None
     try:
         transporte = Transporte.objects.get(id_transporte=id)
@@ -110,11 +148,12 @@ def editarTransporte(request, id):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'alta_transporte.html', {'transporte_form': transporte_form, 'error':error})
+    return render(request, 'alta_transporte.html', {'transporte_form': transporte_form, 'error': error})
 
-def eliminarTransporte(request,id):
+
+def eliminarTransporte(request, id):
     transporte = Transporte.objects.get(id_transporte=id)
     if request.method == 'POST':
         transporte.delete()
         return redirect('comision:transportes')
-    return render(request,'eliminar_transporte.html',{'transporte':transporte})
+    return render(request, 'eliminar_transporte.html', {'transporte': transporte})
