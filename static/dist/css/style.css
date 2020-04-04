@@ -1,137 +1,68 @@
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-a {
-  color: #5D6975;
-  text-decoration: underline;
-}
-
-body {
-  position: relative;
-  width: 21cm;  
-  height: 29.7cm; 
-  margin: 0 auto; 
-  color: #001028;
-  background: #FFFFFF; 
-  font-family: Arial, sans-serif; 
-  font-size: 12px; 
-  font-family: Arial;
-}
-
-header {
-  padding: 10px 0;
-  margin-bottom: 30px;
-}
-
-#logo {
+/*estas son las propiedades de la tabla editable en la confección de anticipos*/
+.input_edit {
+  /*min-width: 50px !important;
+  transition: width 0.20s;*/
+  max-width: 99.99% !important;
   text-align: center;
-  margin-bottom: 10px;
+  min-width: 100%;
+  line-height:30px;
+  border: none;
+}
+/*estas son las propiedades del input para ingresar el número de comisión*/
+.input_num{
+  height: 35px;
+  margin: 0;
+  overflow: hidden;
 }
 
-#logo img {
-  width: 90px;
+.input_num input{
+  padding: 0px;
+  height: 28.4px;
+  padding-left: 8px;
+  padding-top: 4px;
+  border: none;
+  outline: none;
 }
 
-h1 {
-
-  /*border-top: 1px solid  #5D6975;
-  border-bottom: 1px solid  #5D6975;*/
-  /*color: #5D6975;*/
-  font-size: 1.4em;
-  line-height: 1.4em;
-  font-weight: normal;
-  text-align: center;
-  margin: 20px 0 20px 0;
-  /*background: url(dimension.png);*/
-}
-
-#project {
-  float: left;
-}
-
-#project span {
-  color: #5D6975;
-  text-align: right;
-  width: 52px;
-  margin-right: 10px;
-  display: inline-block;
-  font-size: 0.8em;
-}
-
-#company {
-  float: right;
-  text-align: right;
-}
-
-#project div,
-#company div {
-  white-space: nowrap;        
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-bottom: 20px;
-}
-
-table tr:nth-child(2n-1) td {
-  background: #F5F5F5;
-}
-
-table th,
-table td {
-  text-align: center;
-}
-
-table th {
-  padding: 5px 20px;
-  color: #5D6975;
-  border-bottom: 1px solid #C1CED9;
-  white-space: nowrap;        
-  font-weight: normal;
-}
-
-table .service,
-table .desc {
-  text-align: left;
-}
-
-table td {
-  padding: 20px;
-  text-align: right;
-}
-
-table td.service,
-table td.desc {
-  vertical-align: top;
-}
-
-table td.unit,
-table td.qty,
-table td.total {
-  font-size: 1.2em;
-}
-
-table td.grand {
-  border-top: 1px solid #5D6975;;
-}
-
-#notices .notice {
-  color: #5D6975;
-  font-size: 1.2em;
-}
-
-footer {
-  color: #5D6975;
-  width: 100%;
-  height: 30px;
+.input_num label{
   position: absolute;
-  bottom: 0;
-  border-top: 1px solid #C1CED9;
-  padding: 8px 0;
-  text-align: center;
+  bottom: 0px;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-bottom: 1px solid;
 }
+
+.input_num label::after{
+  content: "";
+  left: 0px;
+  bottom: -1px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-bottom: 3px solid #007bff;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.content-name{
+  position:absolute;
+  bottom: 2px;
+  left: 0px;
+  transition: all 0.04s ease;
+}
+
+.input_num input:focus + .label-name .content-name,
+.input_num input:valid + .label-name .content-name{
+  transform: translateY(-45%);
+  font-size: 14px;
+  color: #007bff;
+
+}
+
+.input_num input:focus + .label-name::after,
+.input_num input:valid + .label-name::after{
+  transform: translateX(0%);
+}
+/*----------------------------------------------------------------------*/

@@ -64,7 +64,7 @@ class FormRegistro(forms.Form):
 
     def clean(self):
         """Verificacion del password"""
-        data = super().clean()  # forma de llamar al metodo antes de ser sobre escrito, trae los datos
+        data = super().clean()  # forma de llamar al metodo antes de ser sobreescrito, trae los datos
         passw = data['password']
         passw_confirmation = data['password_confirmation']
         if passw != passw_confirmation:
@@ -73,6 +73,7 @@ class FormRegistro(forms.Form):
 
 
 class FormLogin(AuthenticationForm):
+    """ Formulario para validar los datos de login """
     def __init__(self, *args, **kwargs):
         super(FormLogin, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
@@ -82,7 +83,7 @@ class FormLogin(AuthenticationForm):
 
 
 class FormUpdateProfile(forms.Form):
-    #num_afiliado = forms.CharField(min_length=7, max_length=7)
+    """ Formulario para validar perfil de usuario """
     email = forms.CharField(
         min_length=6, max_length=70,
         widget=forms.EmailInput(),

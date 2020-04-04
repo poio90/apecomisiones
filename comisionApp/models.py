@@ -56,7 +56,7 @@ class Transporte(models.Model):
         db_table = 'transporte'
 
     def __str__(self):
-        return self.num_legajo
+        return '{} {}'.format(self.num_legajo,self.patente)
 
 
 class Ubicaciones(models.Model):
@@ -138,7 +138,7 @@ class Anticipo(models.Model):
         db_table = 'anticipo_comision'
 
     def __str__(self):
-        return '{} {} {}'.format(self.fech_inicio, self.num_comision,self.ciudad.ciudad)
+        return '{} {} {}'.format(self.fech_inicio, self.num_comision, self.ciudad.ciudad)
 
 
 ''' SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
@@ -211,7 +211,8 @@ class Itineraio(models.Model):
     hora_llegada = models.DateTimeField()
     salida = models.CharField(max_length=45)
     llegada = models.CharField(max_length=45)
-    rendicion = models.ForeignKey(
+
+    anticipo = models.ForeignKey(
         Anticipo,
         on_delete=models.DO_NOTHING,
         db_column='id_anticipo'
@@ -232,7 +233,7 @@ class DetalleTrabajo(models.Model):
     km_llegada = models.IntegerField()
     detalle_trabajo = RichTextField()
 
-    rendicion = models.ForeignKey(
+    anticipo = models.ForeignKey(
         Anticipo,
         on_delete=models.DO_NOTHING,
         db_column='id_anticipo'

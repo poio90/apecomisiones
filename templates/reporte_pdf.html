@@ -100,17 +100,18 @@
   <header class="clearfix">
     <h1>SOLICITUD DE ANTICIPO DE SERVICIOS</h1>
     <div id="company" class="clearfix">
-      <div><b>Fecha de Pedido</b> 23/1/2020</div>
+      <div><b>Fecha de Pedido</b> {% now "j F Y" %}</div>
     </div>
   </header>
   <main>
     <table>
       <tbody>
+        {% for afiliado in afiliados %}
         <tr>
           <td class="service"><b>Apellido y nombre</b></td>
-          <td class="desc">{{ datos.apellido }} {{ datos.nombre }}</td>
+          <td class="desc">{{ afiliado.nombre }} {{ afiliado.first_name }}</td>
           <td class="unit"><b>Legajo N°</b></td>
-          <td class="qty">70305/1</td>
+          <td class="qty">{{ afiliado.num_afiliado }} </td>
         </tr>
         <tr>
           <td class="service"></td>
@@ -118,65 +119,40 @@
           <td class="unit"></td>
           <td class="qty"><b>N° Afiliado SEMPRE</b></td>
         </tr>
-        <tr>
-          <td class="service"><b>Apellido y nombre</b></td>
-          <td class="desc">Formaggio Pablo</td>
-          <td class="unit"><b>Legajo N°</b></td>
-          <td class="qty">26483/0</td>
-        </tr>
-        <tr>
-          <td class="service"></td>
-          <td class="desc"></td>
-          <td class="unit"></td>
-          <td class="qty"><b>N° Afiliado SEMPRE</b></td>
-        </tr>
-
-        <tr>
-          <td class="service"><b>Apellido y nombre</b></td>
-          <td class="desc">Gorosito Juan</td>
-          <td class="unit"><b>Legajo N°</b></td>
-          <td class="qty">16453/0</td>
-        </tr>
-        <tr>
-          <td class="service"></td>
-          <td class="desc"></td>
-          <td class="unit"></td>
-          <td class="qty"><b>N° Afiliado SEMPRE</b></td>
-        </tr>
-
+        {% endfor %}
       </tbody>
     </table>
     <br>
     <div id="notices" style="line-height : 25px;">
       <div class="notice">
-        <p><b>Motivo de la comisión: </b>Mantenimiento de la SET Dorila, SET Miguel Cané y seccionadores de la ruta 10 y 1.</p>
+        <p><b>Motivo de la comisión: </b>{{ motivo }}</p>
       </div>
     </div>
     <br>
     <table>
       <tbody>
         <tr>
-          <td><b>Fecha de iniciación: </b> 23/1/2020 </td>
-          <td> <b>Duración prevista: </b>5 días</td>
+          <td><b>Fecha de iniciación: </b>{{ fech_inicio }}</td>
+          <td> <b>Duración prevista: </b>{{ duracion_prevista }}</td>
         </tr>
       </tbody>
     </table>
     <div id="notices">
       <div class="notice">
-        <p><b>Lugar de residencia durante la comisión:</b> Miguel Cané</p>
+        <p><b>Lugar de residencia durante la comisión: </b>{{ ciudad }}</p>
       </div>
     </div>
     <table>
       <tbody>
         <tr>
-          <td><b>Medio de transporte a utilizar: UL</b> (PU1522) </td>
-          <td> <b>Patente: </b>SGB664</td>
+          <td><b>Medio de transporte a utilizar: UL</b> ({{ transporte }})</td>
+          <td> <b>Patente: </b>{{ patente }}</td>
         </tr>
       </tbody>
     </table>
     <div id="notices">
       <div class="notice">
-        <p><b>Gastos a solicitar: $</b>3500</p>
+        <p><b>Gastos a solicitar: $</b>{{ gastos_previstos }}</p>
       </div>
       <br>
       <div class="notice">

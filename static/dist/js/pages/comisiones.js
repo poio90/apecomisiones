@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $('#key').on('keyup', function() {
+    
+    /*$('#key').on('keyup', function() {
         var key = $(this).val();		
         var dataString = 'key='+key;
 	$.ajax({
@@ -22,5 +23,50 @@ $(document).ready(function() {
                 });
             }
         });
+    });*/
+
+    $("body").on("change","select",function () {
+        var form = $(this).closest("select")
+        var id = this.id;
+        var div = document.getElementById(id);
+        $.ajax({
+            url: div.getAttribute("data-validate-afiliado-url"),
+            data: form.serialize(),
+            dataType: 'json',
+            success: function (data) {
+                $('#afiliado'+id).val(data.data[0].num_afiliado);
+                /*$("").parent().children("input[name='" + data.name + "']").val(text);*/
+                }
+        });
+        
+      });
+    
+    
+    $("#transporte").change(function () {
+        var form = $(this).closest("#transporte");
+        var div = document.getElementById("transporte");
+        $.ajax({
+            url: div.getAttribute("data-validate-transporte-url"),
+            data: form.serialize(),
+            dataType: 'json',
+            success: function (data) {
+                $('#patente').val(data.data[0].patente);
+                }
+        });
     });
+
+    function resizable (el, factor) {
+        var int = Number(factor) || 7.7;
+        function resize() {el.style.width = ((el.value.length+1) * int) + 'px'}
+        var e = 'keyup,keypress,focus,blur,change'.split(',');
+        for (var i in e) el.addEventListener(e[i],resize,false);
+        resize();
+      }
+    resizable(document.getElementById('input-name'),7);
+    resizable(document.getElementById('input-dia'),7);
+    resizable(document.getElementById('input-mes'),7);
+    resizable(document.getElementById('input-salida'),7);
+    resizable(document.getElementById('input-hora1'),7);
+    resizable(document.getElementById('input-llegada'),7);
+    resizable(document.getElementById('input-hora2'),7);
 });

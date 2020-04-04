@@ -27,37 +27,59 @@ $(document).ready(function () {
   })
 
   // bootstrap WYSIHTML5 - text editor
-  $('.textarea').summernote({
-    height: 300,
-  })
+  $('.textarea').summernote()
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
-  $(".add-more").click(function () {
+  $("body").on("click", ".add-more", function () {
+    //Toma el id de full name para 
+    var id = $(".full_name").attr('id')
+    $(".copy select").attr("id", id);
+    $(".copy input").attr("id", 'afiliado' + id);
     var html = $(".copy").html();
     $(".after-add-more").after(html);
+    id = parseInt(id);
+    $(".full_name").attr('id', id = id + 1);
   });
 
   $("body").on("click", ".remove", function () {
     $(this).parents(".form-group").remove();
-
+    var id = $(".full_name").attr('id')
+    id = parseInt(id);
+    $(".full_name").attr('id', id = id - 1);
   });
   //---------------------------------------------------------------------------------------------//
 
   //Add text editor
-  $('#compose-textarea').summernote();
+  $('#compose-textarea').summernote({
+    height: 200,
+  });
 
   //---------Tabla dinamica para el itinerario------------------------//
   const $tableID = $('#table');
   const $BTN = $('#export-btn');
   const $EXPORT = $('#export');
   const newTr = `<tr class="hide">
-                  <td class="pt-3-half" contenteditable="true">Apellido y Nombre</td>
-                  <td class="pt-3-half" contenteditable="true">Día</td>
-                  <td class="pt-3-half" contenteditable="true">Mes</td>
-                  <td class="pt-3-half" contenteditable="true">Salida de:</td>
-                  <td class="pt-3-half" contenteditable="true">horario</td>
-                  <td class="pt-3-half" contenteditable="true">Llegada a:</td>
-                  <td class="pt-3-half" contenteditable="true">horario</td>
+                  <td class="pt-3-half">
+                    <input id="input-name" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-dia" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-mes" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-salida" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-hora1" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-llegada" class="input_edit"/>
+                  </td>
+                  <td class="pt-3-half">
+                    <input id="input-hora2" class="input_edit"/>
+                    </td>
                   <td>
                     <span class="table-remove">
                       <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
@@ -70,10 +92,9 @@ $(document).ready(function () {
     const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
 
     if ($tableID.find('tbody tr').length === 0) {
-
       $('tbody').append(newTr);
     }
-
+    $clone.find('button').attr("disabled", false);
     $tableID.find('table').append($clone);
   });
 
@@ -111,7 +132,6 @@ $(document).ready(function () {
 
     // Get the headers (add special header logic here)
     $($rows.shift()).find('th:not(:empty)').each(function () {
-
       headers.push($(this).text().toLowerCase());
     });
 

@@ -96,7 +96,6 @@ def update_profile(request):
             redirect('usuarios:update_profile')
     else:
         afiliado_form = FormUpdateProfile()
-
     return render(request=request, template_name='profile.html', context={
         'user': request.user,
         'afiliado_form': afiliado_form
@@ -134,60 +133,5 @@ def validar_dni(request):
     if data['is_taken']:
         data['error_message'] = 'Ya existe un usuario con este número de documento.'
     return JsonResponse(data)
-#----------------------------------------------------------------------------------------#
-
-
-def registroUsuario(request):
-    if request.method == 'POST':
-        form = FormularioRegistro(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.num_afiliado = form.cleaned_data.get('num_afiliado')
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('usuarios:perfil_agente')
-        else:
-            messages.error(
-                request, ('Por favor corrija el error a continuación.'))
-    else:
-        form = FormularioRegistro()
-    return render(request, 'registroUser.html', {'form': form})
-
-
-@login_required
-@transaction.atomic
-def update_profile(request):
-    if request.method == 'POST':
-        dni = request.POST.get('dni', None)
-        data = {
-            'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
-        }
-        if data['is_taken']:
-            data['error_message'] = 'Ya existe un usuario con este número de documento.'
-        else:
-            agente_form = AgenteForm(
-                request.POST, instance=request.user.afiliado)
-            if agente_form.is_valid():
-                agente_form.save()
-                data['success_message'] = 'Su perfil fue actualizado con éxito!'
-        return JsonResponse(data)
-    else:
-        agente_form = AgenteForm(instance=request.user.afiliado)
-    return render(request, 'profile.html', {
-        'agente_form': agente_form
-    })
-
-
-@login_required
-@transaction.atomic
-def confeccionComision(request):
-    return render(request, 'confeccion_comision.html')
-
-
-@login_required
-@transaction.atomic
-def confeccionSolicitudComision(request):
-    return render(request, 'confeccion_sol_comision.html')"""
+#----------------------------------------------------------------------------------------
+"""

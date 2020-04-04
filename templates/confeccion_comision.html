@@ -22,185 +22,206 @@
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-
       <div class="col-md-12">
-        <div class="card card-primary card-outline">
-          <div class="card-header">
-            <h3 class="card-title">Rendición de Comisión N°</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-
-            <div class="form-group after-add-more">
+        
+          <div class="card card-primary card-outline">
+            <form method="POST" class="form-horizontal" action="{% url 'comisiones:archivar' %}">
+            {% csrf_token %}
+            <div class="card-header">
               <div class="form-row">
-                {% csrf_token %}
-                <div class="col-md-6">
-                  <label class="form-control col-form-label">{{ user.get_full_name }}</label>
+                <div class="col-md-2">
+                  <label class="card-title">Anticipo de Comisión</label>
                 </div>
-                <div class="col-md-5">
-                  <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
+                <div class="input_num col-md-2">
+                  <input type="text" class="form-control form-control-sm" required>
+                  <label for="name" class="label-name">
+                    <span class="content-name">N°</span>
+                  </label>
                 </div>
-                <div class="col">
-                  <span class="float-right mb-3 mr-2">
-                    <a style="cursor:pointer;" class="text-success add-more">
-                      <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
-                    </a>
-                  </span>
-                </div>
+                
               </div>
             </div>
-            <!-- div que se muestra luego de agregar usuario -->
-            <div class="copy d-none d-print-block">
-              <div class="form-group">
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="form-group after-add-more">
                 <div class="form-row">
-                  {% csrf_token %}
+                  
                   <div class="col-md-6">
-                    <select class="browser-default custom-select">
-                      <option value="" disabled selected>Apellido y nombre</option>
-                      {% for afiliado in users %}
-                      <option>{{ afiliado.last_name }} {{ afiliado.first_name }}</option>
-                      {% endfor %}
-                  </select>
+                    <label id="0" class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
                   </div>
                   <div class="col-md-5">
-                    <input class="form-control" placeholder="Número de afiliado SEMPRE">
+                    <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
                   </div>
                   <div class="col">
                     <span class="float-right mb-3 mr-2">
-                      <a style="cursor:pointer;" class="text-danger remove">
-                        <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
+                      <a style="cursor:pointer;" class="text-success add-more">
+                        <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
                       </a>
                     </span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="form-group">
-              <div class="form-row">
-                {% csrf_token %}
-                <div class="col">
-                  <input class="form-control" placeholder="Fecha de inicio">
-                </div>
-                <div class="col">
-                  <input class="form-control" placeholder="Fecha de finalización">
+              <!-- div que se muestra luego de agregar usuario -->
+              <div class="copy d-none d-print-block">
+                <div class="form-group">
+                  <div class="form-row">
+                    <div class="col-md-6">
+                      <select id="" name="afiliado[]" class="browser-default custom-select"
+                        data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                        <option value="" disabled selected>Apellido y nombre</option>
+                        {% for afiliado in users %}
+                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }} {{ afiliado.first_name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-5">
+                      <input id="" name="num_afiliado[]" class="form-control" type="text"
+                        placeholder="Número de afiliado a SEMPRE">
+                    </div>
+                    <div class="col">
+                      <span class="float-right mb-3 mr-2">
+                        <a style="cursor:pointer;" class="text-danger remove">
+                          <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
+                        </a>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group">
-              {% csrf_token %}
-              <select class="browser-default custom-select">
-                <option value="" disabled selected>Lugar de residencia durante la comisión</option>
-                {% for ciudad in ciudades %}
-                <option>{{ ciudad.ciudad }}</option>
-                {% endfor %}
-            </select>
-            </div>
-            <div class="form-group row">
-              {% csrf_token %}
-              <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
-              <div class="col">
-                <!--<input class="form-control" placeholder="Unidad de legajo">-->
+              <div class="form-group">
+                <div class="form-row">
+                  <div class="col">
+                    <input name="fech_inicio" class="form-control" type="text" placeholder="Fecha de inicio" required>
+                  </div>
+                  <div class="col">
+                    <input name="fech_fin" class="form-control" type="text" placeholder="Fecha de finalización" required>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
                 <select class="browser-default custom-select">
-                  <option value="" disabled selected>Unidad de legajo</option>
-                  {% for transporte in transportes %}
-                  <option>{{ transporte.num_legajo }}</option>
+                  <option name="ciudad" value="" disabled selected>Lugar de residencia durante la comisión</option>
+                  {% for ciudad in ciudades %}
+                  <option>{{ ciudad.ciudad }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div class="col">
-                <input class="form-control" placeholder="Patente" readonly="readonly">
-              </div>
-            </div>
-            <div class="form-group">
-              {% csrf_token %}
-              <input class="form-control" placeholder="Gastos">
-            </div>
-
-            <!--- Tabla para el armado del itinenario--->
-            <div class="form-group">
-              {% csrf_token %}
-              <div class="card-body">
-                <div id="table" class="table-editable">
-                  <span class="table-add float-right mb-3 mr-2"><a style="cursor:pointer;" class="text-success"><i
-                        class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
-                  <table class="table table-bordered table-responsive-md table-striped text-center">
-                    <thead>
-                      <tr>
-                        <th class="text-center">Apellido y Nombre</th>
-                        <th class="text-center">Día</th>
-                        <th class="text-center">Mes</th>
-                        <th class="text-center">Salida de:</th>
-                        <th class="text-center">horario</th>
-                        <th class="text-center">Llegada a:</th>
-                        <th class="text-center">horario</th>
-                        <th class="text-center">acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="pt-3-half" contenteditable="true">{{ user.get_full_name }}</td>
-                        <td class="pt-3-half" contenteditable="true">Día</td>
-                        <td class="pt-3-half" contenteditable="true">Mes</td>
-                        <td class="pt-3-half" contenteditable="true">Salida de:</td>
-                        <td class="pt-3-half" contenteditable="true">horario</td>
-                        <td class="pt-3-half" contenteditable="true">Llegada a:</td>
-                        <td class="pt-3-half" contenteditable="true">horario</td>
-                        <td>
-                          <span class="table-remove"><button type="button"
-                              class="btn btn-danger btn-rounded btn-sm my-0">Remover</button></span>
-                        </td>
-                      </tr>
-                      <!-- This is our clonable table line -->
-
-                      <!-- This is our clonable table line -->
-
-                    </tbody>
-                  </table>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="form-group">
-              {% csrf_token %}
-              <label for="inputAfiliado" class="col-sm-4 col-form-label">
-                <h4>Informe de la Comisión:</h4>
-              </label>
-            </div>
-            <div class="form-group">
-              {% csrf_token %}
-              <div class="form-row">
+              <div class="form-group row">
+                <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
                 <div class="col">
-                  <input class="form-control" placeholder="Km de salida">
+                  <!--<input class="form-control" placeholder="Unidad de legajo">-->
+                  <select id="transporte" name="transporte" class="browser-default custom-select"
+                    data-validate-transporte-url="{% url 'comisiones:get_patente' %}">
+                    <option value="" disabled selected>Unidad de legajo</option>
+                    {% for transporte in transportes %}
+                    <option>{{ transporte.num_legajo }}</option>
+                    {% endfor %}
+                  </select>
                 </div>
                 <div class="col">
-                  <input class="form-control" placeholder="Kn de llegada">
-                </div>
-                <div class="col">
-                  <input class="form-control" placeholder="Total kms recorridos" readonly="readonly">
+                  <input id="patente" class="form-control" type="text" placeholder="Patente" readonly="readonly">
                 </div>
               </div>
-            </div>
-            <div class="form-group">
-              {% csrf_token %}
-              <textarea id="compose-textarea" class="form-control" style="height: 300px">
-                <strong>DETALLE DE LOS TRABAJOS REALIZADOS:</strong>
-              </textarea>
-            </div>
+              <div class="form-group">
+                <input class="form-control" placeholder="Gastos" required>
+              </div>
+              <!--- Tabla para el armado del itinenario--->
+              <div class="form-group">
+                <div class="card-body">
+                  <div id="table" class="table-editable">
+                    <span class="table-add float-right mb-3 mr-2">
+                      <a style="cursor:pointer;" class="btn text-success">
+                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                      <thead>
+                        <tr>
+                          <th class="text-center">Apellido y Nombre</th>
+                          <th class="text-center">Día</th>
+                          <th class="text-center">Mes</th>
+                          <th class="text-center">Salida de:</th>
+                          <th class="text-center">horario</th>
+                          <th class="text-center">Llegada a:</th>
+                          <th class="text-center">horario</th>
+                          <th class="text-center">acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="pt-3-half">
+                            <input id="input-name" name="input-name[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-dia" name="input-dia[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-mes" name="input-mes[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-salida" name="input-salida[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-hora1" name="input-hora1[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-llegada" name="input-llegada[]" class="input_edit"/>
+                          </td>
+                          <td class="pt-3-half">
+                            <input id="input-hora2" name="input-hora2[]" class="input_edit"/>
+                          </td>
+                          <td>
+                            <span class="table-remove"><button disabled="true" type="button"
+                                class="btn btn-danger btn-rounded btn-sm my-0">Remover</button></span>
+                                
+                          </td>
+                        </tr>
+                        <!-- This is our clonable table line -->
 
+                        <!-- This is our clonable table line -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAfiliado" class="col-sm-4 col-form-label">
+                  <h4>Informe de la Comisión:</h4>
+                </label>
+              </div>
+              <div class="form-group">
+                <div class="form-row">
+                  <div class="col">
+                    <input name="km_salida" class="form-control" type="text" placeholder="Km de salida" required>
+                  </div>
+                  <div class="col">
+                    <input name="km_llegada" class="form-control" type="text" placeholder="Kn de llegada" required>
+                  </div>
+                  <div class="col">
+                    <input name="km_total" class="form-control" type="text" placeholder="Total kms recorridos"
+                      readonly="readonly">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <textarea name="detalle_trabajo" class="form-control" type="text"
+                  placeholder="DETALLE DE LOS TRABAJOS REALIZADOS:" required></textarea>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <div class="float-right">
+                <a type="button" class="btn btn-success" href="{% url 'comisiones:reportePdfAnticipo' %}"><i
+                    class="fas fa-file-pdf" target="_blank"></i>
+                  Imprimir</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-archive"></i>Archivar</button>
+              </div>
+              <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
+            </div>
+            <!-- /.card-footer -->
+          </form>
           </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <div class="float-right">
-              <button type="button" class="btn btn-default"><i class="fas fa-file-pdf"></i>
-                Imprimir</button>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-archive"></i>Archivar</button>
-            </div>
-            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Descartar</button>
-          </div>
-          <!-- /.card-footer -->
-        </div>
+        
         <!-- /.card -->
       </div>
       <!-- /.col -->
