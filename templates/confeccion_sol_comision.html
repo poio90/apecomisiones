@@ -102,13 +102,9 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-row">
-                                    <div class="col-md-6" id="sandbox-container">
-                                        <div class="input-group date">
-                                            <input type="text" name="fech_inicio" class="form-control"
-                                                placeholder="Fecha de iniciación" required>
-                                            <span class="input-group-addon"><i
-                                                    class="glyphicon glyphicon-th"></i></span>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="datepicker" name="fech_inicio" class="form-control"
+                                        placeholder="Fecha de iniciación" required>
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" name="duracion_prevista" class="form-control"
@@ -117,7 +113,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select name="ciudad" class="browser-default custom-select">
+                                <select name="ciudad" class="browser-default custom-select" required>
                                     <option disabled selected>Lugar de residencia durante la comisión</option>
                                     {% for ciudad in ciudades %}
                                     <option>{{ ciudad.ciudad }}</option>
@@ -129,7 +125,7 @@
                                     transporte:</label>
                                 <div class="col">
                                     <select id="transporte" name="transporte" class="browser-default custom-select"
-                                        data-validate-transporte-url="{% url 'comisiones:get_patente' %}">
+                                        data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
                                         <option value="" disabled selected>Unidad de legajo</option>
                                         {% for transporte in transportes %}
                                         <option>{{ transporte.num_legajo }}</option>

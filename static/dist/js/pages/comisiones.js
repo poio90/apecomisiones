@@ -23,7 +23,18 @@ $(document).ready(function() {
                 });
             }
         });
-    });*/
+    });*/   
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        format: "dd/mm/yyyy",
+    });
+    
+    $('#datepickerFin').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        format: "dd/mm/yyyy",
+    });
 
     $("body").on("change","select",function () {
         var form = $(this).closest("select")
@@ -69,4 +80,27 @@ $(document).ready(function() {
     resizable(document.getElementById('input-hora1'),7);
     resizable(document.getElementById('input-llegada'),7);
     resizable(document.getElementById('input-hora2'),7);
+
+    $('input[name="km_salida"]').change(function(){
+        var km_salida = $(this).val()
+        var km_llegada = $('input[name="km_llegada"]').val()
+        console.log(km_salida)
+        console.log(km_llegada)
+        if(km_llegada==0){
+            $('input[name="km_total"]').val(km_salida);
+        }else{
+            $('input[name="km_total"]').val(km_llegada-km_salida);
+        }
+    })
+    $('input[name="km_llegada"]').change(function(){
+        var km_llegada = $(this).val()
+        var km_salida = $('input[name="km_salida"]').val()
+        console.log(km_salida)
+        console.log(km_llegada)
+        if(km_salida==0){
+            $('input[name="km_total"]').val(km_llegada);
+        }else{
+            $('input[name="km_total"]').val(km_llegada-km_salida);
+        }
+    })
 });

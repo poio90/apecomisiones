@@ -26,15 +26,13 @@ $(document).ready(function () {
     zIndex: 999999
   })
 
-  // bootstrap WYSIHTML5 - text editor
-  $('.textarea').summernote()
-
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
   $("body").on("click", ".add-more", function () {
     //Toma el id de full name para 
     var id = $(".full_name").attr('id')
     $(".copy select").attr("id", id);
     $(".copy input").attr("id", 'afiliado' + id);
+    //$(".copy select").prop('required',true);
     var html = $(".copy").html();
     $(".after-add-more").after(html);
     id = parseInt(id);
@@ -48,11 +46,6 @@ $(document).ready(function () {
     $(".full_name").attr('id', id = id - 1);
   });
   //---------------------------------------------------------------------------------------------//
-
-  //Add text editor
-  $('#compose-textarea').summernote({
-    height: 200,
-  });
 
   //---------Tabla dinamica para el itinerario------------------------//
   const $tableID = $('#table');
@@ -95,6 +88,7 @@ $(document).ready(function () {
       $('tbody').append(newTr);
     }
     $clone.find('button').attr("disabled", false);
+    //$clone.find('input').prop('required',true);
     $tableID.find('table').append($clone);
   });
 
