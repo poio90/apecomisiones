@@ -113,11 +113,12 @@
                   <div class="form-group row">
                     <label for="inpuTel" class="col-sm-2 col-form-label">Número de tel.</label>
                     <div class="col-sm-10">
-                      <input type="text" 
+                      <input type="tel" pattern="^(?:\(?\d{2,3}\)?[- .]?\d{4,5}[- .]?\(?\d{4}\)?)"
                         class="form-control {% if afiliado_form.num_tel.errors %} is-invalid {% endif %}" 
                         placeholder="Número de telefono" 
                         name="num_tel" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.num_tel.value }}{% else %}{{ user.num_tel }}{% endif %}">
+                        value="{% if afiliado_form.errors %}{{ afiliado_form.num_tel.value }}{% else %}{{ user.num_tel }}{% endif %}"
+                        required>
                     </div>
                   </div>
                   {% for error in afiliado_form.num_tel.errors %}

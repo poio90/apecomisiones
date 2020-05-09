@@ -1,10 +1,11 @@
 /*estas son las propiedades de la tabla editable en la confección de anticipos*/
-.input_edit {
+.input_edit,.select_edit {
   /*min-width: 50px !important;
   transition: width 0.20s;*/
   max-width: 99.99% !important;
   text-align: center;
   min-width: 100%;
+  padding: 0.2px;
   line-height:30px;
   border: none;
 }

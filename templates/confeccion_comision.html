@@ -25,7 +25,7 @@
       <div class="col-md-12">
 
         <div class="card card-primary card-outline">
-          <form method="POST" class="form-horizontal" action="{% url 'comisiones:archivar' %}">
+          <form method="POST" class="form-horizontal" action="{% url 'comisiones:reportePdfAnticipo' %}" target="_blank">
             {% csrf_token %}
             <div class="card-header">
               <div class="form-row">
@@ -33,7 +33,7 @@
                   <label class="card-title">Anticipo de Comisión</label>
                 </div>
                 <div class="input_num col-md-2">
-                  <input type="text" class="form-control form-control-sm" required>
+                  <input name="num_comision" type="text" class="form-control form-control-sm" required>
                   <label for="name" class="label-name">
                     <span class="content-name">N°</span>
                   </label>
@@ -99,10 +99,10 @@
                 </div>
               </div>
               <div class="form-group">
-                <select class="browser-default custom-select" required>
-                  <option name="ciudad" value="" disabled selected>Lugar de residencia durante la comisión</option>
+                <select name="ciudad" class="browser-default custom-select" required>
+                  <option  value="" disabled selected>Lugar de residencia durante la comisión</option>
                   {% for ciudad in ciudades %}
-                  <option>{{ ciudad.ciudad }}</option>
+                  <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -114,16 +114,16 @@
                     data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
                     <option value="" disabled selected>Unidad de legajo</option>
                     {% for transporte in transportes %}
-                    <option>{{ transporte.num_legajo }}</option>
+                    <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
                     {% endfor %}
                   </select>
                 </div>
                 <div class="col">
-                  <input id="patente" class="form-control" type="text" placeholder="Patente" readonly="readonly">
+                  <input id="patente" name="patente" class="form-control" type="text" placeholder="Patente" readonly="readonly">
                 </div>
               </div>
               <div class="form-group">
-                <input class="form-control" placeholder="Gastos" required>
+                <input name="gastos" class="form-control" placeholder="Gastos" required>
               </div>
               <!--- Tabla para el armado del itinenario--->
               <div class="form-group">
@@ -141,34 +141,34 @@
                           <th class="text-center">Día</th>
                           <th class="text-center">Mes</th>
                           <th class="text-center">Salida de:</th>
-                          <th class="text-center">horario</th>
+                          <th class="text-center">hora</th>
                           <th class="text-center">Llegada a:</th>
-                          <th class="text-center">horario</th>
+                          <th class="text-center">hora</th>
                           <th class="text-center">acción</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td class="pt-3-half">
-                            <input id="input-name" name="input-name[]" class="input_edit" required/>
+                            <input id="input-name" name="name[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-dia" name="input-dia[]" class="input_edit" required/>
+                            <input id="input-dia" name="dia[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-mes" name="input-mes[]" class="input_edit" required/>
+                            <input id="input-mes" name="mes[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-salida" name="input-salida[]" class="input_edit" required/>
+                            <input id="input-salida" name="salida[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-hora1" name="input-hora1[]" class="input_edit" required/>
+                            <input id="input-hora1" type="time" name="hora_salida[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-llegada" name="input-llegada[]" class="input_edit" required/>
+                            <input id="input-llegada" name="llegada[]" class="input_edit" required/>
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-hora2" name="input-hora2[]" class="input_edit" required/>
+                            <input id="input-hora2" type="time" name="hora_llegada[]" class="input_edit" required/>
                           </td>
                           <td>
                             <span class="table-remove"><button disabled="true" type="button"
@@ -211,8 +211,8 @@
             <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-                <a type="button" class="btn btn-success" href="{% url 'comisiones:reportePdfAnticipo' %}"><i
-                    class="fas fa-file-pdf" target="_blank"></i>
+                <a type="button" class="btn btn-success" href="{% url 'comisiones:reportePdfAnticipo' %}" target="_blank">
+                  <i class="fas fa-file-pdf"></i>
                   Imprimir</a>
                 <button type="submit" class="btn btn-primary"><i class="fas fa-archive"></i>Archivar</button>
               </div>

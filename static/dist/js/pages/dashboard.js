@@ -29,21 +29,21 @@ $(document).ready(function () {
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
   $("body").on("click", ".add-more", function () {
     //Toma el id de full name para 
-    var id = $(".full_name").attr('id')
-    $(".copy select").attr("id", id);
-    $(".copy input").attr("id", 'afiliado' + id);
-    //$(".copy select").prop('required',true);
+    var id = $(".full_name").attr('id')//agregado por mi
+    $(".copy select").attr("id", id);//agregado por mi
+    $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
+    //$(".copy select").prop('required',true);//agregado por mi
     var html = $(".copy").html();
     $(".after-add-more").after(html);
-    id = parseInt(id);
-    $(".full_name").attr('id', id = id + 1);
+    id = parseInt(id);//agregado por mi
+    $(".full_name").attr('id', id = id + 1);//agregado por mi
   });
 
   $("body").on("click", ".remove", function () {
     $(this).parents(".form-group").remove();
-    var id = $(".full_name").attr('id')
-    id = parseInt(id);
-    $(".full_name").attr('id', id = id - 1);
+    var id = $(".full_name").attr('id')//agregado por mi
+    id = parseInt(id);//agregado por mi
+    $(".full_name").attr('id', id = id - 1);//agregado por mi
   });
   //---------------------------------------------------------------------------------------------//
 

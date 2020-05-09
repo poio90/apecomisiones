@@ -54,6 +54,9 @@ class Transporte(models.Model):
         verbose_name_plural = 'Transportes'
         managed = True
         db_table = 'transporte'
+    
+    def get_patente(self):
+        return self.patente
 
     def __str__(self):
         return '{} {}'.format(self.num_legajo,self.patente)
@@ -206,9 +209,11 @@ class Integrantes_x_Anticipo(models.Model):
 
 class Itineraio(models.Model):
     id_itinerario = models.AutoField(primary_key=True)
-    fecha = models.DateField()
-    hora_salida = models.DateTimeField()
-    hora_llegada = models.DateTimeField()
+    nombre_afiliado = models.CharField(max_length=150)
+    dia = models.CharField(max_length=10)
+    mes = models.CharField(max_length=10)
+    hora_salida = models.CharField(max_length=6)
+    hora_llegada = models.CharField(max_length=6)
     salida = models.CharField(max_length=45)
     llegada = models.CharField(max_length=45)
 
@@ -224,7 +229,7 @@ class Itineraio(models.Model):
         db_table = 'itinerario'
 
     def __str__(self):
-        return self.id_det_recorrido
+        return self.id_itinerario
 
 
 class DetalleTrabajo(models.Model):

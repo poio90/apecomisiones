@@ -128,7 +128,7 @@
                                         data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
                                         <option value="" disabled selected>Unidad de legajo</option>
                                         {% for transporte in transportes %}
-                                        <option>{{ transporte.num_legajo }}</option>
+                                        <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
