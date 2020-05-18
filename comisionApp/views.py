@@ -320,7 +320,7 @@ def historicoAnticipos(request):
         integrantes_x_anticipo__user=request.user.id)
     return render(request, 'public/historico.html', {'anticipos': anticipos})
 
-
+@login_required
 def archivar(request):
     if request.method == 'POST':
         # usuarios
@@ -352,7 +352,7 @@ def archivar(request):
 
         # Crear anticpo en la BD
         nuevo_anticipo = Anticipo(num_comision=num_comision, ciudad_id=pk_ciudad,
-                                  transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
+                                transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
         nuevo_anticipo.save()
 
         for i in range(len(nombres)):
@@ -370,9 +370,17 @@ def archivar(request):
 
         return redirect('comisiones:historico_anticipo')
 
-    else:
-        return render(request, 'confeccion_comision.html')
+    return render(request, 'confeccion_comision.html')
 
+@login_required
+def get_num_comision(request):
+    num_comision = request.GET.get('num_comision', None)
+    data = {
+        'is_taken': Anticipo.objects.filter(num_comision__iexact=num_comision).exists()
+    }
+    if data['is_taken']:
+        data['error_message'] = 'Ya existe una comisión con este número.'
+    return JsonResponse(data)
 
 @login_required
 def get_patente(request):
