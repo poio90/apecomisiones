@@ -35,7 +35,7 @@
                 </div>
                 <div class="input_num col-md-2">
                   <input id="num_comision" name="num_comision" type="text" class="form-control form-control-sm"
-                    validate-num-comicion-url="{% url 'comisiones:get_num_comision' %}" required>
+                    validate-num-comicion-url="{% url 'comisiones:get_num_comision' %}" pattern="[0-9]*" required>
                   <label for="name" class="label-name">
                     <span class="content-name">N°</span>
                   </label>
@@ -179,7 +179,6 @@
                         </td>
                       </tr>
                       <!-- This is our clonable table line -->
-
                       <!-- This is our clonable table line -->
                     </tbody>
                   </table>
@@ -213,7 +212,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="float-right">
-            <button type="submit" class="btn btn-primary" formaction="{% url 'comisiones:reportePdfAnticipo' %}"
+            <button id="imprimir" type="submit" class="btn btn-primary" formaction="{% url 'comisiones:reportePdfAnticipo' %}"
               formtarget="_blank">
               <i class="fas fa-file-pdf"></i>
               Imprimir</button>

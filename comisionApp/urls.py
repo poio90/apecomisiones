@@ -10,6 +10,10 @@ urlpatterns = [
     path(route='accounts/reporte_anticipo',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
+        
+    path(route='accounts/reporte_anticipo/<pk>/',
+         view=views.ReportePdfAnticipo.as_view(),
+         name='reportePdfAnticipo'),
 
     path('accounts/confeccion_comisión', login_required(
         views.confeccionAnticipo), name='confeccion_comisión'),

@@ -141,7 +141,14 @@ class Anticipo(models.Model):
         db_table = 'anticipo_comision'
 
     def __str__(self):
-        return '{} {} {}'.format(self.fech_inicio, self.num_comision, self.ciudad.ciudad)
+        return '{} {} {} {} {} {} {}'.format(
+            self.fech_inicio,
+            self.num_comision,
+            self.ciudad.ciudad,
+            self.fech_fin,
+            self.gastos,
+            self.transporte.num_legajo,
+            self.transporte.patente)
 
 
 ''' SET_NULL: establece la referencia en NULL (requiere que el campo sea anulable). Por ejemplo, 
@@ -204,7 +211,7 @@ class Integrantes_x_Anticipo(models.Model):
         db_table = 'integrantes_x_anticipo'
 
     def __str__(self):
-        return '{} {} {}'.format(self.anticipo, self.user, self.user.num_afiliado)
+        return '{} {}'.format(self.anticipo,self.user)
 
 
 class Itineraio(models.Model):
@@ -229,7 +236,14 @@ class Itineraio(models.Model):
         db_table = 'itinerario'
 
     def __str__(self):
-        return self.id_itinerario
+        return '{} {} {} {} {} {} {}'.format(
+            self.nombre_afiliado,
+            self.dia,
+            self.mes,
+            self.hora_salida,
+            self.hora_llegada,
+            self.salida,
+            self.llegada)
 
 
 class DetalleTrabajo(models.Model):
@@ -250,7 +264,11 @@ class DetalleTrabajo(models.Model):
         db_table = 'detalle_trabajo'
 
     def __str__(self):
-        return '{}'.format(self.id_det_trabajo)
+        return '{} {} {}'.format(
+            self.km_salida,
+            self.km_llegada,
+            self.detalle_trabajo
+            )
 
 
 ''' https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Authentication

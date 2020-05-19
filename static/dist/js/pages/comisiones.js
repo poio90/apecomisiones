@@ -51,6 +51,8 @@ $(document).ready(function () {
             data: form,
             success: function (data) {
                 if(data.is_taken){
+                    $("#imprimir").prop('disabled', true);
+                    $("#archivar").prop('disabled', true);
                     swal({
                         title: "Revise los campos!",
                         text: 'El número de comisión que está intentando cargar ya existe.',
@@ -58,6 +60,9 @@ $(document).ready(function () {
                         dangerMode: true,
                     });
                     $('#num_comision').val("");
+                }else{
+                    $("#imprimir").prop('disabled', false);
+                    $("#archivar").prop('disabled', false);
                 }
             }
         });
