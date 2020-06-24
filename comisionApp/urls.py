@@ -3,25 +3,25 @@ from django.contrib.auth.decorators import login_required
 from comisionApp import views
 
 urlpatterns = [
-    path(route='accounts/reporte_solicitud',
+    path(route='accounts/anticipo/solicitud/reporte',
          view=views.ReportePdfSolicitud.as_view(),
          name='reportePdfSolicitud'),
 
-    path(route='accounts/reporte_anticipo',
+    path(route='accounts/anticipo/reporte',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
         
-    path(route='accounts/reporte_anticipo/<pk>/',
+    path(route='accounts/anticipo/reporte/<pk>/',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
 
-    path('accounts/confeccion_comisión', login_required(
+    path('accounts/anticipo/comisión', login_required(
         views.confeccionAnticipo), name='confeccion_comisión'),
 
-    path('accounts/confeccion_solicitud_comisión', login_required(
+    path('accounts/anticipo/solicitud', login_required(
         views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
 
-    path('accounts/historico_anticipo', login_required(
+    path('accounts/anticipo/historico', login_required(
         views.historicoAnticipos), name='historico_anticipo'),
     
     path('accounts/archivar', login_required(

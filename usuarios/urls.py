@@ -21,7 +21,7 @@ urlpatterns = [
          view=login_required(views.Inicio.as_view()),
          name='index'),
 
-    path(route='perfil_usuario/',
+    path(route='usuario/perfil',
          view=views.update_profile,
          name='update_profile'),
 ]
