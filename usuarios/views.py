@@ -19,6 +19,24 @@ class Inicio(View):
         return render(request, 'index.html')
 
 
+class Perfil(DetailView):
+    model = User
+    template_name = 'profile.html'
+
+
+class EditarPerfil(UpdateView):
+    model = User
+    form_class = FormUpdateProfile
+    context_object_name = 'usuario'
+    template_name = 'profile_edit.html'
+
+    def get_success_url(self):
+        # if you are passing 'pk' from 'urls' to 'UpdateView' for user
+        # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
+        user_pk = self.request.user.pk
+        return reverse_lazy('usuarios:perfil', kwargs={'pk': user_pk})
+
+
 class LoginUsuario(FormView):
     template_name = 'login.html'
     form_class = FormLogin
@@ -78,28 +96,6 @@ def registroUsuario(request):
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('accounts/login/')
-
-
-@login_required
-def update_profile(request):
-    user = request.user
-    if request.method == 'POST':
-        afiliado_form = FormUpdateProfile(request.POST)
-        if afiliado_form.is_valid():
-            data = afiliado_form.cleaned_data
-            user.last_name = data['last_name']
-            user.first_name = data['first_name']
-            user.email = data['email']
-            user.dni = data['dni']
-            user.num_tel = data['num_tel']
-            user.save()
-            redirect('usuarios:update_profile')
-    else:
-        afiliado_form = FormUpdateProfile()
-    return render(request=request, template_name='profile.html', context={
-        'user': request.user,
-        'afiliado_form': afiliado_form
-    })
 
 
 """

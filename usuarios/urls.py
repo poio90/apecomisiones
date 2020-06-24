@@ -21,9 +21,13 @@ urlpatterns = [
          view=login_required(views.Inicio.as_view()),
          name='index'),
 
-    path(route='usuario/perfil',
-         view=views.update_profile,
-         name='update_profile'),
+    path(route='usuario/perfil/<pk>/editar',
+         view=login_required(views.EditarPerfil.as_view()),
+         name='editar_perfil'),
+
+    path(route='usuario/perfi/<pk>/',
+         view=login_required(views.Perfil.as_view()),
+         name='perfil'),
 ]
 
 """

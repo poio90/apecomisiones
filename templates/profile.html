@@ -30,110 +30,55 @@
           </div><!-- /.card-header -->
           <div class="card-body">
             <div class="tab-content">
-
               <!-- /.tab-pane -->
-
-              <!-- /.tab-pane -->
-
               <div id="settings">
-                <form method="POST" class="form-horizontal" action="{% url 'usuarios:update_profile' %}" enctype="multipart/form-data">
+                <form method="GET" class="form-horizontal" action="{% url 'usuarios:editar_perfil' user.pk %}"
+                  enctype="multipart/form-data">
                   {% csrf_token %}
                   <div class="form-group row">
                     <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
-                    <div class="col-sm-10">               
-                      <input type="text" 
-                        class="form-control {% if afiliado_form.last_name.errors %} is-invalid {% endif %}" 
-                        placeholder="Apellido" 
-                        name="last_name" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.last_name.value }}{% else %}{{ user.last_name }}{% endif %}">
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" readonly="readonly" placeholder="Apellido"
+                        name="last_name" value="{{ user.last_name }}">
                     </div>
                   </div>
-                  {% for error in afiliado_form.last_name.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Apellido: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
                   <div class="form-group row">
                     <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
                     <div class="col-sm-10">
-                      <input type="text" 
-                        class="form-control {% if afiliado_form.first_name.errors %} is-invalid {% endif %}" 
-                        placeholder="Nombre" 
-                        name="first_name" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.first_name.value }}{% else %}{{ user.first_name }}{% endif %}">
+                      <input type="text" class="form-control" readonly="readonly" placeholder="Nombre" name="first_name"
+                        value="{{ user.first_name }}">
                     </div>
                   </div>
-                  {% for error in afiliado_form.first_name.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Nombre: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
                   <div class="form-group row">
                     <label id="dni_label" for="inputDni" class="col-sm-2 col-form-label">DNI</label>
                     <div class="col-sm-10">
-                      <input type="text" 
-                        class="form-control {% if afiliado_form.dni.errors %} is-invalid {% endif %}" 
-                        placeholder="DNI" 
-                        name="dni" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.dni.value }}{% else %}{{ user.dni }}{% endif %}">
+                      <input type="text" class="form-control" readonly="readonly" placeholder="DNI" name="dni"
+                        value="{{ user.dni }}">
                     </div>
                   </div>
-                  {% for error in afiliado_form.dni.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>DNI: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
                   <div class="form-group row">
                     <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                      <input type="email" 
-                        class="form-control {% if afiliado_form.email.errors %} is-invalid {% endif %}" 
-                        placeholder="Email" 
-                        name="email" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.email.value }} {% else %} {{ user.email }} {% endif %}">
+                      <input type="email" class="form-control" readonly="readonly" placeholder="Email" name="email"
+                        value="{{ user.email }}">
                     </div>
                   </div>
-                  {% for error in afiliado_form.email.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Email: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
                   <div class="form-group row">
                     <label for="inpuTel" class="col-sm-2 col-form-label">Número de tel.</label>
                     <div class="col-sm-10">
-                      <input type="tel" pattern="^(?:\(?\d{2,3}\)?[- .]?\d{4,5}[- .]?\(?\d{4}\)?)"
-                        class="form-control {% if afiliado_form.num_tel.errors %} is-invalid {% endif %}" 
-                        placeholder="Número de telefono" 
-                        name="num_tel" 
-                        value="{% if afiliado_form.errors %}{{ afiliado_form.num_tel.value }}{% else %}{{ user.num_tel }}{% endif %}"
-                        required>
+                      <input type="tel" readonly="readonly" class="form-control " placeholder="Número de telefono"
+                        name="num_tel" value="{{ user.num_tel }}">
                     </div>
                   </div>
-                  {% for error in afiliado_form.num_tel.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Número de telefono: </b>{{ error }}
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <div class="float-right">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-edit"></i>
+                        Editar</button>
                     </div>
                   </div>
-                  {% endfor %}
-                  <div class="form-group row">
-                    <div class="offset-sm-2 col-sm-10">
-                      <button id="updateButtonProfile" type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                  </div>
+                  <!-- /.card-footer -->
                 </form>
               </div>
               <!-- /.tab-pane -->

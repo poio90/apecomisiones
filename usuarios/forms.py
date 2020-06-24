@@ -3,10 +3,10 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .models import User
 
 
 class FormRegistro(forms.Form):
-
     username = forms.CharField(
         min_length=4,
         max_length=50
@@ -82,8 +82,13 @@ class FormLogin(AuthenticationForm):
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
 
-class FormUpdateProfile(forms.Form):
-    """ Formulario para validar perfil de usuario """
+class FormUpdateProfile(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['last_name','first_name','dni','email','num_tel']
+        context = {'form' : fields}
+
+    """ Formulario para validar perfil de usuario 
     email = forms.CharField(
         min_length=6, max_length=70,
         widget=forms.EmailInput(),
@@ -112,7 +117,7 @@ class FormUpdateProfile(forms.Form):
         min_length=10,
         max_length=10,
         required=True
-    )
+    )"""
 
 
 """class DateInput(DatePickerInput):

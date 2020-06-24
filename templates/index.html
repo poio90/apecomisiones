@@ -86,7 +86,7 @@
             <!-- Menu Body -->
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a href="{% url 'usuarios:update_profile' %}" class="btn btn-default btn-flat">Perfil</a>
+              <a href="{% url 'usuarios:perfil' user.pk %}" class="btn btn-default btn-flat">Perfil</a>
               <a href="{% url 'usuarios:logout' %}" class="btn btn-default btn-flat float-right">Cerrar Sesión</a>
             </li>
           </ul>

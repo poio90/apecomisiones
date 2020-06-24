@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.core.validators import MinLengthValidator, RegexValidator
 
 
 class User(AbstractUser):
@@ -25,11 +25,16 @@ class User(AbstractUser):
         message = "El DNI debe ser ingresado en formato: 09999999 o 99999999. Hasta 8 caracteres permitidos"
     )
 
-    dni = models.CharField('DNI', unique=True,max_length=8, blank=True, null=True)
+    dni = models.CharField(
+        'DNI', 
+        unique=True,
+        max_length=8,
+        validators = [regex_num_af,MinLengthValidator(7)],
+        blank=True, null=True)
 
     regex_tel = RegexValidator(
         regex = r'^(?:\(?\d{2,3}\)?[- .]?\d{4,5}[- .]?\(?\d{4}\)?)',
-        message = "El número de telefono debe ser ingresado sin 0 y 15. Hasta 10 digitos permitidos"
+        message = "El número de telefono debe ser ingresado sin 0 y 15, no se permiten letras. Hasta 10 digitos permitidos"
     )
 
     num_tel = models.CharField(
