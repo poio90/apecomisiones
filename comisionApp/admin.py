@@ -10,7 +10,7 @@ class IAxInline(admin.TabularInline):
 
 class AnticipoAdmin(admin.ModelAdmin):
     search_fields = ['num_comision']
-    list_display = ('num_comision', 'fech_inicio', 'fech_fin')
+    list_display = ('fech_inicio', 'fech_fin')
     inlines = (IAxInline,)
 
 

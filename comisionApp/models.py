@@ -125,12 +125,6 @@ class Anticipo(models.Model):
 
     fech_inicio = models.DateField()
 
-    num_comision = models.CharField(
-        'Número de Comisión',
-        unique=True,
-        max_length=45
-    )
-
     fech_fin = models.DateField()
     gastos = models.FloatField()
 

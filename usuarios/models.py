@@ -20,7 +20,7 @@ class User(AbstractUser):
         }
     )
 
-    rexex_dni = RegexValidator(
+    regex_dni = RegexValidator(
         regex = r'^\d{8}(?:[-\s]\d{4})?$',
         message = "El DNI debe ser ingresado en formato: 09999999 o 99999999. Hasta 8 caracteres permitidos"
     )
@@ -29,7 +29,7 @@ class User(AbstractUser):
         'DNI', 
         unique=True,
         max_length=8,
-        validators = [regex_num_af,MinLengthValidator(7)],
+        validators = [regex_dni,MinLengthValidator(7)],
         blank=True, null=True)
 
     regex_tel = RegexValidator(
@@ -61,7 +61,3 @@ class User(AbstractUser):
             self.email,
             self.num_tel
         )
-        """field_values = []
-        for field in self._meta.get_fields():
-            field_values.append(getattr(self, field, '')) #corregir getattr
-        return ' '.join(field_values)"""

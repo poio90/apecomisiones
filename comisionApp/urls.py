@@ -33,6 +33,4 @@ urlpatterns = [
     path('usuario/get_num_afiliado', login_required(
         views.get_num_afiliado), name='get_num_afiliado'),
         
-    path('usuario/get_num_comisión', login_required(
-        views.get_num_comision), name='get_num_comision'),
 ]

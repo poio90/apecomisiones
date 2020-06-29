@@ -2,7 +2,7 @@ from datetime import date
 from django.db import transaction
 from io import BytesIO
 from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.views.generic import View, CreateView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
@@ -128,7 +128,8 @@ class ReportePdfAnticipo(View):
         anticipo = Anticipo.objects.get(pk=kwargs['pk'])
         itineraio = Itineraio.objects.filter(anticipo_id=kwargs['pk'])
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
-        integrantes = Integrantes_x_Anticipo.objects.filter(anticipo_id=kwargs['pk'])
+        integrantes = Integrantes_x_Anticipo.objects.filter(
+            anticipo_id=kwargs['pk'])
 
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
@@ -136,7 +137,7 @@ class ReportePdfAnticipo(View):
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Rendicion de comisión N° '+anticipo.num_comision
+        text = 'Rendicion de comisión'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
@@ -157,7 +158,8 @@ class ReportePdfAnticipo(View):
             alto = alto - 25
 
         c.drawString(30, 620, 'Fecha de inicio: ' + str(anticipo.fech_inicio))
-        c.drawString(320, 620, 'Fecha de finalización: ' + str(anticipo.fech_fin))
+        c.drawString(320, 620, 'Fecha de finalización: ' +
+                     str(anticipo.fech_fin))
         c.drawString(
             30, 595, 'Lugar de residencia durante la comisión: ' + anticipo.ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
@@ -217,7 +219,8 @@ class ReportePdfAnticipo(View):
         c.setFont('Helvetica', 12)
         c.drawString(32, 220, 'km Salida: '+str(det_trabajo.km_salida))
         c.drawString(180, 220, 'km Llegada: '+str(det_trabajo.km_llegada))
-        c.drawString(350, 220, 'Total km recorrido: '+str(det_trabajo.km_llegada-det_trabajo.km_salida))
+        c.drawString(350, 220, 'Total km recorrido: ' +
+                     str(det_trabajo.km_llegada-det_trabajo.km_salida))
 
         # Lineas Verticales
         c.line(30, 237, 30, 50)
@@ -240,7 +243,8 @@ class ReportePdfAnticipo(View):
                 story = story + det_trabajo.detalle_trabajo[j:n] + '\n'
                 j = n
                 n = n + 87
-        story = story + det_trabajo.detalle_trabajo[j:len(det_trabajo.detalle_trabajo)]
+        story = story + \
+            det_trabajo.detalle_trabajo[j:len(det_trabajo.detalle_trabajo)]
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
@@ -270,7 +274,6 @@ class ReportePdfAnticipo(View):
         # ciudad
         pk_ciudad = request.POST['ciudad']
         # comision
-        num_comision = request.POST['num_comision']
         fech_inicio = request.POST['fecha_inicio']
         fech_fin = request.POST['fecha_fin']
         transporte = request.POST['transporte']
@@ -308,7 +311,7 @@ class ReportePdfAnticipo(View):
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Rendicion de comisión N° '+num_comision
+        text = 'Rendicion de comisión N° ___________'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
@@ -484,7 +487,6 @@ def archivar(request):
         # ciudad
         pk_ciudad = request.POST['ciudad']
         # comision
-        num_comision = request.POST['num_comision']
         fech_inicio = request.POST['fecha_inicio']
         fech_fin = request.POST['fecha_fin']
         pk_transporte = request.POST['transporte']
@@ -506,7 +508,7 @@ def archivar(request):
         detalle_trabajo = request.POST['detalle_trabajo']
 
         # Crear anticpo en la BD
-        nuevo_anticipo = Anticipo(num_comision=num_comision, ciudad_id=pk_ciudad,
+        nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
                                   transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
         nuevo_anticipo.save()
 
@@ -526,17 +528,6 @@ def archivar(request):
         return redirect('comisiones:historico_anticipo')
 
     return render(request, 'confeccion_comision.html')
-
-
-@login_required
-def get_num_comision(request):
-    num_comision = request.GET.get('num_comision', None)
-    data = {
-        'is_taken': Anticipo.objects.filter(num_comision__iexact=num_comision).exists()
-    }
-    if data['is_taken']:
-        data['error_message'] = 'Ya existe una comisión con este número.'
-    return JsonResponse(data)
 
 
 @login_required

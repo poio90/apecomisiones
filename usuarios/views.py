@@ -40,8 +40,7 @@ class EditarPerfil(UpdateView):
 class LoginUsuario(FormView):
     template_name = 'login.html'
     form_class = FormLogin
-    success_url = reverse_lazy('usuarios:index')
-
+    
     # medidas de seguridad
     @method_decorator(csrf_protect)  # evita bulneravilidades comunes
     # no se almacena en cache la informacion correspondiente
@@ -56,6 +55,12 @@ class LoginUsuario(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(LoginUsuario, self).form_valid(form)
+    
+    def get_success_url(self):
+        # if you are passing 'pk' from 'urls' to 'UpdateView' for user
+        # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
+        user_pk = self.request.user.pk
+        return reverse_lazy('usuarios:perfil', kwargs={'pk': user_pk})
 
 
 def registroUsuario(request):

@@ -86,38 +86,6 @@ class FormUpdateProfile(forms.ModelForm):
     class Meta:
         model = User
         fields = ['last_name','first_name','dni','email','num_tel']
-        context = {'form' : fields}
-
-    """ Formulario para validar perfil de usuario 
-    email = forms.CharField(
-        min_length=6, max_length=70,
-        widget=forms.EmailInput(),
-        required=True
-    )
-
-    last_name = forms.CharField(
-        min_length=2,
-        max_length=70,
-        required=True
-    )
-
-    first_name = forms.CharField(
-        min_length=2,
-        max_length=70,
-        required=True
-    )
-
-    dni = forms.CharField(
-        min_length=8,
-        max_length=8,
-        required=True
-    )
-
-    num_tel = forms.CharField(
-        min_length=10,
-        max_length=10,
-        required=True
-    )"""
 
 
 """class DateInput(DatePickerInput):
@@ -144,27 +112,5 @@ class FormularioRegistro(UserCreationForm):
             'num_afiliado': forms.TextInput(),
             'password1': forms.TextInput(),
             'password2': forms.TextInput(),
-        }
-
-
-class AgenteForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for myField in self.fields:
-            self.fields[myField].widget.attrs['class'] = 'form-control'
-        self.fields['num_afiliado'].widget.attrs['placeholder'] = 'Numero de afiliado'
-        self.fields['num_afiliado'].widget.attrs['readonly'] = 'readonly'
-        self.fields['num_tel'].widget.attrs['placeholder'] = 'Número de telefono'
-        self.fields['dni'].widget.attrs['placeholder'] = 'DNI'
-
-    class Meta:
-        model = Afiliado
-        fields = ['num_afiliado', 'num_tel', 'dni']
-
-        widget = {
-            'last_name': forms.TextInput(),
-            'first_name': forms.TextInput(),
-            'num_afiliado': forms.TextInput(),
-            'dni': forms.TextInput(),
-            'email': forms.EmailInput()
         }"""
+
