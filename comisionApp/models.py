@@ -183,7 +183,7 @@ class Integrantes_x_Anticipo(models.Model):
 
     anticipo = models.ForeignKey(
         Anticipo,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         db_column='id_anticipo'
     )
@@ -220,7 +220,7 @@ class Itineraio(models.Model):
 
     anticipo = models.ForeignKey(
         Anticipo,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         db_column='id_anticipo'
     )
 
@@ -248,7 +248,7 @@ class DetalleTrabajo(models.Model):
 
     anticipo = models.ForeignKey(
         Anticipo,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         db_column='id_anticipo'
     )
 

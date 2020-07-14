@@ -39,7 +39,7 @@ class User(AbstractUser):
 
     num_tel = models.CharField(
         'Número de Telefono',
-        validators = [regex_tel],
+        validators = [regex_tel,MinLengthValidator(10)],
         max_length=10,
         blank=True,
     )

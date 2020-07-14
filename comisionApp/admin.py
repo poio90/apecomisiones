@@ -26,6 +26,5 @@ class CiudadAdmin(admin.ModelAdmin):
 admin.site.register(Anticipo, AnticipoAdmin)
 admin.site.register(Ciudad, CiudadAdmin)
 admin.site.register(Transporte, TransporteAdmin)
-admin.site.register(Solicitud)
-admin.site.register(DetalleTrabajo)
+
 # admin.site.register(Itineraio)

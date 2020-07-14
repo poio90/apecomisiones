@@ -7,16 +7,16 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import View, FormView, UpdateView, CreateView, TemplateResponseMixin
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.contrib.auth import login, logout, authenticate, views as auth_views
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from .forms import FormLogin, FormRegistro, FormUpdateProfile
 
 
-class Inicio(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+class Inicio(TemplateView):
+    template_name = 'index.html'
 
 
 class Perfil(DetailView):
@@ -40,7 +40,7 @@ class EditarPerfil(UpdateView):
 class LoginUsuario(FormView):
     template_name = 'login.html'
     form_class = FormLogin
-    
+
     # medidas de seguridad
     @method_decorator(csrf_protect)  # evita bulneravilidades comunes
     # no se almacena en cache la informacion correspondiente
@@ -55,7 +55,7 @@ class LoginUsuario(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(LoginUsuario, self).form_valid(form)
-    
+
     def get_success_url(self):
         # if you are passing 'pk' from 'urls' to 'UpdateView' for user
         # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
@@ -97,42 +97,5 @@ def registroUsuario(request):
     return render(request, 'registroUser.html')
 
 
-@login_required
-def logoutUsuario(request):
-    logout(request)
-    return HttpResponseRedirect('accounts/login/')
-
-
-"""
-# ------------------------------Validaciones----------------------------------------#
-
-def validar_username(request):
-    username = request.GET.get('username', None)
-    data = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
-    }
-    if data['is_taken']:
-        data['error_message'] = 'Ya existe un usuario con este nombre de usuario.'
-    return JsonResponse(data)
-
-
-def validar_afiliado(request):
-    num_afiliado = request.GET.get('num_afiliado', None)
-    data = {
-        'is_taken': Afiliado.objects.filter(num_afiliado__iexact=num_afiliado).exists()
-    }
-    if data['is_taken']:
-        data['error_message'] = 'Ya existe un usuario con este número de afiliado.'
-    return JsonResponse(data)
-
-
-def validar_dni(request):
-    dni = request.GET.get('dni', None)
-    data = {
-        'is_taken': Afiliado.objects.filter(dni__iexact=dni).exists()
-    }
-    if data['is_taken']:
-        data['error_message'] = 'Ya existe un usuario con este número de documento.'
-    return JsonResponse(data)
-#----------------------------------------------------------------------------------------
-"""
+class LogoutUsuario(LogoutView):
+    next_page = 'accounts/login/'

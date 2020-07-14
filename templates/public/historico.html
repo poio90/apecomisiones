@@ -32,9 +32,9 @@
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Fecha</th>
+                                    <th>Fecha de inicio de la comisión</th>
                                     <th>Localidad</th>
-                                    <th>Número de comisión</th>
+                                   
                                     <th class="text-center">Acción</th>
                                 </tr>
                             </thead>
@@ -42,12 +42,15 @@
                                 {% for anticipo in anticipos %}
                                 <tr>
                                     <td>{{ anticipo.fech_inicio }}</td>
-                                    <td>{{ anticipo.ciudad.ciudad }}</td>
-                                    <td id="{{ anticipo.num_comision }}">{{ anticipo.num_comision }}</td>
+                                    <td>{{ anticipo.ciudad.ciudad }}</td>                                    
                                     <td class="text-center">
                                         <span class="table-remove">
-                                            <a target="_blank" href="{% url 'comisiones:reportePdfAnticipo' pk=anticipo.pk %}"
+                                            <a target="_blank" href="{% url 'comisiones:reportePdfAnticipo' anticipo.pk %}"
                                                 class="btn btn-success btn-rounded btn-sm my-0">Consultar</a>
+                                        </span>
+                                        <span class="table-remove">
+                                            <a href="{% url 'comisiones:eliminar_anticipo' anticipo.pk %}"
+                                                class="btn btn-danger btn-rounded btn-sm my-0">Eliminar</a>
                                         </span>
                                     </td>
                                 </tr>
@@ -55,10 +58,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Fecha</th>
+                                    <th>Fecha de inicio de la comisión</th>
                                     <th>Localidad</th>
-                                    <th>Número de comisión</th>
-                                    <th>Acción</th>
+                                    <th class="text-center">Acción</th>
                                 </tr>
                             </tfoot>
                         </table>

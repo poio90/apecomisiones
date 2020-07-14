@@ -11,9 +11,13 @@ urlpatterns = [
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
         
-    path(route='usuario/anticipo/reporte/<pk>/',
+    path(route='usuario/anticipo/<pk>/reporte/',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
+    
+    path(route='usuario/anticipo/<pk>/eliminar/',
+         view=views.EliminarAnticipo.as_view(),
+         name='eliminar_anticipo'),
 
     path('usuario/anticipo/comisión', login_required(
         views.confeccionAnticipo), name='confeccion_comisión'),
@@ -22,7 +26,7 @@ urlpatterns = [
         views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
 
     path('usuario/anticipo/historico', login_required(
-        views.historicoAnticipos), name='historico_anticipo'),
+        views.HistoricoAnticipos.as_view()), name='historico_anticipo'),
     
     path('usuario/archivar', login_required(
         views.archivar), name='archivar'),
@@ -32,5 +36,7 @@ urlpatterns = [
     
     path('usuario/get_num_afiliado', login_required(
         views.get_num_afiliado), name='get_num_afiliado'),
-        
+
+    path('usuario/licencia/solicitar', login_required(
+        views.LicenciaSolicitud.as_view()), name='licencia_solicitud'),
 ]

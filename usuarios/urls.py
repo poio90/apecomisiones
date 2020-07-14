@@ -14,7 +14,7 @@ urlpatterns = [
          name='register'),
 
     path(route='logout',
-         view=views.logoutUsuario,
+         view=login_required(views.LogoutUsuario.as_view()),
          name='logout'),
 
     path(route='',
@@ -29,18 +29,3 @@ urlpatterns = [
          view=login_required(views.Perfil.as_view()),
          name='perfil'),
 ]
-
-"""
-
-    path(route='perfil_agente',
-         view=login_required(views.update_profile),
-         name='perfil_agente'),
-
-    
-    path('confeccion_comisión', login_required(
-        views.confeccionComision), name='confeccion_comisión'),
-    path('confeccion_solicitud_comisión', login_required(
-        views.confeccionSolicitudComision), name='confeccion_solicitud_comisión'),
-    path('ajax/validate_username/', views.validar_username, name='validate_username'),
-    path('ajax/validate_afiliado/', views.validar_afiliado, name='validate_afiliado'),
-    path('ajax/validate_dni/', views.validar_dni, name='validate_dni'),"""

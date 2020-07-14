@@ -2,7 +2,8 @@ from datetime import date
 from django.db import transaction
 from io import BytesIO
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import TransporteForm
@@ -471,12 +472,29 @@ def confeccionAnticipo(request):
     })
 
 
-@login_required
-def historicoAnticipos(request):
-    anticipos = Anticipo.objects.filter(
-        integrantes_x_anticipo__user=request.user.id)
-    return render(request, 'public/historico.html', {'anticipos': anticipos})
+class HistoricoAnticipos(ListView):
+    model = Anticipo
+    context_object_name = 'anticipos'
+    template_name = 'public/historico.html'
 
+    def get_queryset(self):
+        return Anticipo.objects.filter(integrantes_x_anticipo__user=self.request.user.id)
+
+
+class EliminarAnticipo(DeleteView):
+    model = Anticipo
+    context_object_name = 'anticipo'
+    template_name = 'eliminar_anticipo.html'
+    success_url = reverse_lazy('comisiones:historico_anticipo')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['entity'] = 'Anticipo'
+        context['list_url'] = reverse_lazy('comisiones:historico_anticipo') 
+        return context
+
+class LicenciaSolicitud(TemplateView):
+    template_name = 'licencia.html'
 
 @login_required
 def archivar(request):
@@ -492,7 +510,6 @@ def archivar(request):
         pk_transporte = request.POST['transporte']
         patente = request.POST.get('patente')
         gastos = request.POST.get('gastos')
-
         # Itinerario
         nombres = request.POST.getlist('name[]')
         dias = request.POST.getlist('dia[]')
@@ -524,9 +541,7 @@ def archivar(request):
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
-
         return redirect('comisiones:historico_anticipo')
-
     return render(request, 'confeccion_comision.html')
 
 
