@@ -12,13 +12,11 @@ class CustomUserAdmin(UserAdmin):
     ordering = ['last_name','first_name']
 
     fieldsets = UserAdmin.fieldsets + (
-        ('Info extra', {'fields': ('dni','num_tel',)}),
+        ('Info extra', {'fields': ('num_afiliado','dni','num_tel',)}),
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Info extra', {'fields': ('dni','num_tel',)}),
+        ('Info extra', {'fields': ('num_afiliado','dni','num_tel',)}),
     )
-
-
 
 admin.site.register(User,CustomUserAdmin)

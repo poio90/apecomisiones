@@ -490,11 +490,13 @@ class EliminarAnticipo(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['entity'] = 'Anticipo'
-        context['list_url'] = reverse_lazy('comisiones:historico_anticipo') 
+        context['list_url'] = reverse_lazy('comisiones:historico_anticipo')
         return context
+
 
 class LicenciaSolicitud(TemplateView):
     template_name = 'licencia.html'
+
 
 @login_required
 def archivar(request):
