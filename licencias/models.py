@@ -17,3 +17,19 @@ class Licencia(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     fecha_reintegro = models.DateField()
+
+    class Meta:
+        verbose_name = 'Licencia'
+        verbose_name_plural = 'Licencias'
+        managed = True
+        db_table = 'licencia'
+    
+    def __str__(self):
+        return '{} {} {} {} {} {}'.format(
+            self.dias_habiles_acum,
+            self.dias_habiles_agregar,
+            self.fecha_solicitud,
+            self.fecha_inicio,
+            self.fecha_fin,
+            self.fecha_reintegro
+            )

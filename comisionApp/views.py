@@ -494,10 +494,6 @@ class EliminarAnticipo(DeleteView):
         return context
 
 
-class LicenciaSolicitud(TemplateView):
-    template_name = 'licencia.html'
-
-
 @login_required
 def archivar(request):
     if request.method == 'POST':

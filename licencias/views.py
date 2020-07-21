@@ -6,17 +6,12 @@ from .models import *
 class LicenciaSolicitud(TemplateView):
     template_name = 'licencia.html'
 
-class EliminarAnticipo(DeleteView):
-    model = Anticipo
-    context_object_name = 'anticipo'
-    template_name = 'eliminar_anticipo.html'
+class LicenciaSolicitud(CreateView):
+    model = Licencia
+    context_object_name = 'licencia'
+    template_name = 'licencia.html'
     success_url = reverse_lazy('comisiones:historico_anticipo')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['entity'] = 'Anticipo'
-        context['list_url'] = reverse_lazy('comisiones:historico_anticipo')
-        return context
 
 
 class HistoricoAnticipos(ListView):

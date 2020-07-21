@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'comisionApp.apps.ComisionappConfig',
     'usuarios.apps.UsuariosConfig',
+    'licencias.apps.LicenciasConfig',
     'bootstrap_datepicker_plus',
     'ckeditor',
 
