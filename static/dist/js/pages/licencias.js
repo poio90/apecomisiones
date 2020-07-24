@@ -1,5 +1,23 @@
 $(document).ready(function () {
 
+    $('#date_inicio').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        format: "yyyy-mm-dd",
+    })
+
+    $('#date_fin').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        format: "yyyy-mm-dd",
+    })
+
+    $('#date_reintegro').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        format: "yyyy-mm-dd",
+    })
+    
     $('input[name=fech_inicio]').on('change',function(){
         var fecha = new Date($(this).val());
         var dias = 2

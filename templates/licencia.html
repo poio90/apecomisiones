@@ -23,8 +23,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form id="myform" target="_blank" method="POST" class="form-horizontal"
-                    action="{% url 'comisiones:reportePdfSolicitud' %}" enctype="multipart/form-data">
+                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="card card-primary card-outline">
                         <div class="card-header">
@@ -58,9 +57,8 @@
                                     <div class="form-group row">
                                         <label for="inputDiasHabiles" class="col-sm-6 col-form-label">Días hábiles acumulados</label>
                                         <div class="col">
-                                            <input id="dias_acumulados" type="number" name="dias_acumulados" class="form-control"
-                                                required>
-                                        </div>
+                                            {{ form.dias_habiles_acum }}
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -68,8 +66,7 @@
                                         <label class="col-sm-1 col-form-label"></label>
                                         <label for="inputDiasAgregados" class="col-sm-4 col-form-label">Días hábiles a agregar</label>
                                         <div class="col">
-                                            <input id="dias_agregados" type="number" name="dias_agregados" class="form-control"
-                                                required>
+                                            {{ form.dias_habiles_agregar}}
                                         </div>
                                     </div>
                                 </div>
@@ -80,9 +77,8 @@
                                         <label for="inputFehcaInicio" class="col-sm-6 col-form-label">Comienzo de la
                                             licencia</label>
                                         <div class="col">
-                                            <input type="text" id="datepicker" name="fech_inicio" class="form-control"
-                                                required>
-                                        </div>
+                                            {{ form.fecha_inicio}}
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -91,9 +87,8 @@
                                         <label for="inputFechaFin" class="col-sm-4 col-form-label">Fin de la
                                             licencia</label>
                                         <div class="col">
-                                            <input id="fech_fin" type="text" name="fech_fin" class="form-control"
-                                                required>
-                                        </div>
+                                            {{ form.fecha_fin }}
+                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +97,7 @@
                                     <div class="form-group row">
                                         <label for="inputFechaReintegro" class="col-sm-3 col-form-label">Fecha de reintegro</label>
                                         <div class="col">
-                                            <input type="text" id="datepickerFin" name="fech_reintegro" class="form-control" required>
+                                            {{ form.fecha_reintegro }}    
                                         </div>
                                     </div>
                                 </div>
