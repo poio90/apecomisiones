@@ -1,32 +1,32 @@
 $(document).ready(function () {
-    /*--------------------------------control de filiados registrados------------------------------ */
-    $("#id_username").change(function () {
-        var form = $(this).closest("form");
-        var div = document.getElementById("usuario");
-        $.ajax({
-            url: div.getAttribute("data-validate-username-url"),
-            data: form.serialize(),
-            dataType: 'json',
-            success: function (data) {
-                if (data.is_taken) {
-                    $("#usuario").notify(data.error_message, { position: 'right' });
-                }
-            }
-        });
+    $('#mostrar').on('click', function () {
+        console.log($('#id_password').attr('type'));
+        if($('#id_password').attr('type')=='password'){
+            $(this).addClass('fa-eye').removeClass('fa-eye-slash');
+            $('#id_password').attr('type','text');
+        }else{
+            $('#id_password').attr('type','password');
+            $(this).addClass('fa-eye-slash').removeClass('fa-eye');
+        }
     });
-    $("#id_num_afiliado").change(function () {
-        var form = $(this).closest("form");
-        var div = document.getElementById("afiliado");
-        $.ajax({
-            url: div.getAttribute("data-validate-afiliado-url"),
-            data: form.serialize(),
-            dataType: 'json',
-            success: function (data) {
-                if (data.is_taken) {
-                    $("#afiliado").notify(data.error_message, { position: 'right' });
-                }
-            }
-        });
+
+    $('#mostrar_pass1').on('click', function () {
+        if($('#id_password1').attr('type')=='password'){
+            $(this).addClass('fa-eye').removeClass('fa-eye-slash');
+            $('#id_password1').attr('type','text');
+        }else{
+            $('#id_password1').attr('type','password');
+            $(this).addClass('fa-eye-slash').removeClass('fa-eye');
+        }
     });
-    /*------------------------------------------------------------------------------------------- */
+    
+    $('#mostrar_pass2').on('click', function () {
+        if($('#id_password2').attr('type')=='password'){
+            $(this).addClass('fa-eye').removeClass('fa-eye-slash');
+            $('#id_password2').attr('type','text');
+        }else{
+            $('#id_password2').attr('type','password');
+            $(this).addClass('fa-eye-slash').removeClass('fa-eye');
+        }
+    });
 })

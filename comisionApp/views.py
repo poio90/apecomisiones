@@ -452,7 +452,7 @@ def confeccionSolicitudComision(request):
     users = User.objects.all().exclude(pk=request.user.pk)
     ciudades = Ciudad.objects.all()
     transportes = Transporte.objects.all()
-    return render(request, 'confeccion_sol_comision.html', {
+    return render(request, 'comisiones/confeccion_sol_comision.html', {
         'users': users,
         'ciudades': ciudades,
         'transportes': transportes,
@@ -465,7 +465,7 @@ def confeccionAnticipo(request):
     users = User.objects.all().exclude(pk=request.user.pk)
     ciudades = Ciudad.objects.all()
     transportes = Transporte.objects.all()
-    return render(request, 'confeccion_comision.html', {
+    return render(request, 'comisiones/confeccion_comision.html', {
         'users': users,
         'ciudades': ciudades,
         'transportes': transportes,
@@ -475,16 +475,24 @@ def confeccionAnticipo(request):
 class HistoricoAnticipos(ListView):
     model = Anticipo
     context_object_name = 'anticipos'
-    template_name = 'public/historico.html'
+    template_name = 'comisiones/historico.html'
 
     def get_queryset(self):
         return Anticipo.objects.filter(integrantes_x_anticipo__user=self.request.user.id)
+
+class HistoricoSolicitudes(ListView):
+    model = Solicitud
+    context_object_name = 'solicitudes'
+    template_name = 'comisiones/historico_solicitud.html'
+
+    def get_queryset(self):
+        return Solicitud.objects.filter(integrantes_x_solicitud__user=self.request.user.id)
 
 
 class EliminarAnticipo(DeleteView):
     model = Anticipo
     context_object_name = 'anticipo'
-    template_name = 'eliminar_anticipo.html'
+    template_name = 'comisiones/eliminar_anticipo.html'
     success_url = reverse_lazy('comisiones:historico_anticipo')
 
     def get_context_data(self, **kwargs):
@@ -499,7 +507,6 @@ def archivar(request):
     if request.method == 'POST':
         # usuarios
         pk_users = request.POST.getlist('afiliado[]')
-        num_afiliados = request.POST.getlist('num_afiliado[]')
         # ciudad
         pk_ciudad = request.POST['ciudad']
         # comision
@@ -540,7 +547,35 @@ def archivar(request):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
         return redirect('comisiones:historico_anticipo')
-    return render(request, 'confeccion_comision.html')
+    return render(request, 'comisiones/confeccion_comision.html')
+
+
+@login_required
+def archivarSolicitud(request):
+    if request.method == 'POST':
+        # usuarios
+        pk_users = request.POST.getlist('afiliado[]')
+        # solicitud
+        motivo = request.POST['motivo']
+        fech_inicio = request.POST['fech_inicio']
+        duracion_prevista = request.POST['duracion_prevista']
+        pk_ciudad = request.POST['ciudad']
+        pk_transporte = request.POST['transporte']
+        gastos_previstos = request.POST['gastos_previstos']
+
+        # Crear anticpo en la BD
+        nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
+                                    transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista, 
+                                    motivo=motivo, gastos_previstos=gastos_previstos)
+        nueva_solicitud.save()
+
+        Integrantes_x_Solicitud.objects.create(
+            solicitud=nueva_solicitud, user=request.user)
+        for i in range(len(pk_users)):
+            Integrantes_x_Solicitud.objects.create(
+                solicitud=nueva_solicitud, user_id=pk_users[i])
+        return redirect('comisiones:historico_solicitud')
+    return render(request, 'comisiones/confeccion_solicitud_comision.html')
 
 
 @login_required
@@ -556,44 +591,3 @@ def get_num_afiliado(request):
     pk = str(num_afiliado[0])
     data = list(User.objects.filter(pk=pk).values('num_afiliado'))
     return JsonResponse({'data': data})
-
-
-def listarTransportes(request):
-    transportes = Transporte.objects.all()
-    return render(request, 'transportes.html', {'transportes': transportes})
-
-
-def altaTrasnporte(request):
-    if request.method == 'POST':
-        transporte_form = TransporteForm(request.POST)
-        if transporte_form.is_valid():
-            transporte_form.save()
-            return redirect('comision:transportes')
-    else:
-        transporte_form = TransporteForm()
-    return render(request, 'alta_transporte.html', {'transporte_form': transporte_form})
-
-
-def editarTransporte(request, id):
-    transporte_form = None
-    error = None
-    try:
-        transporte = Transporte.objects.get(id_transporte=id)
-        if request.method == 'GET':
-            transporte_form = TransporteForm(instance=transporte)
-        else:
-            transporte_form = TransporteForm(request.POST, instance=transporte)
-            if transporte_form.is_valid():
-                transporte_form.save()
-            return redirect('index')
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request, 'alta_transporte.html', {'transporte_form': transporte_form, 'error': error})
-
-
-def eliminarTransporte(request, id):
-    transporte = Transporte.objects.get(id_transporte=id)
-    if request.method == 'POST':
-        transporte.delete()
-        return redirect('comision:transportes')
-    return render(request, 'eliminar_transporte.html', {'transporte': transporte})

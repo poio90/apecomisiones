@@ -10,6 +10,9 @@ class FormLicencia(forms.ModelForm):
         self.fields['fecha_inicio'].widget.attrs['id'] = 'date_inicio'
         self.fields['fecha_fin'].widget.attrs['id'] = 'date_fin'
         self.fields['fecha_reintegro'].widget.attrs['id'] = 'date_reintegro'
+        self.fields['fecha_inicio'].widget.attrs['autocomplete'] = 'off'
+        self.fields['fecha_fin'].widget.attrs['autocomplete'] = 'off'
+        self.fields['fecha_reintegro'].widget.attrs['autocomplete'] = 'off'
 
     class Meta:
         model = Licencia

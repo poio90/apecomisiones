@@ -10,7 +10,7 @@ urlpatterns = [
          name='login'),
 
     path(route='accounts/register/',
-         view=views.registroUsuario,
+         view=views.RegistroUsuario.as_view(),
          name='register'),
 
     path(route='logout',

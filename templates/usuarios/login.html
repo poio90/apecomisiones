@@ -1,4 +1,5 @@
-{% extends "loginPrincipal.html" %}
+{% extends "usuarios/loginPrincipal.html" %}
+{% load staticfiles %}
 
 {% block content %}
 <div class="card-body login-card-body">
@@ -16,7 +17,7 @@
       {{ form.username }}
       <div class="input-group-append">
         <div class="input-group-text">
-          <span class="fas fa-envelope"></span>
+          <span class="fas fa-id-card"></span>
         </div>
       </div>
     </div>
@@ -24,7 +25,7 @@
       {{ form.password }}
       <div class="input-group-append">
         <div class="input-group-text">
-          <span class="fas fa-lock"></span>
+          <span id="mostrar" class="fas fa-eye-slash" style="cursor:pointer;"></span>
         </div>
       </div>
     </div>
@@ -52,5 +53,7 @@
     <a href="{% url 'usuarios:register' %}" class="text-center">Registrarme</a>
   </p>
 </div>
+
 <!-- /.login-card-body -->
 {% endblock %}
+

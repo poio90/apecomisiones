@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import User
 
 
-class FormRegistro(forms.Form):
+'''class FormRegistro(forms.Form):
     username = forms.CharField(
         min_length=4,
         max_length=50
@@ -69,16 +69,17 @@ class FormRegistro(forms.Form):
         passw_confirmation = data['password_confirmation']
         if passw != passw_confirmation:
             raise forms.ValidationError('No coincide la contraseña')
-        return data
+        return data'''
 
 
 class FormLogin(AuthenticationForm):
     """ Formulario para validar los datos de login """
     def __init__(self, *args, **kwargs):
         super(FormLogin, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = 'form-control'
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['autocomplete'] = 'off'
         self.fields['username'].widget.attrs['placeholder'] = 'DNI'
-        self.fields['password'].widget.attrs['class'] = 'form-control'
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
 
@@ -90,27 +91,22 @@ class FormUpdateProfile(forms.ModelForm):
 
 """class DateInput(DatePickerInput):
     def __init__(self):
-        DatePickerInput.__init__(self,format="%Y-%m-%d")
+        DatePickerInput.__init__(self,format="%Y-%m-%d")"""
 
-class FormularioRegistro(UserCreationForm):
+class FormRegistro(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['autocomplete'] = 'off'
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de Usuario'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email'
+        self.fields['dni'].widget.attrs['placeholder'] = 'DNI'
         self.fields['num_afiliado'].widget.attrs['placeholder'] = 'Número de Afiliado'
         self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'
-        self.fields['password2'].widget.attrs['placeholder'] = 'Repetir contraseña'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Confirmar contraseña'
 
     class Meta:
-        model = Afiliado
-        fields = ['num_afiliado', 'password1', 'password2']
-        widget = {
-            'username': forms.TextInput(),
-            'email': forms.EmailInput(),
-            'num_afiliado': forms.TextInput(),
-            'password1': forms.TextInput(),
-            'password2': forms.TextInput(),
-        }"""
+        model = User
+        fields = ['username','num_afiliado','dni', 'num_afiliado','password1', 'password2']
+       
 

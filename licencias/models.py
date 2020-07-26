@@ -3,6 +3,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+
 class Licencia(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -23,7 +25,7 @@ class Licencia(models.Model):
         verbose_name_plural = 'Licencias'
         managed = True
         db_table = 'licencia'
-    
+
     def __str__(self):
         return '{} {} {} {} {} {}'.format(
             self.dias_habiles_acum,
@@ -32,4 +34,4 @@ class Licencia(models.Model):
             self.fecha_inicio,
             self.fecha_fin,
             self.fecha_reintegro
-            )
+        )

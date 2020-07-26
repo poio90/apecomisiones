@@ -21,14 +21,14 @@ class Inicio(TemplateView):
 
 class Perfil(DetailView):
     model = User
-    template_name = 'profile.html'
+    template_name = 'usuarios/profile.html'
 
 
 class EditarPerfil(UpdateView):
     model = User
     form_class = FormUpdateProfile
     context_object_name = 'usuario'
-    template_name = 'profile_edit.html'
+    template_name = 'usuarios/profile_edit.html'
 
     def get_success_url(self):
         # if you are passing 'pk' from 'urls' to 'UpdateView' for user
@@ -38,7 +38,7 @@ class EditarPerfil(UpdateView):
 
 
 class LoginUsuario(FormView):
-    template_name = 'login.html'
+    template_name = 'usuarios/login.html'
     form_class = FormLogin
 
     # medidas de seguridad
@@ -63,38 +63,12 @@ class LoginUsuario(FormView):
         return reverse_lazy('usuarios:perfil', kwargs={'pk': user_pk})
 
 
-def registroUsuario(request):
-    if request.method == 'POST':
-        dni = request.POST['dni']
-        username = request.POST['username']
-        passw = request.POST['password']
-        passw_confirmation = request.POST['password_confirmation']
-        num_afil = request.POST['num_afiliado']
-
-        num_afiliado_taken = User.objects.filter(
-            num_afiliado=num_afil).exists()
-        if num_afiliado_taken:
-            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de afiliado.'})
-
-        dni_taken = User.objects.filter(
-            dni=dni).exists()
-        if dni_taken:
-            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este número de documento.'})
-
-        if passw != passw_confirmation:
-            return render(request, 'registroUser.html', {'error': 'No coincide la contraseña'})
-
-        try:
-            user = User.objects.create_user(
-                username=username, num_afiliado=num_afil, dni=dni, password=passw)
-        except IntegrityError:
-            return render(request, 'registroUser.html', {'error': 'Ya existe un usuario con este nombre de usuario.'})
-
-        user.save()
-
-        return redirect('usuarios:login')
-
-    return render(request, 'registroUser.html')
+class RegistroUsuario(CreateView):
+    model = User
+    form_class = FormRegistro
+    context_object_name = 'licencia'
+    template_name = 'usuarios/registroUser.html'
+    success_url = reverse_lazy('usuarios:login')
 
 
 class LogoutUsuario(LogoutView):

@@ -127,6 +127,12 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="{% url 'comisiones:historico_solicitud' %}" class="nav-link">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>Histórico</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="{% url 'comisiones:confeccion_comisión' %}" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Anticipo</p>
@@ -196,13 +202,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{% url 'licencias:licencia_solicitud' %}" class="nav-link">
+                  <a href="{% url 'licencias:licencias_solicitud' %}" class="nav-link">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>Confeccionar</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="{% url 'licencias:licencias_historico' %}" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>
