@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'licencias.apps.LicenciasConfig',
     'bootstrap_datepicker_plus',
-    'ckeditor',
+    'ckeditor',   
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

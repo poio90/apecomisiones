@@ -66,7 +66,6 @@ class LoginUsuario(FormView):
 class RegistroUsuario(CreateView):
     model = User
     form_class = FormRegistro
-    context_object_name = 'licencia'
     template_name = 'usuarios/registroUser.html'
     success_url = reverse_lazy('usuarios:login')
 

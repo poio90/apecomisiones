@@ -13,7 +13,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="{% static 'dist/css/ionicons.min.css' %}">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
   <!--DataTable-->
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
 
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="{% static 'dist/css/fonts.googleapis.css' %}" rel="stylesheet">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -148,6 +148,29 @@
             </li>
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-road"></i>
+                <p>
+                  Licencias
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'licencias:licencias_solicitud' %}" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>Confeccionar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'licencias:licencias_historico' %}" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>Registro</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-shopping-cart"></i>
                 <p>
                   Requisición de compra
@@ -186,29 +209,6 @@
                 </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-book"></i>
-                    <p>Registro</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-road"></i>
-                <p>
-                  Licencias
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{% url 'licencias:licencias_solicitud' %}" class="nav-link">
-                    <i class="nav-icon fas fa-edit"></i>
-                    <p>Confeccionar</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{% url 'licencias:licencias_historico' %}" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                     <p>Registro</p>
                   </a>
@@ -269,8 +269,8 @@
   <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
 
   <!--DatePicker-->
-  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-  <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
+  <script src="{% static 'dist/js/gijgo.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'dist/js/messages.es-es.js' %}" type="text/javascript"></script>
   
   <!-- SweetAlert -->
   <script src="{% static 'dist/js/sweetalert.min.js' %}"></script>

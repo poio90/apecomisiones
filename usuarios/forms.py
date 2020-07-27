@@ -38,5 +38,3 @@ class FormRegistro(UserCreationForm):
     class Meta:
         model = User
         fields = ['username','num_afiliado','dni', 'num_afiliado','password1', 'password2']
-       
-
