@@ -27,6 +27,86 @@ from django.core import serializers
 class ReportePdfSolicitud(View):
     """Regresa Pdf"""
 
+    def get(self, request, *args, **kwargs):
+        solicitud = Solicitud.objects.get(pk=kwargs['pk'])
+        integrantes = Integrantes_x_Solicitud.objects.filter(
+            solicitud_id=kwargs['pk'])
+
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer, pagesize=A4)
+
+        PAGE_WIDTH = defaultPageSize[0]
+        PAGE_HEIGHT = defaultPageSize[1]
+
+        text = 'Solicitud de comisión'
+
+        width = stringWidth(text, 'Helvetica', 16)
+        x = (PAGE_WIDTH/2)-(width/2)
+
+        # Header
+        c.setLineWidth(.3)
+        c.setFont('Helvetica', 18)
+        c.drawString(x, 800, text)
+        c.setFont('Helvetica', 12)
+
+        fecha = date.today().strftime("%d/%m/%Y")
+
+        c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
+        c.drawString(30, 745, 'Apellido y Nombre'+'       ' +
+                     request.user.last_name + '  '+request.user.first_name)
+        c.drawString(360, 745, 'N° Afiliado a SEMPRE' +
+                     '         ' + str(request.user.num_afiliado))
+
+        alto = 720
+        for i in range(len(integrantes)):
+            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
+                         integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
+            c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
+                         '         ' + integrantes[i].user.num_afiliado[i])
+            alto = alto - 25
+
+        c.drawString(30, 570, 'Motivo de la comisión: ')
+        # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
+        j = 0
+        n = 87
+        story = ''
+        for i in range(len(solicitud.motivo)):
+            if i == n:
+                story = story + solicitud.motivo[j:n] + '\n'
+                j = n
+                n = n + 86
+        story = story + solicitud.motivo[j:len(solicitud.motivo)]
+
+        # Texto que va contenido dentro de los detalles de trabajo
+        textobject = c.beginText()
+        textobject.setTextOrigin(35, 555)
+        textobject.setFont("Courier", 10)
+        textobject.textLines(story)
+        c.drawText(textobject)
+
+        c.setFont('Helvetica', 12)
+        c.drawString(30, 410, 'Fecha de iniciación: '+str(solicitud.fech_inicio))
+        c.drawString(320, 410, 'Duracón prevista: '+solicitud.duracion_prevista)
+        c.drawString(
+            30, 380, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
+        c.drawString(30, 350, 'Medio de transporte')
+        c.drawString(200, 350, 'Unidad de legajo: ' +
+                     solicitud.transporte.num_legajo)
+        c.drawString(400, 350, 'Patente: '+solicitud.transporte.patente)
+        c.drawString(30, 320, 'Gastos a solicitar: $'+str(solicitud.gastos_previstos))
+        c.drawString(30, 290, 'Comisión ordenada por: ' +
+                     request.user.last_name+'  '+request.user.first_name)
+
+        c.drawString(500, 20, 'Firma')
+        c.line(465, 32, 570, 32)
+
+        c.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'filename=Solicitud.pdf'
+        return response
+
     def post(self, request, *args, **kwargs):
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
@@ -345,7 +425,7 @@ class ReportePdfAnticipo(View):
         c.drawString(200, 570, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
         c.drawString(400, 570, 'Patente: ' + patente)
-        c.drawString(30, 545, 'Gastos: ' + gastos)
+        c.drawString(30, 545, 'Gastos: $' + gastos)
 
         # tabla.encabezado
         styles = getSampleStyleSheet()

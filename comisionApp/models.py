@@ -176,7 +176,7 @@ class Integrantes_x_Solicitud(models.Model):
         db_table = 'integrantes_x_solicitud'
 
     def __str__(self):
-        return '{} {} {}'.format(self.solicitud, self.user.username, self.user.num_afiliado)
+        return '{} {} {}'.format(self.solicitud, self.user)
 
 
 class Integrantes_x_Anticipo(models.Model):

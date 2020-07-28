@@ -6,6 +6,10 @@ urlpatterns = [
     path(route='usuarios/anticipos/solicitudes/reportes',
          view=views.ReportePdfSolicitud.as_view(),
          name='reportePdfSolicitud'),
+    
+    path(route='usuarios/anticipos/<pk>/solicitudes/reportes',
+         view=views.ReportePdfSolicitud.as_view(),
+         name='reportePdfSolicitud'),
 
     path(route='usuarios/anticipos/reportes',
          view=views.ReportePdfAnticipo.as_view(),
