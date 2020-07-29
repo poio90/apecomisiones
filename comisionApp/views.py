@@ -62,7 +62,7 @@ class ReportePdfSolicitud(View):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
-                         '         ' + integrantes[i].user.num_afiliado[i])
+                         '         ' + integrantes[i].user.num_afiliado)
             alto = alto - 25
 
         c.drawString(30, 570, 'Motivo de la comisión: ')
@@ -85,15 +85,18 @@ class ReportePdfSolicitud(View):
         c.drawText(textobject)
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 410, 'Fecha de iniciación: '+str(solicitud.fech_inicio))
-        c.drawString(320, 410, 'Duracón prevista: '+solicitud.duracion_prevista)
+        c.drawString(30, 410, 'Fecha de iniciación: ' +
+                     str(solicitud.fech_inicio))
+        c.drawString(320, 410, 'Duracón prevista: ' +
+                     solicitud.duracion_prevista)
         c.drawString(
             30, 380, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
         c.drawString(30, 350, 'Medio de transporte')
         c.drawString(200, 350, 'Unidad de legajo: ' +
                      solicitud.transporte.num_legajo)
         c.drawString(400, 350, 'Patente: '+solicitud.transporte.patente)
-        c.drawString(30, 320, 'Gastos a solicitar: $'+str(solicitud.gastos_previstos))
+        c.drawString(30, 320, 'Gastos a solicitar: $' +
+                     str(solicitud.gastos_previstos))
         c.drawString(30, 290, 'Comisión ordenada por: ' +
                      request.user.last_name+'  '+request.user.first_name)
 
@@ -560,6 +563,7 @@ class HistoricoAnticipos(ListView):
     def get_queryset(self):
         return Anticipo.objects.filter(integrantes_x_anticipo__user=self.request.user.id)
 
+
 class HistoricoSolicitudes(ListView):
     model = Solicitud
     context_object_name = 'solicitudes'
@@ -579,6 +583,19 @@ class EliminarAnticipo(DeleteView):
         context = super().get_context_data(**kwargs)
         context['entity'] = 'Anticipo'
         context['list_url'] = reverse_lazy('comisiones:historico_anticipo')
+        return context
+
+
+class EliminarSolicitud(DeleteView):
+    model = Solicitud
+    context_object_name = 'solicitud'
+    template_name = 'comisiones/eliminar_solicitud.html'
+    success_url = reverse_lazy('comisiones:historico_solicitud')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['entity'] = 'Solicitud'
+        context['list_url'] = reverse_lazy('comisiones:historico_solicitud')
         return context
 
 
@@ -645,7 +662,7 @@ def archivarSolicitud(request):
 
         # Crear anticpo en la BD
         nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
-                                    transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista, 
+                                    transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
                                     motivo=motivo, gastos_previstos=gastos_previstos)
         nueva_solicitud.save()
 

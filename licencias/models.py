@@ -27,11 +27,12 @@ class Licencia(models.Model):
         db_table = 'licencia'
 
     def __str__(self):
-        return '{} {} {} {} {} {}'.format(
+        return '{} {} {} {} {} {} {}'.format(
             self.dias_habiles_acum,
             self.dias_habiles_agregar,
             self.fecha_solicitud,
             self.fecha_inicio,
             self.fecha_fin,
-            self.fecha_reintegro
+            self.fecha_reintegro,
+            self.user,
         )

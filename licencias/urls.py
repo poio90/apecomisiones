@@ -13,4 +13,8 @@ urlpatterns = [
     path(route='usuarios/licencias/<pk>/eliminar/',
          view=views.EliminarLicencia.as_view(),
          name='licencias_eliminar'),
+
+    path(route='usuarios/licencias/<pk>/reportes/',
+         view=views.ReportePdfLicencia.as_view(),
+         name='licencias_pdf'),
 ]
