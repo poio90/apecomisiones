@@ -71,7 +71,9 @@ class ReportePdfSolicitud(View):
         n = 87
         story = ''
         for i in range(len(solicitud.motivo)):
-            if i == n:
+            if solicitud.motivo[i] == '\n':
+                n = i + 86
+            if i == n :
                 story = story + solicitud.motivo[j:n] + '\n'
                 j = n
                 n = n + 86
@@ -85,19 +87,19 @@ class ReportePdfSolicitud(View):
         c.drawText(textobject)
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 410, 'Fecha de iniciación: ' +
+        c.drawString(30, 370, 'Fecha de iniciación: ' +
                      str(solicitud.fech_inicio))
-        c.drawString(320, 410, 'Duracón prevista: ' +
+        c.drawString(320, 370, 'Duracón prevista: ' +
                      solicitud.duracion_prevista)
         c.drawString(
-            30, 380, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
-        c.drawString(30, 350, 'Medio de transporte')
-        c.drawString(200, 350, 'Unidad de legajo: ' +
+            30, 340, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
+        c.drawString(30, 310, 'Medio de transporte')
+        c.drawString(200, 310, 'Unidad de legajo: ' +
                      solicitud.transporte.num_legajo)
-        c.drawString(400, 350, 'Patente: '+solicitud.transporte.patente)
-        c.drawString(30, 320, 'Gastos a solicitar: $' +
+        c.drawString(400, 310, 'Patente: '+solicitud.transporte.patente)
+        c.drawString(30, 280, 'Gastos a solicitar: $' +
                      str(solicitud.gastos_previstos))
-        c.drawString(30, 290, 'Comisión ordenada por: ' +
+        c.drawString(30, 250, 'Comisión ordenada por: ' +
                      request.user.last_name+'  '+request.user.first_name)
 
         c.drawString(500, 20, 'Firma')
@@ -169,6 +171,8 @@ class ReportePdfSolicitud(View):
         n = 87
         story = ''
         for i in range(len(motivo)):
+            if motivo[i] == '\n':
+                n = i + 88
             if i == n:
                 story = story + motivo[j:n] + '\n'
                 j = n
@@ -183,17 +187,17 @@ class ReportePdfSolicitud(View):
         c.drawText(textobject)
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 410, 'Fecha de iniciación: '+fech_inicio)
-        c.drawString(320, 410, 'Duracón prevista: '+duracion_prevista)
+        c.drawString(30, 370, 'Fecha de iniciación: '+fech_inicio)
+        c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista)
         c.drawString(
-            30, 380, 'Lugar de residencia durante la comisión: '+ciudad)
-        c.drawString(30, 350, 'Medio de transporte')
-        c.drawString(200, 350, 'Unidad de legajo: ' +
+            30, 340, 'Lugar de residencia durante la comisión: '+ciudad)
+        c.drawString(30, 310, 'Medio de transporte')
+        c.drawString(200, 310, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
-        c.drawString(400, 350, 'Patente: '+patente)
-        c.drawString(30, 320, 'Gastos a solicitar: $'+gastos_previstos)
-        c.drawString(30, 290, 'Comisión ordenada por: ' +
-                     request.user.last_name+'  '+request.user.first_name)
+        c.drawString(400, 310, 'Patente: ' + patente)
+        c.drawString(30, 280, 'Gastos a solicitar: $' + gastos_previstos)
+        c.drawString(30, 250, 'Comisión ordenada por: ' +
+                     request.user.last_name + '  ' + request.user.first_name)
 
         c.drawString(500, 20, 'Firma')
         c.line(465, 32, 570, 32)
@@ -323,6 +327,8 @@ class ReportePdfAnticipo(View):
         n = 87
         story = ''
         for i in range(len(det_trabajo.detalle_trabajo)):
+            if det_trabajo.detalle_trabajo[i] == '\n':
+                n = i + 87
             if i == n:
                 story = story + det_trabajo.detalle_trabajo[j:n] + '\n'
                 j = n
@@ -500,6 +506,8 @@ class ReportePdfAnticipo(View):
         n = 87
         story = ''
         for i in range(len(detalle_trabajo)):
+            if detalle_trabajo[i] == '\n':
+                n = i + 87
             if i == n:
                 story = story + detalle_trabajo[j:n] + '\n'
                 j = n
