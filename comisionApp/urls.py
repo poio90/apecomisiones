@@ -24,9 +24,9 @@ urlpatterns = [
          view=login_required(views.archivarSolicitud),
          name='archivar_solicitud'),
 
-    path(route='usuarios/anticipos/historico/solicitudes',
-         view=login_required(views.HistoricoSolicitudes.as_view()),
-         name='historico_solicitud'),
+    path(route='usuarios/comisiones/historico',
+         view=login_required(views.historicos),
+         name='historico_comisiones'),
 
     # Anticipos
     path(route='usuarios/anticipos/reportes',
@@ -45,12 +45,6 @@ urlpatterns = [
          view=login_required(views.confeccionAnticipo),
          name='confeccion_comisión'),
 
-
-
-    path(route='usuarios/anticipos/historico',
-         view=login_required(views.HistoricoAnticipos.as_view()),
-         name='historico_anticipo'),
-
     path(route='usuarios/anticipos/archivar',
          view=login_required(views.archivar),
          name='archivar'),
@@ -63,3 +57,11 @@ urlpatterns = [
          view=login_required(views.get_num_afiliado),
          name='get_num_afiliado'),
 ]
+
+"""path(route='usuarios/anticipos/historico/solicitudes',
+         view=login_required(views.HistoricoSolicitudes.as_view()),
+         name='historico_solicitud'),
+         
+     path(route='usuarios/anticipos/historico',
+         view=login_required(views.HistoricoAnticipos.as_view()),
+         name='historico_anticipo'),"""

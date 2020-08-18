@@ -18,12 +18,14 @@ class FormLogin(AuthenticationForm):
 
 
 class FormUpdateProfile(forms.ModelForm):
+    """ Formulario para validar los datos de usuario """
     class Meta:
         model = User
         fields = ['last_name','first_name','dni','email','num_tel']
 
 
 class FormRegistro(UserCreationForm):
+    """ Formulario para validar los datos de registro """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for myField in self.fields:

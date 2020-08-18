@@ -1,3 +1,4 @@
+import datetime
 from datetime import date
 from django.db import transaction
 from io import BytesIO
@@ -52,12 +53,8 @@ class ReportePdfSolicitud(View):
         fecha = date.today().strftime("%d/%m/%Y")
 
         c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
-        c.drawString(30, 745, 'Apellido y Nombre'+'       ' +
-                     request.user.last_name + '  '+request.user.first_name)
-        c.drawString(360, 745, 'N° Afiliado a SEMPRE' +
-                     '         ' + str(request.user.num_afiliado))
 
-        alto = 720
+        alto = 745
         for i in range(len(integrantes)):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
@@ -73,7 +70,7 @@ class ReportePdfSolicitud(View):
         for i in range(len(solicitud.motivo)):
             if solicitud.motivo[i] == '\n':
                 n = i + 86
-            if i == n :
+            if i == n:
                 story = story + solicitud.motivo[j:n] + '\n'
                 j = n
                 n = n + 86
@@ -86,11 +83,14 @@ class ReportePdfSolicitud(View):
         textobject.textLines(story)
         c.drawText(textobject)
 
+        fecha_inicio = datetime.datetime.strptime(
+            str(solicitud.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
+
         c.setFont('Helvetica', 12)
         c.drawString(30, 370, 'Fecha de iniciación: ' +
-                     str(solicitud.fech_inicio))
+                     str(fecha_inicio))
         c.drawString(320, 370, 'Duracón prevista: ' +
-                     solicitud.duracion_prevista)
+                     solicitud.duracion_prevista+' días')
         c.drawString(
             30, 340, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
         c.drawString(30, 310, 'Medio de transporte')
@@ -186,9 +186,12 @@ class ReportePdfSolicitud(View):
         textobject.textLines(story)
         c.drawText(textobject)
 
+        fecha_inicio = datetime.datetime.strptime(
+            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
+
         c.setFont('Helvetica', 12)
-        c.drawString(30, 370, 'Fecha de iniciación: '+fech_inicio)
-        c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista)
+        c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
+        c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista+' días')
         c.drawString(
             30, 340, 'Lugar de residencia durante la comisión: '+ciudad)
         c.drawString(30, 310, 'Medio de transporte')
@@ -245,16 +248,20 @@ class ReportePdfAnticipo(View):
                          '         ' + integrantes[i].user.num_afiliado)
             alto = alto - 25
 
-        c.drawString(30, 620, 'Fecha de inicio: ' + str(anticipo.fech_inicio))
-        c.drawString(320, 620, 'Fecha de finalización: ' +
-                     str(anticipo.fech_fin))
+        fecha_inicio = datetime.datetime.strptime(
+            str(anticipo.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_fin = datetime.datetime.strptime(
+            str(anticipo.fech_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
+        c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
         c.drawString(
             30, 595, 'Lugar de residencia durante la comisión: ' + anticipo.ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
         c.drawString(200, 570, 'Unidad de legajo: ' +
                      anticipo.transporte.num_legajo)
         c.drawString(400, 570, 'Patente: ' + anticipo.transporte.patente)
-        c.drawString(30, 545, 'Gastos: ' + str(anticipo.gastos))
+        c.drawString(30, 545, 'Gastos: $' + str(anticipo.gastos))
 
         # tabla.encabezado
         styles = getSampleStyleSheet()
@@ -426,8 +433,13 @@ class ReportePdfAnticipo(View):
                          '         ' + num_afiliados[i])
             alto = alto - 25
 
-        c.drawString(30, 620, 'Fecha de inicio: ' + fech_inicio)
-        c.drawString(320, 620, 'Fecha de finalización: ' + fech_fin)
+        fecha_inicio = datetime.datetime.strptime(
+            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_fin = datetime.datetime.strptime(
+            fech_fin, "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
+        c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
         c.drawString(
             30, 595, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
@@ -563,7 +575,7 @@ def confeccionAnticipo(request):
     })
 
 
-class HistoricoAnticipos(ListView):
+"""class HistoricoAnticipos(ListView):
     model = Anticipo
     context_object_name = 'anticipos'
     template_name = 'comisiones/historico.html'
@@ -571,26 +583,36 @@ class HistoricoAnticipos(ListView):
     def get_queryset(self):
         return Anticipo.objects.filter(integrantes_x_anticipo__user=self.request.user.id)
 
-
 class HistoricoSolicitudes(ListView):
     model = Solicitud
     context_object_name = 'solicitudes'
     template_name = 'comisiones/historico_solicitud.html'
 
     def get_queryset(self):
-        return Solicitud.objects.filter(integrantes_x_solicitud__user=self.request.user.id)
+        return Solicitud.objects.filter(integrantes_x_solicitud__user=self.request.user.id)"""
+
+@login_required
+def historicos(request):
+    anticipos = Anticipo.objects.filter(
+        integrantes_x_anticipo__user=request.user.pk)
+    solicitudes = Solicitud.objects.filter(
+        integrantes_x_solicitud__user=request.user.pk)
+    return render(request, 'comisiones/historico.html', {
+        'anticipos': anticipos,
+        'solicitudes': solicitudes,
+    })
 
 
 class EliminarAnticipo(DeleteView):
     model = Anticipo
     context_object_name = 'anticipo'
     template_name = 'comisiones/eliminar_anticipo.html'
-    success_url = reverse_lazy('comisiones:historico_anticipo')
+    success_url = reverse_lazy('comisiones:historico_comisiones')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['entity'] = 'Anticipo'
-        context['list_url'] = reverse_lazy('comisiones:historico_anticipo')
+        context['list_url'] = reverse_lazy('comisiones:historico_comisiones')
         return context
 
 
@@ -598,12 +620,12 @@ class EliminarSolicitud(DeleteView):
     model = Solicitud
     context_object_name = 'solicitud'
     template_name = 'comisiones/eliminar_solicitud.html'
-    success_url = reverse_lazy('comisiones:historico_solicitud')
+    success_url = reverse_lazy('comisiones:historico_comisiones')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['entity'] = 'Solicitud'
-        context['list_url'] = reverse_lazy('comisiones:historico_solicitud')
+        context['list_url'] = reverse_lazy('comisiones:historico_comisiones')
         return context
 
 
@@ -651,7 +673,7 @@ def archivar(request):
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
-        return redirect('comisiones:historico_anticipo')
+        return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_comision.html')
 
 
@@ -679,7 +701,7 @@ def archivarSolicitud(request):
         for i in range(len(pk_users)):
             Integrantes_x_Solicitud.objects.create(
                 solicitud=nueva_solicitud, user_id=pk_users[i])
-        return redirect('comisiones:historico_solicitud')
+        return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_solicitud_comision.html')
 
 

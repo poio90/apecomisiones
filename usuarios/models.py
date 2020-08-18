@@ -7,7 +7,7 @@ class User(AbstractUser):
 
     regex_num_af = RegexValidator(
         regex = r'(?:(\d{5})([/]\d{1})?)',
-        message = "El número de afuliado debe ser ingresado en formato: 99999/9 o 99999. Hasta 7 caracteres son permitidos"
+        message = "El número de afiliado debe ser ingresado en formato: 99999/9 o 99999. Hasta 7 caracteres son permitidos"
     )
 
     num_afiliado = models.CharField(
