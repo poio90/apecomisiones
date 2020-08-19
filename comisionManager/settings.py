@@ -140,14 +140,16 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 
+LOGIN_REDIRECT_URL = '/accounts/login/'
+
+LOGIN_URL = '/accounts/login/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
-
-LOGIN_URL = 'accounts/login/'
 
 DATE_INPUT_FORMATS=[
     '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
