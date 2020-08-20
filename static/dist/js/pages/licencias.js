@@ -1,33 +1,19 @@
 $(document).ready(function () {
 
-    $('#date_inicio').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
-        format: "yyyy-mm-dd",
-    })
+    $('#date_inicio').inputmask("dd/mm/yyyy");  //static mask
+    $('#date_inicio').inputmask({ "mask": "99/99/9999", "placeholder": "dd/mm/yyyy"}); //specifying options
+    //$('#date_inicio').inputmask("9-a{1,3}9{1,3}"); //mask with dynamic syntax
 
-    $('#date_fin').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
-        format: "yyyy-mm-dd",
-    })
+    $('#date_fin').inputmask({ "mask": "99/99/9999" , "placeholder": "dd/mm/yyyy"}); //specifying options
+    $('#date_reintegro').inputmask({ "mask": "99/99/9999", "placeholder": "dd/mm/yyyy" }); //specifying options
 
-    $('#date_reintegro').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
-        format: "yyyy-mm-dd",
-    })
-    
-    $('input[name=fech_inicio]').on('change',function(){
+    $('input[name=fech_inicio]').on('change', function () {
         var fecha = new Date($(this).val());
         var dias = 2
         var dias2 = $('#dias_agregados').val();
-        dias3 = dias+dias2
+        dias3 = dias + dias2
         console.log(fecha);
         fecha.setDate(fecha.getDate() + dias);
-        
-        console.log(fecha);
-
     })
 
 });

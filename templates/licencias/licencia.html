@@ -46,67 +46,115 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="inputSolicitante" class="col-sm-3 col-form-label">Quien solicita</label>
+                                <label for="inputSolicitante" class="col-sm-2 col-form-label">Quien solicita</label>
                                 <div class="col">
-                                    <label class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
+                                    <label
+                                        class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
                                 </div>
-                                
                             </div>
                             <div class="form-group row">
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label for="inputDiasHabiles" class="col-sm-6 col-form-label">Días hábiles acumulados</label>
+                                <div class="col-md-6">
+                                    <div class=" row">
+                                        <label for="inputFehcaInicio" class="col-sm-4 col-form-label">Días hábiles
+                                            acumulados</label>
                                         <div class="col">
-                                            {{ form.dias_habiles_acum }}
+                                            <div class="input-group">
+                                                {{ form.dias_habiles_acum }}
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label class="col-sm-1 col-form-label"></label>
-                                        <label for="inputDiasAgregados" class="col-sm-4 col-form-label">Días hábiles a agregar</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="inputFechaFin" class="col-sm-4 col-form-label">Días hábiles a
+                                            agregar</label>
                                         <div class="col">
-                                            {{ form.dias_habiles_agregar}}
+                                            <div class="input-group">
+                                                {{ form.dias_habiles_agregar}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label for="inputFehcaInicio" class="col-sm-6 col-form-label">Comienzo de la
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="inputFehcaInicio" class="col-sm-4 col-form-label">Comienzo de la
                                             licencia</label>
                                         <div class="col">
-                                            {{ form.fecha_inicio}}
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-calendar-alt"></i></span>
+                                                </div>
+                                                {{ form.fecha_inicio}}
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label class="col-sm-1 col-form-label"></label>
+                                <div class="col-md-6">
+                                    <div class="row">
                                         <label for="inputFechaFin" class="col-sm-4 col-form-label">Fin de la
                                             licencia</label>
                                         <div class="col">
-                                            {{ form.fecha_fin }}
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-calendar-alt"></i></span>
+                                                </div>
+                                                {{ form.fecha_fin }}
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col">
-                                    <div class="form-group row">
-                                        <label for="inputFechaReintegro" class="col-sm-3 col-form-label">Fecha de reintegro</label>
+                                    <div class="row">
+                                        <label for="inputFechaReintegro" class="col-sm-2 col-form-label">Fecha de
+                                            reintegro</label>
                                         <div class="col">
-                                            {{ form.fecha_reintegro }}    
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-calendar-alt"></i></span>
+                                                </div>
+                                                {{ form.fecha_reintegro }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            {% for error in form.fecha_inicio.errors %}
+                            <div class="form-group">
+                                <label class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-12 alert alert-danger">
+                                    <b>Comienzo de la licencia: </b>{{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% for error in form.fecha_fin.errors %}
+                            <div class="form-group">
+                                <label class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-12 alert alert-danger">
+                                    <b>Fin de la licencia: </b>{{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% for error in form.fecha_reintegro.errors %}
+                            <div class="form-group">
+                                <label class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-12 alert alert-danger">
+                                    <b>Fecha de reintegro: </b>{{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <div class="float-right">
-                                <button type="submit" class="btn btn-success" formaction="#"><i class="fas fa-file-pdf"></i>
+                                <button type="submit" class="btn btn-success" formaction="#"><i
+                                        class="fas fa-file-pdf"></i>
                                     Imprimir</button>
                                 <button type="submit" class="btn btn-primary"><i
                                         class="fas fa-archive"></i>Archivar</button>

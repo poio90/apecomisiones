@@ -67,7 +67,7 @@
                 <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6 mt-2">
-                      <select id="" name="afiliado[]" class="browser-default custom-select"
+                      <select name="afiliado[]" class="browser-default custom-select"
                         data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                         <option value="" disabled selected>Apellido y nombre</option>
                         {% for afiliado in users %}
@@ -76,7 +76,7 @@
                       </select>
                     </div>
                     <div class="col-md-5 mt-2">
-                      <input id="" name="num_afiliado[]" class="form-control" type="text"
+                      <input name="num_afiliado[]" class="form-control" type="text"
                         placeholder="Número de afiliado a SEMPRE">
                     </div>
                     <div class="col mt-2">
@@ -107,21 +107,25 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="form-group row">
-                <label for="inputAfiliado" class="col-sm-2 col-form-label">Medio de transporte:</label>
+              <div class="row">
+                <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
+                    transporte:</label>
                 <div class="col">
-                  <!--<input class="form-control" placeholder="Unidad de legajo">-->
-                  <select id="transporte" name="transporte" class="browser-default custom-select"
-                    data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
-                    <option value="" disabled selected>Unidad de legajo</option>
-                    {% for transporte in transportes %}
-                    <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
-                    {% endfor %}
-                  </select>
+                    <div class="form-group">
+                        <select id="transporte" name="transporte" class="browser-default custom-select"
+                            data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
+                            <option value="" disabled selected>Unidad de legajo</option>
+                            {% for transporte in transportes %}
+                            <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="col">
-                  <input id="patente" name="patente" class="form-control" type="text" placeholder="Patente"
-                    readonly="readonly">
+                    <div class="form-group">
+                        <input id="patente" name="patente" type="text" class="form-control"
+                            placeholder="Patente" readonly="readonly">
+                    </div>
                 </div>
               </div>
               <div class="form-group">
