@@ -115,11 +115,12 @@ class ReportePdfSolicitud(View):
 
     def post(self, request, *args, **kwargs):
 
-        fech_inicio = request.POST['fech_inicio']
+        
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         motivo = request.POST['motivo']
 
+        fech_inicio = request.POST['fech_inicio']
         duracion_prevista = request.POST['duracion_prevista']
         ciudad = request.POST['ciudad']
         transporte = request.POST['transporte']
@@ -189,8 +190,7 @@ class ReportePdfSolicitud(View):
         textobject.textLines(story)
         c.drawText(textobject)
 
-        fecha_inicio = datetime.datetime.strptime(
-            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_inicio = datetime.strptime(fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.setFont('Helvetica', 12)
         c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
@@ -251,9 +251,9 @@ class ReportePdfAnticipo(View):
                          '         ' + integrantes[i].user.num_afiliado)
             alto = alto - 25
 
-        fecha_inicio = datetime.datetime.strptime(
+        fecha_inicio = datetime.strptime(
             str(anticipo.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_fin = datetime.datetime.strptime(
+        fecha_fin = datetime.strptime(
             str(anticipo.fech_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
@@ -439,9 +439,9 @@ class ReportePdfAnticipo(View):
                          '         ' + num_afiliados[i])
             alto = alto - 25
 
-        fecha_inicio = datetime.datetime.strptime(
+        fecha_inicio = datetime.strptime(
             fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_fin = datetime.datetime.strptime(
+        fecha_fin = datetime.strptime(
             fech_fin, "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
@@ -664,24 +664,10 @@ def archivar(request):
         detalle_trabajo = request.POST['detalle_trabajo']
 
         # Crear anticpo en la BD
-        try:
-            fecha_inicio = datetime.strptime(
-                fech_inicio, "%d/%m/%Y").strftime("%Y-%m-%d")
-            fecha_fin = datetime.strptime(
-                fech_fin, "%d/%m/%Y").strftime("%Y-%m-%d")
-        except ValueError as e:
-            users = User.objects.all().exclude(pk=request.user.pk)
-            ciudades = Ciudad.objects.all()
-            transportes = Transporte.objects.all()
-            return render(request, 'comisiones/confeccion_comision.html', {
-                'users': users,
-                'ciudades': ciudades,
-                'transportes': transportes,
-                'error': 'Ha introducido una fecha inválida '+ fech_inicio,
-                'detalle_trabajo': detalle_trabajo})
+       
 
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
-                                      transporte_id=pk_transporte, fech_inicio=fecha_inicio, fech_fin=fecha_fin, gastos=gastos)
+                                      transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
         nuevo_anticipo.save()
 
         for i in range(len(nombres)):
@@ -713,24 +699,12 @@ def archivarSolicitud(request):
         pk_transporte = request.POST['transporte']
         gastos_previstos = request.POST['gastos_previstos']
 
-        try:
-            fecha_inicio = datetime.strptime(
-                fech_inicio, "%d/%m/%Y").strftime("%Y-%m-%d")
-        except ValueError as e:
-            users = User.objects.all().exclude(pk=request.user.pk)
-            ciudades = Ciudad.objects.all()
-            transportes = Transporte.objects.all()
-            return render(request, 'comisiones/confeccion_sol_comision.html', {
-                'users': users,
-                'ciudades': ciudades,
-                'transportes': transportes,
-                'error': 'Ha introducido una fecha inválida '+ fech_inicio,
-                'motivo': motivo})
+        
 
         # Crear anticpo en la BD
 
         nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
-                                    transporte_id=pk_transporte, fech_inicio=fecha_inicio, duracion_prevista=duracion_prevista,
+                                    transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
                                     motivo=motivo, gastos_previstos=gastos_previstos)
         nueva_solicitud.save()
 

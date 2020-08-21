@@ -96,7 +96,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                       </div>
-                      <input type="text" id="date_inicio" name="fecha_inicio" class="form-control"
+                      <input type="date" id="date_inicio" name="fecha_inicio" class="form-control"
                         placeholder="Fecha de inicio" autocomplete='off' required>
                     </div>
                   </div>
@@ -105,7 +105,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                       </div>
-                      <input type="text" id="date_fin" name="fecha_fin" class="form-control"
+                      <input type="date" id="date_fin" name="fecha_fin" class="form-control"
                         placeholder="Fecha de finalización" autocomplete='off' required>
                     </div>
                   </div>
@@ -226,14 +226,6 @@
                 <textarea name="detalle_trabajo" class="form-control" type="text"
                   placeholder="DETALLE DE LOS TRABAJOS REALIZADOS:" required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
               </div>
-              {% if error %}
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"></label>
-                                <div class="col-sm-12 alert alert-danger">
-                                    <b>Fecha de iniciación: </b>{{ error }}
-                                </div>
-                            </div>
-                            {% endif %}
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

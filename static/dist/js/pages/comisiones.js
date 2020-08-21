@@ -1,17 +1,5 @@
 $(document).ready(function () {
 
-    $('#datepicker').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
-        format: "yyyy-mm-dd",
-    })
-
-    $('#datepickerFin').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
-        format: "yyyy-mm-dd",
-    })
-
     $("#myform").on("change", "select", function () {
         var form = $(this).closest("select")
         var id = this.id;
@@ -41,37 +29,10 @@ $(document).ready(function () {
         });
     })
 
-    $("#num_comision").on('change',function (){
-        var form = $(this).closest('form').serialize();
-        var div = document.getElementById(this.id);
-        $.ajax({
-            url: div.getAttribute("validate-num-comicion-url"),
-            type: 'GET',
-            dataType: 'json',
-            data: form,
-            success: function (data) {
-                if(data.is_taken){
-                    $("#imprimir").prop('disabled', true);
-                    $("#archivar").prop('disabled', true);
-                    swal({
-                        title: "Revise los campos!",
-                        text: 'El número de comisión que está intentando cargar ya existe.',
-                        icon: "warning",
-                        dangerMode: true,
-                    });
-                    $('#num_comision').val("");
-                }else{
-                    $("#imprimir").prop('disabled', false);
-                    $("#archivar").prop('disabled', false);
-                }
-            }
-        });
-    })
-
     $('#myform').on('submit', function (e) { //use on if jQuery 1.7+
 
         var data = $("input[name='num_afiliado[]']").serializeArray();
-        var form = $(this).closest('form').serialize();
+        var km_total = $("input[name='km_total']").val();
         control = true;
         indice = 0;
 
@@ -87,11 +48,16 @@ $(document).ready(function () {
                 }
             }
         }
+        if(control && (km_total < 0)){
+                control = false;
+        }
         if (!control) {
             e.preventDefault();  //prevent form from submitting
-            if (data[indice].value === "") {
+            if (km_total < 0) {
+                msg = "Los kilomtros recorridos no pueden ser valores negativos.";
+            } else if(data[indice].value === "") {
                 msg = "Hay un campo vacío para algún usuario."
-            } else {
+            }else {
                 msg = "Está intentando cargar el afiliado " + data[indice].value + " más de una vez."
             }
             swal({
@@ -131,8 +97,6 @@ $(document).ready(function () {
     $('input[name="km_llegada"]').change(function () {
         var km_llegada = $(this).val();
         var km_salida = $('input[name="km_salida"]').val();
-        console.log(km_salida)
-        console.log(km_llegada)
         if (km_salida == 0) {
             $('input[name="km_total"]').val(km_llegada);
         } else {

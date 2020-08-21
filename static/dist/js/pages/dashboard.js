@@ -2,12 +2,6 @@ $(document).ready(function () {
 
   'use strict'
 
-  $('#sandbox-container .input-group.date').datepicker({
-    format: "dd/mm/yy",
-    language: "es",
-    orientation: "bottom auto"
-  });
-
   // Make the dashboard widgets sortable Using jquery UI
   $('.connectedSortable').sortable({
     placeholder: 'sort-highlight',

@@ -109,7 +109,7 @@
                                                 <span class="input-group-text"><i
                                                         class="far fa-calendar-alt"></i></span>
                                             </div>
-                                            <input type="text" id="date_inicio" name="fech_inicio" class="form-control"
+                                            <input type="date" id="date_inicio" name="fech_inicio" class="form-control"
                                                 placeholder="Fecha de iniciación" autocomplete='off' required>
                                         </div>
                                     </div>
@@ -152,14 +152,6 @@
                                 <input name="gastos_previstos" type="number" step="any" class="form-control"
                                     placeholder="Gastos a solicitar" required>
                             </div>
-                            {% if error %}
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"></label>
-                                <div class="col-sm-12 alert alert-danger">
-                                    <b>Fecha de iniciación: </b>{{ error }}
-                                </div>
-                            </div>
-                            {% endif %}
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
