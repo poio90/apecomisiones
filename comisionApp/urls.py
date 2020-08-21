@@ -4,52 +4,52 @@ from comisionApp import views
 
 urlpatterns = [
     # Solicitudes
-    path(route='usuarios/anticipos/solicitudes/reportes',
+    path(route='comisiones/solicitudes/reportes',
          view=views.ReportePdfSolicitud.as_view(),
          name='reportePdfSolicitud'),
 
-    path(route='usuarios/anticipos/<pk>/solicitudes/reportes',
+    path(route='comisiones/<pk>/solicitudes/reportes',
          view=views.ReportePdfSolicitud.as_view(),
          name='reportePdfSolicitud'),
 
-    path(route='usuarios/solicitudes/<pk>/eliminar/',
+    path(route='solicitudes/<pk>/eliminar/',
          view=views.EliminarSolicitud.as_view(),
          name='solicitud_eliminar'),
 
-    path(route='usuarios/anticipos/solicitudes',
+    path(route='comisiones/solicitudes',
          view=login_required(views.confeccionSolicitudComision),
          name='confeccion_solicitud_comisión'),
 
-    path(route='usuarios/anticipos/solicitudes/archivar',
+    path(route='comisiones/solicitudes/archivar',
          view=login_required(views.archivarSolicitud),
          name='archivar_solicitud'),
 
-    path(route='usuarios/comisiones/historico',
+    path(route='comisiones/historico',
          view=login_required(views.historicos),
          name='historico_comisiones'),
 
     # Anticipos
-    path(route='usuarios/anticipos/reportes',
+    path(route='comisiones/anticipos/reportes',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
 
-    path(route='usuarios/anticipos/<pk>/reportes/',
+    path(route='comisiones/anticipos/<pk>/reportes/',
          view=views.ReportePdfAnticipo.as_view(),
          name='reportePdfAnticipo'),
 
-    path(route='usuarios/anticipos/<pk>/eliminar/',
+    path(route='comisiones/anticipos/<pk>/eliminar/',
          view=views.EliminarAnticipo.as_view(),
          name='eliminar_anticipo'),
 
-    path(route='usuarios/anticipos/comisiones',
+    path(route='comisiones/anticipos',
          view=login_required(views.confeccionAnticipo),
          name='confeccion_comisión'),
 
-    path(route='usuarios/anticipos/archivar',
+    path(route='anticipos/archivar',
          view=login_required(views.archivar),
          name='archivar'),
 
-    path(route='usuario/get_patente',
+    path(route='get_patente',
          view=login_required(views.get_patente),
          name='get_patente'),
 
