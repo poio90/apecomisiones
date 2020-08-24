@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from licencias import views
 
 urlpatterns = [
-    path('licencias/solicitudes', login_required(
+    path('licencias/solicitudes/', login_required(
         views.LicenciaSolicitud.as_view()), name='licencias_solicitud'),
+
+    path('licencias/<pk>/editar/', login_required(
+        views.LicenciaEditar.as_view()), name='licencias_editar'),
 
     path('licencias/historico', login_required(
         views.HistoricoLicencias.as_view()), name='licencias_historico'),

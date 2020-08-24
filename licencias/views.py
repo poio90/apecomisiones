@@ -4,7 +4,7 @@ from datetime import date, datetime
 from io import BytesIO, StringIO
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
+from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView, UpdateView
 from django.http import HttpResponse, JsonResponse, request
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, letter
@@ -33,6 +33,14 @@ class LicenciaSolicitud(CreateView):
         obj.user = self.request.user
         obj.save()
         return super(LicenciaSolicitud, self).form_valid(form)
+
+
+class LicenciaEditar(UpdateView):
+    model = Licencia
+    form_class = FormLicencia
+    context_object_name = 'licencia'
+    template_name = 'licencias/licencia.html'
+    success_url = reverse_lazy('licencias:licencias_historico')
 
 
 class HistoricoLicencias(ListView):
@@ -107,22 +115,26 @@ class ReportePdfLicencia(View):
         #Story.append(Paragraph(texto, estilos["Normal"]))
         #Story.append(Spacer(1, 12))
 
-        fecha_inicio = datetime.datetime.strptime(str(licencia.fecha_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_fin = datetime.datetime.strptime(str(licencia.fecha_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_reintegro = datetime.datetime.strptime(str(licencia.fecha_reintegro), "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_solicitud = datetime.datetime.strptime(str(licencia.fecha_solicitud), "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_inicio = datetime.strptime(
+            str(licencia.fecha_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_fin = datetime.strptime(
+            str(licencia.fecha_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_reintegro = datetime.strptime(
+            str(licencia.fecha_reintegro), "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_solicitud = datetime.strptime(
+            str(licencia.fecha_solicitud), "%Y-%m-%d").strftime("%d/%m/%Y")
 
         Story.append(Spacer(1, 12))
 
-        texto = 'El que suscribe, agente '+ licencia.user.last_name +' '+licencia.user.first_name +' dependiente de Gerencia de \
-                Explotación solicita '+ str(licencia.dias_habiles_acum) +' días hábiles, comenzando a hacer uso de la misma desde el '\
-                + str(fecha_inicio) +' hasta el '+ str(fecha_fin) +', a la cual se le agregarán '\
-                + str(licencia.dias_habiles_agregar) +' días hábiles en concepto de traslado reintegrándome a mis\
-                funciones el día '+ str(fecha_reintegro) +'.'
+        texto = 'El que suscribe, agente ' + licencia.user.last_name + ' '+licencia.user.first_name + ' dependiente de Gerencia de \
+                Explotación solicita ' + str(licencia.dias_habiles_acum) + ' días hábiles, comenzando a hacer uso de la misma desde el '\
+                + str(fecha_inicio) + ' hasta el ' + str(fecha_fin) + ', a la cual se le agregarán '\
+                + str(licencia.dias_habiles_agregar) + ' días hábiles en concepto de traslado reintegrándome a mis\
+                funciones el día ' + str(fecha_reintegro) + '.'
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, 60))
 
-        texto='Santa Rora, '+ str(fecha_solicitud)
+        texto = 'Santa Rora, ' + str(fecha_solicitud)
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, -8))
 
@@ -195,9 +207,9 @@ class ReportePdfLicencia(View):
 
         response['Content-Dispotition'] = 'filename=Reporte-Anticipo.pdf'
         return response
-    
+
     def post(self, request, *args, **kwargs):
-        
+
         dias_habiles_acum = request.POST['dias_habiles_acum']
         dias_habiles_agregar = request.POST['dias_habiles_agregar']
         fecha_inicio = request.POST['fecha_inicio']
@@ -250,17 +262,17 @@ class ReportePdfLicencia(View):
 
         Story.append(Spacer(1, 12))
 
-        texto = 'El que suscribe, agente '+ request.user.last_name +' '+request.user.first_name +' dependiente de Gerencia de \
-                Explotación solicita '+ dias_habiles_acum +' días hábiles, comenzando a hacer uso de la misma desde el '\
-                + fecha_inicio +' hasta el '+ fecha_fin +', a la cual se le agregarán '\
-                + dias_habiles_agregar +' días hábiles en concepto de traslado reintegrándome a mis\
-                funciones el día '+ fecha_reintegro +'.'
+        texto = 'El que suscribe, agente ' + request.user.last_name + ' '+request.user.first_name + ' dependiente de Gerencia de \
+                Explotación solicita ' + dias_habiles_acum + ' días hábiles, comenzando a hacer uso de la misma desde el '\
+                + fecha_inicio + ' hasta el ' + fecha_fin + ', a la cual se le agregarán '\
+                + dias_habiles_agregar + ' días hábiles en concepto de traslado reintegrándome a mis\
+                funciones el día ' + fecha_reintegro + '.'
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, 60))
 
         fecha = date.today().strftime("%d/%m/%Y")
 
-        texto='Santa Rora, '+ str(fecha)
+        texto = 'Santa Rora, ' + str(fecha)
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, -8))
 
@@ -330,9 +342,6 @@ class ReportePdfLicencia(View):
 
         response.write(buffer.getvalue())
         buffer.close()
-        
 
         response['Content-Dispotition'] = 'filename=Reporte-Anticipo.pdf'
         return response
-
-

@@ -29,7 +29,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Fecha de solicitud</th>
@@ -50,6 +50,10 @@
                                         <span class="table-remove">
                                             <a target="_blank" href="{% url 'licencias:licencias_pdf' licencia.pk %}"
                                                 class="btn btn-success btn-rounded btn-sm my-0">Consultar</a>
+                                        </span>
+                                        <span class="table-remove">
+                                            <a href="{% url 'licencias:licencias_editar' licencia.pk %}"
+                                                class="btn btn-primary btn-rounded btn-sm my-0">Editar</a>
                                         </span>
                                         <span class="table-remove">
                                             <a href="{% url 'licencias:licencias_eliminar' licencia.pk %}"
