@@ -31,16 +31,8 @@
             <div class="card-header">
               <div class="form-row">
                 <div class="col-md-2">
-                  <label class="card-title">Anticipo de Comisión</label>
+                  <label class="card-title">Rendición de anticipo</label>
                 </div>
-                <!--<div class="input_num col-md-2">
-                  <input id="num_comision" name="num_comision" type="text" class="form-control form-control-sm"
-                    validate-num-comicion-url="" pattern="[0-9]*" required>
-                  <label for="name" class="label-name">
-                    <span class="content-name">N°</span>
-                  </label>
-                </div>-->
-
               </div>
             </div>
             <!-- /.card-header -->
@@ -203,7 +195,7 @@
               </div>
               <div class="form-group">
                 <label for="inputAfiliado" class="col-sm-6 col-form-label">
-                  <h4>Informe de la Comisión:</h4>
+                  <h4>Informe de Anticipo:</h4>
                 </label>
               </div>
               <div class="form-group">
@@ -224,7 +216,7 @@
               </div>
               <div class="form-group">
                 <textarea name="detalle_trabajo" class="form-control" type="text"
-                  placeholder="DETALLE DE LOS TRABAJOS REALIZADOS:" required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
+                  placeholder="NOTA:" required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
               </div>
             </div>
             <!-- /.card-body -->

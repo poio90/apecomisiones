@@ -203,7 +203,7 @@ class ReportePdfSolicitud(View):
                      num_legajo_transporte.num_legajo)
         c.drawString(400, 310, 'Patente: ' + patente)
         c.drawString(30, 280, 'Gastos a solicitar: $' + gastos_previstos)
-        c.drawString(30, 250, 'Comisión ordenada por: ' +
+        c.drawString(30, 250, 'Anticipo ordenado por: ' +
                      request.user.last_name + '  ' + request.user.first_name)
 
         c.drawString(500, 20, 'Firma')
@@ -232,7 +232,7 @@ class ReportePdfAnticipo(View):
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Rendicion de comisión'
+        text = 'Rendición de comisión'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
@@ -313,13 +313,13 @@ class ReportePdfAnticipo(View):
 
         # informe de comision
         c.setFont('Helvetica', 16)
-        c.drawString(30, 245, 'Informe de la comision: ')
+        c.drawString(30, 245, 'Informe de Anticipo ')
 
-        c.setFont('Helvetica', 12)
-        c.drawString(32, 220, 'km Salida: '+str(det_trabajo.km_salida))
-        c.drawString(180, 220, 'km Llegada: '+str(det_trabajo.km_llegada))
-        c.drawString(350, 220, 'Total km recorrido: ' +
-                     str(det_trabajo.km_llegada-det_trabajo.km_salida))
+        #c.setFont('Helvetica', 12)
+        #c.drawString(32, 220, 'km Salida: '+str(det_trabajo.km_salida))
+        #c.drawString(180, 220, 'km Llegada: '+str(det_trabajo.km_llegada))
+        #c.drawString(350, 220, 'Total km recorrido: ' +
+         #            str(det_trabajo.km_llegada-det_trabajo.km_salida))
 
         # Lineas Verticales
         c.line(30, 237, 30, 50)
@@ -327,11 +327,11 @@ class ReportePdfAnticipo(View):
 
         # Lineas Horizontales
         c.line(30, 237, 565, 237)
-        c.line(30, 210, 565, 210)
+        #c.line(30, 210, 565, 210)
         c.line(30, 50, 565, 50)
 
         c.setFont('Helvetica', 12)
-        c.drawString(35, 195, 'Detalle de los trabajos realizados: ')
+        c.drawString(35, 220, 'NOTA: ')
 
         # Funcion que agrega saltos de linea
         j = 0
@@ -349,7 +349,7 @@ class ReportePdfAnticipo(View):
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
-        textobject.setTextOrigin(35, 180)
+        textobject.setTextOrigin(35, 208)
         textobject.setFont("Courier", 10)
         textobject.textLines(story)
         c.drawText(textobject)

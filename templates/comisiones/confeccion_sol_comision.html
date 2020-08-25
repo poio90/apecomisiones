@@ -28,7 +28,7 @@
                     {% csrf_token %}
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <label class="card-title">Solicitud de comisión de servicios</label>
+                            <label class="card-title">Solicitud de anticipo</label>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -48,12 +48,19 @@
                             <div class="form-group after-add-more">
                                 <div class="form-row">
                                     <div class="col-md-6 mt-2">
-                                        <label id="0"
-                                            class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
+                                        <select name="afiliado[]" class="browser-default custom-select"
+                                            data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                                            <option value="" disabled selected>Apellido y nombre</option>
+                                            {% for afiliado in users %}
+                                            <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                                                {{ afiliado.first_name }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                     <div class="col-md-5 mt-2">
-                                        <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
-                                    </div>
+                                            <input name="num_afiliado[]" type="text" class="form-control"
+                                                placeholder="Número de afiliado a SEMPRE">
+                                        </div>
                                     <div class="col-md-1 mt-2">
                                         <span class="float-right mb-3 mr-2">
                                             <a style="cursor:pointer;" class="text-success add-more">
@@ -160,8 +167,8 @@
                                     formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
                                     <i class="fas fa-download"></i>
                                     Generar PDF</button>
-                                <button type="submit" class="btn btn-success"><i
-                                        class="fas fa-archive"></i> Archivar</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
+                                    Archivar</button>
                             </div>
                             <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
                         </div>
