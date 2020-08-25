@@ -5,6 +5,7 @@ from io import BytesIO
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
@@ -615,6 +616,11 @@ class EliminarAnticipo(DeleteView):
     context_object_name = 'anticipo'
     template_name = 'comisiones/eliminar_anticipo.html'
     success_url = reverse_lazy('comisiones:historico_comisiones')
+    success_message = "Anticipo de comisión eliminado exitosamente"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EliminarAnticipo, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -628,6 +634,11 @@ class EliminarSolicitud(DeleteView):
     context_object_name = 'solicitud'
     template_name = 'comisiones/eliminar_solicitud.html'
     success_url = reverse_lazy('comisiones:historico_comisiones')
+    success_message = "Solicitud de comisión eliminada exitosamente"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EliminarSolicitud, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

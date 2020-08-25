@@ -88,6 +88,7 @@
                                                             class="far fa-calendar-alt"></i></span>
                                                 </div>
                                                 {{ form.fecha_inicio}}
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -120,7 +121,7 @@
                                                             class="far fa-calendar-alt"></i></span>
                                                 </div>
                                                 {{ form.fecha_reintegro }}
-                                            </div>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -153,9 +154,10 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <div class="float-right">
-                                <button type="submit" class="btn btn-success" formaction="{% url 'licencias:licencias_pdf' %}" formtarget="_blank"><i
+                                <button type="submit" class="btn {{ atr }}" formmethod="{{ method }}"
+                                    formaction="{{ list_url }}" formtarget="{{ target }}"><i
                                         class="fas fa-file-pdf"></i>
-                                    Imprimir</button>
+                                    {{ title }}</button>
                                 <button type="submit" class="btn btn-primary"><i
                                         class="fas fa-archive"></i>Archivar</button>
                             </div>

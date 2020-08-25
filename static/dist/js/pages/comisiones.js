@@ -15,6 +15,10 @@ $(document).ready(function () {
         });
     })
 
+    $(document).ready(function() {
+        $('.select2bs4').select2();
+    });
+
 
     $("#transporte").change(function () {
         var form = $(this).closest("#transporte");
@@ -68,21 +72,6 @@ $(document).ready(function () {
             });
         }
     })
-
-    function resizable(el, factor) {
-        var int = Number(factor) || 7.7;
-        function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }
-        var e = 'keyup,keypress,focus,blur,change'.split(',');
-        for (var i in e) el.addEventListener(e[i], resize, false);
-        resize();
-    }
-    resizable(document.getElementById('input-name'), 7);
-    resizable(document.getElementById('input-dia'), 7);
-    resizable(document.getElementById('input-mes'), 7);
-    resizable(document.getElementById('input-salida'), 7);
-    resizable(document.getElementById('input-hora1'), 7);
-    resizable(document.getElementById('input-llegada'), 7);
-    resizable(document.getElementById('input-hora2'), 7);
 
     $('input[name="km_salida"]').change(function () {
         var km_salida = $(this).val()

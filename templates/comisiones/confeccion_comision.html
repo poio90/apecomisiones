@@ -232,13 +232,13 @@
               <div class="float-right">
                 <button id="imprimir" type="submit" class="btn btn-primary"
                   formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
-                  <i class="fas fa-file-pdf"></i>
-                  Imprimir</button>
+                  <i class="fas fa-download"></i>
+                                    Generar PDF</button>
                 <button id="archivar" class="btn btn-success">
                   <i class="fas fa-archive"></i>
                   Archivar</button>
               </div>
-              <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i>Descartar</button>
+              <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
             </div>
             <!-- /.card-footer -->
           </form>
@@ -252,4 +252,21 @@
   </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
+
+<script>
+  function resizable(el, factor) {
+        var int = Number(factor) || 7.7;
+        function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }
+        var e = 'keyup,keypress,focus,blur,change'.split(',');
+        for (var i in e) el.addEventListener(e[i], resize, false);
+        resize();
+    }
+    resizable(document.getElementById('input-name'), 7);
+    resizable(document.getElementById('input-dia'), 7);
+    resizable(document.getElementById('input-mes'), 7);
+    resizable(document.getElementById('input-salida'), 7);
+    resizable(document.getElementById('input-hora1'), 7);
+    resizable(document.getElementById('input-llegada'), 7);
+    resizable(document.getElementById('input-hora2'), 7);
+</script>
 {% endblock %}

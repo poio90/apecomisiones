@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import View, FormView, UpdateView, CreateView, TemplateResponseMixin
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth import login, logout, authenticate, views as auth_views
@@ -24,11 +25,12 @@ class Perfil(DetailView):
     template_name = 'usuarios/profile.html'
 
 
-class EditarPerfil(UpdateView):
+class EditarPerfil(SuccessMessageMixin, UpdateView):
     model = User
     form_class = FormUpdateProfile
     context_object_name = 'usuario'
     template_name = 'usuarios/profile_edit.html'
+    success_message = "Su perfil se ha actualizado exitosamente"
 
     def get_success_url(self):
         # if you are passing 'pk' from 'urls' to 'UpdateView' for user
@@ -72,3 +74,6 @@ class RegistroUsuario(CreateView):
 
 class LogoutUsuario(LogoutView):
     next_page = 'accounts/login/'
+
+
+"""https://ccbv.co.uk/projects/Django/3.0/django.views.generic.edit/DeletionMixin/"""

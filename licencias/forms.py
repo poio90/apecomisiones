@@ -8,6 +8,7 @@ class FormLicencia(forms.ModelForm):
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
         
+        self.fields['dias_habiles_acum'].widget.attrs['autofocus'] = 'autofocus'
         """ atrr name"""
         self.fields['dias_habiles_acum'].widget.attrs['name'] = 'dias_habiles_acum'
         self.fields['dias_habiles_agregar'].widget.attrs['name'] = 'dias_habiles_agregar'
@@ -20,11 +21,6 @@ class FormLicencia(forms.ModelForm):
         self.fields['fecha_fin'].widget.attrs['id'] = 'date_fin'
         self.fields['fecha_reintegro'].widget.attrs['id'] = 'date_reintegro'
         
-        """ atrr autocomplete"""
-        self.fields['fecha_inicio'].widget.attrs['autocomplete'] = 'off'
-        self.fields['fecha_fin'].widget.attrs['autocomplete'] = 'off'
-        self.fields['fecha_reintegro'].widget.attrs['autocomplete'] = 'off'
-
     class Meta:
         model = Licencia
         fields = ['dias_habiles_acum','dias_habiles_agregar','fecha_inicio','fecha_fin','fecha_reintegro']

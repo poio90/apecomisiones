@@ -4,6 +4,8 @@ from datetime import date, datetime
 from io import BytesIO, StringIO
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView, UpdateView
 from django.http import HttpResponse, JsonResponse, request
 from reportlab.pdfgen import canvas
@@ -21,12 +23,22 @@ from .forms import FormLicencia
 # Create your views here.
 
 
-class LicenciaSolicitud(CreateView):
+class LicenciaSolicitud(SuccessMessageMixin,CreateView):
     model = Licencia
     form_class = FormLicencia
     context_object_name = 'licencia'
     template_name = 'licencias/licencia.html'
     success_url = reverse_lazy('licencias:licencias_historico')
+    success_message = "La solicitud de licencia ha sido creada exitosamente"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = reverse_lazy('licencias:licencias_pdf')
+        context['title'] = 'Imprimir'
+        context['method'] = 'POST'
+        context['target'] = '_blank'
+        context['atr'] = 'btn-success'
+        return context
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -41,6 +53,15 @@ class LicenciaEditar(UpdateView):
     context_object_name = 'licencia'
     template_name = 'licencias/licencia.html'
     success_url = reverse_lazy('licencias:licencias_historico')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = reverse_lazy('licencias:licencias_historico')
+        context['title'] = 'Cancelar'
+        context['method'] = 'GET'
+        context['target'] = '_self'
+        context['atr'] = 'btn-danger'
+        return context
 
 
 class HistoricoLicencias(ListView):
@@ -57,6 +78,11 @@ class EliminarLicencia(DeleteView):
     context_object_name = 'licencia'
     template_name = 'licencias/eliminar_licencia.html'
     success_url = reverse_lazy('licencias:licencias_historico')
+    success_message = "La solicitud de licencia ha sido eliminada exitosamente"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EliminarLicencia, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

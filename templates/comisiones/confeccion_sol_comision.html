@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <input type="number" name="duracion_prevista" class="form-control"
-                                            placeholder="Duración prevista días" autocomplete='off' required>
+                                            placeholder="Duración prevista en días" autocomplete='off' required>
                                     </div>
                                 </div>
                             </div>
@@ -156,12 +156,12 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <div class="float-right">
-                                <button type="submit" class="btn btn-success"
+                                <button type="submit" class="btn btn-primary"
                                     formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
-                                    <i class="fas fa-file-pdf"></i>
-                                    Imprimir</button>
-                                <button type="submit" class="btn btn-primary"><i
-                                        class="fas fa-archive"></i>Archivar</button>
+                                    <i class="fas fa-download"></i>
+                                    Generar PDF</button>
+                                <button type="submit" class="btn btn-success"><i
+                                        class="fas fa-archive"></i> Archivar</button>
                             </div>
                             <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
                         </div>
