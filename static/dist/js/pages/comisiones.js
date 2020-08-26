@@ -1,9 +1,9 @@
 $(document).ready(function () {
 
-    $("#myform").on("change","select",function () {
+    $('#myform').on('select2:select', function (e) {
         var form = $(this).closest("select")
         var id = this.id;
-        var div = document.getElementById(id);
+        var div = document.getElementById(this.id);
         console.log(id);
         $.ajax({
             url: div.getAttribute("data-validate-afiliado-url"),
@@ -16,15 +16,14 @@ $(document).ready(function () {
         });
     })
 
-    $('select').each(function () {
+    $('.sel').each(function () {
         $(this).select2({
-          theme: 'bootstrap4',
-          width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-          placeholder: $(this).data('placeholder'),
-          allowClear: Boolean($(this).data('allow-clear')),
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
         });
-      });
-
+    });
 
     $("#transporte").change(function () {
         var form = $(this).closest("#transporte");
@@ -58,16 +57,16 @@ $(document).ready(function () {
                 }
             }
         }
-        if(control && (km_total < 0)){
-                control = false;
+        if (control && (km_total < 0)) {
+            control = false;
         }
         if (!control) {
             e.preventDefault();  //prevent form from submitting
             if (km_total < 0) {
                 msg = "Los kilomtros recorridos no pueden ser valores negativos.";
-            } else if(data[indice].value === "") {
+            } else if (data[indice].value === "") {
                 msg = "Hay un campo vacío para algún usuario."
-            }else {
+            } else {
                 msg = "Está intentando cargar el afiliado " + data[indice].value + " más de una vez."
             }
             swal({

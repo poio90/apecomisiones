@@ -37,13 +37,21 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <div class="form-group after-add-more">
+              <div class="form-group">
                 <div class="form-row">
                   <div class="col-md-6 mt-2">
-                    <label id="0" class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
+                    <select id="0" class="sel" name="afiliado[]" class="full_name" data-placeholder="Apellido y nombre"
+                      data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                      <option></option>
+                      {% for afiliado in users %}
+                      <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                        {{ afiliado.first_name }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                   <div class="col-md-5 mt-2">
-                    <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
+                    <input name="num_afiliado[]" type="text" class="form-control"
+                      placeholder="Número de afiliado a SEMPRE">
                   </div>
                   <div class="col-md-1 mt-2">
                     <span class="float-right mb-3 mr-2">
@@ -54,24 +62,27 @@
                   </div>
                 </div>
               </div>
+              <div id="after-add-more">
+              </div>
               <!-- div que se muestra luego de agregar usuario -->
               <div class="copy d-none d-print-block">
                 <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6 mt-2">
-                      <select name="afiliado[]" class="browser-default custom-select"
+                      <select name="afiliado[]" data-placeholder="Apellido y nombre"
                         data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-                        <option value="" disabled selected>Apellido y nombre</option>
+                        <option></option>
                         {% for afiliado in users %}
-                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }} {{ afiliado.first_name }}</option>
+                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                          {{ afiliado.first_name }}</option>
                         {% endfor %}
                       </select>
                     </div>
                     <div class="col-md-5 mt-2">
-                      <input name="num_afiliado[]" class="form-control" type="text"
+                      <input name="num_afiliado[]" type="text" class="form-control"
                         placeholder="Número de afiliado a SEMPRE">
                     </div>
-                    <div class="col mt-2">
+                    <div class="col-md-1 mt-2">
                       <span class="float-right mb-3 mr-2">
                         <a style="cursor:pointer;" class="text-danger remove">
                           <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
@@ -81,6 +92,7 @@
                   </div>
                 </div>
               </div>
+              
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
@@ -104,7 +116,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <select name="ciudad" class="browser-default custom-select" required>
+                <select name="ciudad" class="sel" required>
                   <option value="" disabled selected>Lugar de residencia durante la comisión</option>
                   {% for ciudad in ciudades %}
                   <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
@@ -116,7 +128,7 @@
                   transporte:</label>
                 <div class="col">
                   <div class="form-group">
-                    <select id="transporte" name="transporte" class="browser-default custom-select"
+                    <select id="transporte" name="transporte" class="sel"
                       data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
                       <option value="" disabled selected>Unidad de legajo</option>
                       {% for transporte in transportes %}
@@ -215,8 +227,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <textarea name="detalle_trabajo" class="form-control" type="text"
-                  placeholder="NOTA:" required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
+                <textarea name="detalle_trabajo" class="form-control" type="text" placeholder="NOTA:"
+                  required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
               </div>
             </div>
             <!-- /.card-body -->
@@ -225,7 +237,7 @@
                 <button id="imprimir" type="submit" class="btn btn-primary"
                   formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
                   <i class="fas fa-download"></i>
-                                    Generar PDF</button>
+                  Generar PDF</button>
                 <button id="archivar" class="btn btn-success">
                   <i class="fas fa-archive"></i>
                   Archivar</button>
@@ -247,18 +259,18 @@
 
 <script>
   function resizable(el, factor) {
-        var int = Number(factor) || 7.7;
-        function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }
-        var e = 'keyup,keypress,focus,blur,change'.split(',');
-        for (var i in e) el.addEventListener(e[i], resize, false);
-        resize();
-    }
-    resizable(document.getElementById('input-name'), 7);
-    resizable(document.getElementById('input-dia'), 7);
-    resizable(document.getElementById('input-mes'), 7);
-    resizable(document.getElementById('input-salida'), 7);
-    resizable(document.getElementById('input-hora1'), 7);
-    resizable(document.getElementById('input-llegada'), 7);
-    resizable(document.getElementById('input-hora2'), 7);
+    var int = Number(factor) || 7.7;
+    function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }
+    var e = 'keyup,keypress,focus,blur,change'.split(',');
+    for (var i in e) el.addEventListener(e[i], resize, false);
+    resize();
+  }
+  resizable(document.getElementById('input-name'), 7);
+  resizable(document.getElementById('input-dia'), 7);
+  resizable(document.getElementById('input-mes'), 7);
+  resizable(document.getElementById('input-salida'), 7);
+  resizable(document.getElementById('input-hora1'), 7);
+  resizable(document.getElementById('input-llegada'), 7);
+  resizable(document.getElementById('input-hora2'), 7);
 </script>
 {% endblock %}

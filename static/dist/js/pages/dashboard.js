@@ -21,17 +21,51 @@ $(document).ready(function () {
   })
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
-  $("body").on("click", ".add-more", function () {
+  $("body").on("click",'.add-more', function () {
     //Toma el id de full name para 
     var id = $(".full_name").attr('id')//agregado por mi
     $(".copy select").attr("id", id);//agregado por mi
     $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
     //$(".copy select").prop('required',true);//agregado por mi
     var html = $(".copy").html();
-    $(".after-add-more").after(html);
+    $("#after-add-more").append(html);
     id = parseInt(id);//agregado por mi
     $(".full_name").attr('id', id = id + 1);//agregado por mi
   });
+
+  // select the target node (con esto se logra que los select sean funcionales)
+  var target = document.getElementById('after-add-more');
+
+  if (target) {
+    // create an observer instance
+    var observer = new MutationObserver(function (mutations) {
+      //loop through the detected mutations(added controls)
+      mutations.forEach(function (mutation) {
+        //addedNodes contains all detected new controls
+        if (mutation && mutation.addedNodes) {
+          mutation.addedNodes.forEach(function (elm) {
+            //only apply select2 to select elements
+            if (elm && elm.nodeName === "DIV") {
+              $(elm).find('select[name="afiliado[]"]').select2({
+                theme: 'bootstrap4',
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+                placeholder: $(this).data('placeholder'),
+                allowClear: Boolean($(this).data('allow-clear')),
+              });
+            }
+          });
+        }
+      });
+    });
+
+    // pass in the target node, as well as the observer options
+    observer.observe(target, {
+      childList: true
+    });
+
+    // later, you can stop observing
+    //observer.disconnect();
+  }
 
   $("body").on("click", ".remove", function () {
     $(this).parents(".form-group").remove();

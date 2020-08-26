@@ -45,10 +45,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group after-add-more">
+                            <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6 mt-2">
-                                        <select id="0" name="afiliado[]" class="full_name" data-placeholder="Apellido y nombre"
+                                        <select id="0" class="sel" name="afiliado[]" class="full_name"
+                                            data-placeholder="Apellido y nombre"
                                             data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                                             <option></option>
                                             {% for afiliado in users %}
@@ -58,9 +59,9 @@
                                         </select>
                                     </div>
                                     <div class="col-md-5 mt-2">
-                                            <input name="num_afiliado[]" type="text" class="form-control"
-                                                placeholder="Número de afiliado a SEMPRE">
-                                        </div>
+                                        <input name="num_afiliado[]" type="text" class="form-control"
+                                            placeholder="Número de afiliado a SEMPRE">
+                                    </div>
                                     <div class="col-md-1 mt-2">
                                         <span class="float-right mb-3 mr-2">
                                             <a style="cursor:pointer;" class="text-success add-more">
@@ -70,12 +71,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="after-add-more">
+                            </div>
                             <!-- div que se muestra luego de agregar usuario -->
                             <div class="copy d-none d-print-block">
                                 <div class="form-group">
                                     <div class="form-row">
                                         <div class="col-md-6 mt-2">
-                                            <select name="afiliado[]" data-placeholder="Apellido y nombre" 
+                                            <select name="afiliado[]" data-placeholder="Apellido y nombre"
                                                 data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                                                 <option></option>
                                                 {% for afiliado in users %}
@@ -127,7 +130,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select name="ciudad" data-placeholder="Lugar de residencia durante la comisión" required>
+                                <select name="ciudad" class="sel" data-placeholder="Lugar de residencia durante la comisión"
+                                    required>
                                     <option></option>
                                     {% for ciudad in ciudades %}
                                     <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
@@ -139,7 +143,7 @@
                                     transporte:</label>
                                 <div class="col">
                                     <div class="form-group">
-                                        <select id="transporte" name="transporte" data-placeholder="Unidad de legajo"
+                                        <select id="transporte" class="sel" name="transporte" data-placeholder="Unidad de legajo"
                                             data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
                                             <option></option>
                                             {% for transporte in transportes %}
