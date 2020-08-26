@@ -48,9 +48,9 @@
                             <div class="form-group after-add-more">
                                 <div class="form-row">
                                     <div class="col-md-6 mt-2">
-                                        <select name="afiliado[]" class="browser-default custom-select"
+                                        <select id="0" name="afiliado[]" class="full_name" data-placeholder="Apellido y nombre"
                                             data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-                                            <option value="" disabled selected>Apellido y nombre</option>
+                                            <option></option>
                                             {% for afiliado in users %}
                                             <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
                                                 {{ afiliado.first_name }}</option>
@@ -75,9 +75,9 @@
                                 <div class="form-group">
                                     <div class="form-row">
                                         <div class="col-md-6 mt-2">
-                                            <select name="afiliado[]" class="browser-default custom-select"
+                                            <select name="afiliado[]" data-placeholder="Apellido y nombre" 
                                                 data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-                                                <option value="" disabled selected>Apellido y nombre</option>
+                                                <option></option>
                                                 {% for afiliado in users %}
                                                 <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
                                                     {{ afiliado.first_name }}</option>
@@ -127,8 +127,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select name="ciudad" class="browser-default custom-select" required>
-                                    <option disabled selected>Lugar de residencia durante la comisión</option>
+                                <select name="ciudad" data-placeholder="Lugar de residencia durante la comisión" required>
+                                    <option></option>
                                     {% for ciudad in ciudades %}
                                     <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
                                     {% endfor %}
@@ -139,9 +139,9 @@
                                     transporte:</label>
                                 <div class="col">
                                     <div class="form-group">
-                                        <select id="transporte" name="transporte" class="browser-default custom-select"
+                                        <select id="transporte" name="transporte" data-placeholder="Unidad de legajo"
                                             data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
-                                            <option value="" disabled selected>Unidad de legajo</option>
+                                            <option></option>
                                             {% for transporte in transportes %}
                                             <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
                                             {% endfor %}

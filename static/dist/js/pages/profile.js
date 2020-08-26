@@ -50,8 +50,6 @@ $(document).ready(function () {
     /*----Desactiva boton Guardar hasta que se completen los campos del formulario--------*/
 
     SNButton.init("updateButtonProfile", {
-        fields: ["id_num_afiliado","id_last_name","id_first_name","id_dni","id_email","id_num_tel"],
-    }
-    )
-
+        fields: ["id_num_afiliado","id_last_name","id_first_name","id_dni","id_e mail","id_num_tel"],
+    })
 })

@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('#date_inicio').inputmask("dd/mm/yyyy");  //static mask
+    //$('#date_inicio').inputmask("dd/mm/yyyy");  //static mask
     $('#date_inicio').inputmask({ "mask": "99/99/9999", "placeholder": "dd/mm/yyyy"}); //specifying options
     //$('#date_inicio').inputmask("9-a{1,3}9{1,3}"); //mask with dynamic syntax
 
@@ -15,5 +15,4 @@ $(document).ready(function () {
         console.log(fecha);
         fecha.setDate(fecha.getDate() + dias);
     })
-
 });

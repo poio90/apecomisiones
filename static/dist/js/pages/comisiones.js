@@ -1,9 +1,10 @@
 $(document).ready(function () {
 
-    $("#myform").on("change", "select", function () {
+    $("#myform").on("change","select",function () {
         var form = $(this).closest("select")
         var id = this.id;
         var div = document.getElementById(id);
+        console.log(id);
         $.ajax({
             url: div.getAttribute("data-validate-afiliado-url"),
             data: form.serialize(),
@@ -15,9 +16,14 @@ $(document).ready(function () {
         });
     })
 
-    $(document).ready(function() {
-        $('.select2bs4').select2();
-    });
+    $('select').each(function () {
+        $(this).select2({
+          theme: 'bootstrap4',
+          width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+          placeholder: $(this).data('placeholder'),
+          allowClear: Boolean($(this).data('allow-clear')),
+        });
+      });
 
 
     $("#transporte").change(function () {
