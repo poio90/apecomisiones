@@ -4,7 +4,7 @@ $(document).ready(function () {
         var form = $(this).closest("select")
         var id = this.id;
         var div = document.getElementById('after-add-more');
-        //console.log($(this).closest("select").attr('id'));
+        console.log($(this).closest("select").attr('id'));
         $.ajax({
             url: div.getAttribute("data-validate-afiliado-url"),
             data: form.serialize(),
