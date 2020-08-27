@@ -87,7 +87,7 @@ AUTH_USER_MODEL = 'usuarios.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'comisiones',
@@ -95,6 +95,13 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': 3306,
+    }
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
     }
 }
 
@@ -148,8 +155,11 @@ LOGIN_URL = '/accounts/login/'
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = '/media/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'), os.path.join(BASE_DIR,'media'),)
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+# Media files
+
 
 DATE_INPUT_FORMATS=[
     '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
