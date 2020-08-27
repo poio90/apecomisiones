@@ -1,10 +1,10 @@
 $(document).ready(function () {
 
-    $('#myform').on('select2:select', function (e) {
+    $('#myform').on("change","select", function (e) {
         var form = $(this).closest("select")
         var id = this.id;
-        var div = document.getElementById(this.id);
-        console.log(id);
+        var div = document.getElementById('after-add-more');
+        //console.log($(this).closest("select").attr('id'));
         $.ajax({
             url: div.getAttribute("data-validate-afiliado-url"),
             data: form.serialize(),

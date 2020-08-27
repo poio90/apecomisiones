@@ -559,7 +559,7 @@ class ReportePdfAnticipo(View):
 @login_required
 @transaction.atomic
 def confeccionSolicitudComision(request):
-    users = User.objects.all().exclude(pk=request.user.pk)
+    users = User.objects.all().order_by('last_name')
     ciudades = Ciudad.objects.all()
     transportes = Transporte.objects.all()
     return render(request, 'comisiones/confeccion_sol_comision.html', {
@@ -572,7 +572,7 @@ def confeccionSolicitudComision(request):
 @login_required
 @transaction.atomic
 def confeccionAnticipo(request):
-    users = User.objects.all().exclude(pk=request.user.pk)
+    users = User.objects.all().order_by('last_name')
     ciudades = Ciudad.objects.all()
     transportes = Transporte.objects.all()
     return render(request, 'comisiones/confeccion_comision.html', {
@@ -709,11 +709,8 @@ def archivarSolicitud(request):
         pk_ciudad = request.POST['ciudad']
         pk_transporte = request.POST['transporte']
         gastos_previstos = request.POST['gastos_previstos']
-
         
-
         # Crear anticpo en la BD
-
         nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
                                     transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
                                     motivo=motivo, gastos_previstos=gastos_previstos)

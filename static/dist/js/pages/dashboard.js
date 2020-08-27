@@ -24,6 +24,7 @@ $(document).ready(function () {
   $("body").on("click",'.add-more', function () {
     //Toma el id de full name para 
     var id = $(".full_name").attr('id')//agregado por mi
+    console.log(id);
     $(".copy select").attr("id", id);//agregado por mi
     $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
     //$(".copy select").prop('required',true);//agregado por mi
