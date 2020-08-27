@@ -22,7 +22,6 @@ from reportlab.rl_config import defaultPageSize
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
-from comisionManager.utils import render_pdf
 from django.core import serializers
 
 
