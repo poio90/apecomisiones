@@ -21,17 +21,24 @@ $(document).ready(function () {
   })
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
-  $("form").on("click",'.add-more', function () {
-    //Toma el id de full name para 
-    var id = $(".full_name").attr('id')//agregado por mi
-    //console.log(id);
-    $(".copy select").attr("id", id);//agregado por mi
-    $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
-    //$(".copy select").prop('required',true);//agregado por mi
+  
+  
+  
+  
+  
+  
+  $("body").on("click",'.add-more', function () {
+    //Toma el id de full name para
     var html = $(".copy").html();
-    $("#after-add-more").append(html);
-    id = parseInt(id);//agregado por mi
-    $(".full_name").attr('id', id = id + 1);//agregado por mi
+    var id = $(this).attr('id');//agregado por mi
+    console.log(html);
+    id = parseInt(id) + 1;//agregado por mi
+    $(".copy select").attr("indice", id);//agregado por mi
+    $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
+    $("#after-add-more").append($(".copy").html());
+    
+    //$(".copy select").prop('required',true);//agregado por mi
+    $(this).attr('id', id = id + 1);//agregado por mi
   });
 
   // select the target node (con esto se logra que los select sean funcionales)
@@ -70,9 +77,9 @@ $(document).ready(function () {
 
   $("body").on("click", ".remove", function () {
     $(this).parents(".form-group").remove();
-    var id = $(".full_name").attr('id')//agregado por mi
-    id = parseInt(id);//agregado por mi
-    $(".full_name").attr('id', id = id - 1);//agregado por mi
+    //var id = $(".add-more").attr('id')//agregado por mi
+    //id = parseInt(id);//agregado por mi
+    //$(".add-more").attr('id', id = id - 1);//agregado por mi
   });
   //---------------------------------------------------------------------------------------------//
 

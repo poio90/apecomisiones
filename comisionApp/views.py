@@ -733,7 +733,6 @@ def get_patente(request):
 
 @login_required
 def get_num_afiliado(request):
-    num_afiliado = request.GET.getlist('afiliado[]')
-    pk = str(num_afiliado[0])
+    pk = request.GET.get('pk')
     data = list(User.objects.filter(pk=pk).values('num_afiliado'))
     return JsonResponse({'data': data})

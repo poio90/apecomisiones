@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6 mt-2">
-                                        <select id="0" class="sel" name="afiliado[]"
+                                        <select id="sel" indice="0" name="afiliado[]"
                                             data-placeholder="Apellido y nombre">
                                             <option></option>
                                             {% for afiliado in users %}
@@ -58,12 +58,12 @@
                                         </select>
                                     </div>
                                     <div class="col-md-5 mt-2">
-                                        <input name="num_afiliado[]" type="text" class="form-control"
+                                        <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
                                             placeholder="Número de afiliado a SEMPRE">
                                     </div>
                                     <div class="col-md-1 mt-2">
                                         <span class="float-right mb-3 mr-2">
-                                            <a style="cursor:pointer;" class="text-success add-more">
+                                            <a style="cursor:pointer;" id="0" class="text-success add-more">
                                                 <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
                                             </a>
                                         </span>

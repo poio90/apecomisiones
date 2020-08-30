@@ -1,21 +1,47 @@
 $(document).ready(function () {
 
-    $('#myform').on("change","select", function (e) {
+    /*$('#myform').on("change","select", function (e) {
         var form = $(this).closest("select")
         var id = this.id;
         var div = document.getElementById('after-add-more');
-        console.log($(this).closest("select").attr('id'));
+        console.log(form[0].getAttribute('id'));
         $.ajax({
             url: div.getAttribute("data-validate-afiliado-url"),
             data: form.serialize(),
             dataType: 'json',
             success: function (data) {
                 $('#afiliado' + id).val(data.data[0].num_afiliado);
+                $("").parent().children("input[name='" + data.name + "']").val(text);
+            }
+        });
+    })*/
+
+    $('#myform').on('select2:select', function (e) {
+        var data = e.params.data;
+        var id = data.element.offsetParent.attributes.indice.nodeValue
+        var div = document.getElementById('after-add-more');
+        console.log(data.element.offsetParent.attributes.indice.nodeValue);
+        $.ajax({
+            url: div.getAttribute("data-validate-afiliado-url"),
+            data: { pk : data.element.value},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data[0].num_afiliado);
+                $('#afiliado' + id).val(data.data[0].num_afiliado);
                 /*$("").parent().children("input[name='" + data.name + "']").val(text);*/
             }
         });
-    })
+    });
 
+    $('#sel').each(function () {
+        $(this).select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+    });
+    
     $('.sel').each(function () {
         $(this).select2({
             theme: 'bootstrap4',

@@ -40,8 +40,7 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col-md-6 mt-2">
-                    <select id="0" class="sel" name="afiliado[]" class="full_name" data-placeholder="Apellido y nombre"
-                      data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                    <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
                       <option></option>
                       {% for afiliado in users %}
                       <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
@@ -50,27 +49,26 @@
                     </select>
                   </div>
                   <div class="col-md-5 mt-2">
-                    <input name="num_afiliado[]" type="text" class="form-control"
+                    <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
                       placeholder="Número de afiliado a SEMPRE">
                   </div>
                   <div class="col-md-1 mt-2">
                     <span class="float-right mb-3 mr-2">
-                      <a style="cursor:pointer;" class="text-success add-more">
+                      <a style="cursor:pointer;" id="1" class="text-success add-more">
                         <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
                       </a>
                     </span>
                   </div>
                 </div>
               </div>
-              <div id="after-add-more">
+              <div id="after-add-more" data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
               </div>
               <!-- div que se muestra luego de agregar usuario -->
               <div class="copy d-none d-print-block">
                 <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6 mt-2">
-                      <select name="afiliado[]" data-placeholder="Apellido y nombre"
-                        data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                      <select name="afiliado[]" data-placeholder="Apellido y nombre">
                         <option></option>
                         {% for afiliado in users %}
                         <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
@@ -116,8 +114,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <select name="ciudad" class="sel" required>
-                  <option value="" disabled selected>Lugar de residencia durante la comisión</option>
+                <select name="ciudad" class="sel" data-placeholder="Lugar de residencia durante la comisión" required>
+                  <option></option>
                   {% for ciudad in ciudades %}
                   <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
                   {% endfor %}
@@ -128,9 +126,9 @@
                   transporte:</label>
                 <div class="col">
                   <div class="form-group">
-                    <select id="transporte" name="transporte" class="sel"
+                    <select id="transporte" name="transporte" class="sel" data-placeholder="Unidad de legajo"
                       data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
-                      <option value="" disabled selected>Unidad de legajo</option>
+                      <option></option>
                       {% for transporte in transportes %}
                       <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
                       {% endfor %}
