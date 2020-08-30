@@ -135,9 +135,8 @@ class Anticipo(models.Model):
         db_table = 'anticipo_comision'
 
     def __str__(self):
-        return '{} {} {} {} {} {} {}'.format(
+        return '{} {} {} {} {} {}'.format(
             self.fech_inicio,
-            self.num_comision,
             self.ciudad.ciudad,
             self.fech_fin,
             self.gastos,
@@ -176,7 +175,7 @@ class Integrantes_x_Solicitud(models.Model):
         db_table = 'integrantes_x_solicitud'
 
     def __str__(self):
-        return '{} {} {}'.format(self.solicitud, self.user)
+        return '{} {}'.format(self.solicitud, self.user)
 
 
 class Integrantes_x_Anticipo(models.Model):

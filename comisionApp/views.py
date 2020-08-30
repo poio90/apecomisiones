@@ -115,7 +115,6 @@ class ReportePdfSolicitud(View):
 
     def post(self, request, *args, **kwargs):
 
-        
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         motivo = request.POST['motivo']
@@ -129,7 +128,7 @@ class ReportePdfSolicitud(View):
 
         # este for recupera los usuarios cuyos id estan contenidos en la lista pk
         nombre = []
-        for i in range(len(pk)):
+        for i in range(len(pk)-1):
             pk1 = str(pk[i])
             nombre.append(User.objects.get(pk=pk1))
 
@@ -162,7 +161,7 @@ class ReportePdfSolicitud(View):
                      '         ' + str(request.user.num_afiliado))
 
         alto = 720
-        for i in range(len(pk)):
+        for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          nombre[i].last_name + '  '+nombre[i].first_name)
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
@@ -190,7 +189,8 @@ class ReportePdfSolicitud(View):
         textobject.textLines(story)
         c.drawText(textobject)
 
-        fecha_inicio = datetime.strptime(fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
+        fecha_inicio = datetime.strptime(
+            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.setFont('Helvetica', 12)
         c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
@@ -222,7 +222,7 @@ class ReportePdfAnticipo(View):
         anticipo = Anticipo.objects.get(pk=kwargs['pk'])
         itineraio = Itineraio.objects.filter(anticipo_id=kwargs['pk'])
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
-        integrantes = Integrantes_x_Anticipo.objects.filter(
+        int_x_ant = Integrantes_x_Anticipo.objects.filter(
             anticipo_id=kwargs['pk'])
 
         buffer = BytesIO()
@@ -244,11 +244,11 @@ class ReportePdfAnticipo(View):
         alto = 770
 
         c.setFont('Helvetica', 12)
-        for i in range(len(integrantes)):
+        for i in range(len(int_x_ant)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
-                         integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
+                         int_x_ant[i].user.last_name + '  '+int_x_ant[i].user.first_name)
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
-                         '         ' + integrantes[i].user.num_afiliado)
+                         '         ' + int_x_ant[i].user.num_afiliado)
             alto = alto - 25
 
         fecha_inicio = datetime.strptime(
@@ -259,12 +259,12 @@ class ReportePdfAnticipo(View):
         c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
         c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
         c.drawString(
-            30, 595, 'Lugar de residencia durante la comisión: ' + anticipo.ciudad.ciudad)
+            30, 595, 'Lugar de residencia durante la comisión: ' + int_x_ant[0].anticipo.ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
         c.drawString(200, 570, 'Unidad de legajo: ' +
-                     anticipo.transporte.num_legajo)
-        c.drawString(400, 570, 'Patente: ' + anticipo.transporte.patente)
-        c.drawString(30, 545, 'Gastos: $' + str(anticipo.gastos))
+                     int_x_ant[0].anticipo.transporte.num_legajo)
+        c.drawString(400, 570, 'Patente: ' + int_x_ant[0].anticipo.transporte.patente)
+        c.drawString(30, 545, 'Gastos: $' + str(int_x_ant[0].anticipo.gastos))
 
         # tabla.encabezado
         styles = getSampleStyleSheet()
@@ -317,8 +317,8 @@ class ReportePdfAnticipo(View):
         #c.setFont('Helvetica', 12)
         #c.drawString(32, 220, 'km Salida: '+str(det_trabajo.km_salida))
         #c.drawString(180, 220, 'km Llegada: '+str(det_trabajo.km_llegada))
-        #c.drawString(350, 220, 'Total km recorrido: ' +
-         #            str(det_trabajo.km_llegada-det_trabajo.km_salida))
+        # c.drawString(350, 220, 'Total km recorrido: ' +
+        #            str(det_trabajo.km_llegada-det_trabajo.km_salida))
 
         # Lineas Verticales
         c.line(30, 237, 30, 50)
@@ -400,7 +400,7 @@ class ReportePdfAnticipo(View):
 
         # este for recupera los usuarios cuyos id estan contenidos en la lista pk
         nombre = []
-        for i in range(len(pk)):
+        for i in range(len(pk)-1):
             pk1 = str(pk[i])
             nombre.append(User.objects.get(pk=pk1))
 
@@ -432,7 +432,7 @@ class ReportePdfAnticipo(View):
 
         alto = 745
 
-        for i in range(len(pk)):
+        for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          nombre[i].last_name + '  '+nombre[i].first_name)
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
@@ -674,10 +674,9 @@ def archivar(request):
         detalle_trabajo = request.POST['detalle_trabajo']
 
         # Crear anticpo en la BD
-       
 
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
-                                      transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
+                                  transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
         nuevo_anticipo.save()
 
         for i in range(len(nombres)):
@@ -687,8 +686,6 @@ def archivar(request):
 
         DetalleTrabajo.objects.create(
             anticipo=nuevo_anticipo, km_salida=km_salida, km_llegada=km_llegada, detalle_trabajo=detalle_trabajo)
-        Integrantes_x_Anticipo.objects.create(
-            anticipo=nuevo_anticipo, user=request.user)
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
@@ -701,6 +698,7 @@ def archivarSolicitud(request):
     if request.method == 'POST':
         # usuarios
         pk_users = request.POST.getlist('afiliado[]')
+        print(pk_users)
         # solicitud
         motivo = request.POST['motivo']
         fech_inicio = request.POST['fech_inicio']
@@ -708,15 +706,13 @@ def archivarSolicitud(request):
         pk_ciudad = request.POST['ciudad']
         pk_transporte = request.POST['transporte']
         gastos_previstos = request.POST['gastos_previstos']
-        
+
         # Crear anticpo en la BD
         nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
                                     transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
                                     motivo=motivo, gastos_previstos=gastos_previstos)
         nueva_solicitud.save()
 
-        Integrantes_x_Solicitud.objects.create(
-            solicitud=nueva_solicitud, user=request.user)
         for i in range(len(pk_users)):
             Integrantes_x_Solicitud.objects.create(
                 solicitud=nueva_solicitud, user_id=pk_users[i])

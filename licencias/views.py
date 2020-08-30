@@ -1,3 +1,4 @@
+import os
 import time
 import datetime
 from datetime import date, datetime
@@ -115,7 +116,7 @@ class ReportePdfLicencia(View):
         formatoFecha = time.ctime()
         nombreCompleto = self.request.user.last_name
 
-        imagen = Image(logotipo, 1 * inch, 1 * inch)
+        imagen = Image(os.path.realpath(logotipo), 1 * inch, 1 * inch)
         Story.append(imagen)
 
         estilos = getSampleStyleSheet()
