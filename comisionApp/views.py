@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import TransporteForm
 from .models import *
 from usuarios.models import User
 from django.contrib.auth.decorators import login_required

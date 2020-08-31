@@ -107,14 +107,8 @@ class ReportePdfLicencia(View):
         Story = []
         logotipo = "static/dist/img/escudo.jpeg"
 
-        nombreRevista = "Programación Avanzada"
-        numero = 4
-        precio = "10.00"
-        fechaLimite = "27/09/2017"
-        obsequio = "Taller de Python"
-
         formatoFecha = time.ctime()
-        nombreCompleto = self.request.user.last_name
+        nombreCompleto = self.request.user.last_name +' '+ request.user.first_name
 
         imagen = Image(os.path.realpath(logotipo), 1 * inch, 1 * inch)
         Story.append(imagen)
@@ -252,14 +246,8 @@ class ReportePdfLicencia(View):
         Story = []
         logotipo = "static/dist/img/escudo.jpeg"
 
-        nombreRevista = "Programación Avanzada"
-        numero = 4
-        precio = "10.00"
-        fechaLimite = "27/09/2017"
-        obsequio = "Taller de Python"
-
         formatoFecha = time.ctime()
-        nombreCompleto = self.request.user.last_name
+        nombreCompleto = self.request.user.last_name +' '+ request.user.first_name
 
         imagen = Image(logotipo, 1 * inch, 1 * inch)
         Story.append(imagen)
@@ -282,14 +270,9 @@ class ReportePdfLicencia(View):
 
         estilos = getSampleStyleSheet()
         estilos.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
-        #texto = '%s' % formatoFecha
-
-        #Story.append(Paragraph(texto, estilos["Normal"]))
-        #Story.append(Spacer(1, 12))
-
         Story.append(Spacer(1, 12))
 
-        texto = 'El que suscribe, agente ' + request.user.last_name + ' '+request.user.first_name + ' dependiente de Gerencia de \
+        texto = 'El que suscribe, agente ' + nombreCompleto + ' dependiente de Gerencia de \
                 Explotación solicita ' + dias_habiles_acum + ' días hábiles, comenzando a hacer uso de la misma desde el '\
                 + fecha_inicio + ' hasta el ' + fecha_fin + ', a la cual se le agregarán '\
                 + dias_habiles_agregar + ' días hábiles en concepto de traslado reintegrándome a mis\

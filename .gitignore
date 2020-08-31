@@ -6,6 +6,8 @@ __pycache__
 db.sqlite3
 media
 comisionManager/settings.py
+comisionApp/views.py
+licencias/views.py
 
 # Backup files # 
 *.bak 
