@@ -30,7 +30,7 @@
             {% csrf_token %}
             <div class="card-header">
               <div class="form-row">
-                <div class="col-md-2">
+                <div class="col-md-4">
                   <label class="card-title">Rendición de anticipo</label>
                 </div>
               </div>
@@ -38,30 +38,30 @@
             <!-- /.card-header -->
             <div class="card-body">
               <div id="after-add-more" data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-              <div class="form-group">
-                <div class="form-row">
-                  <div class="col-md-6 mt-2">
-                    <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
-                      <option></option>
-                      {% for afiliado in users %}
-                      <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
-                        {{ afiliado.first_name }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="col-md-5 mt-2">
-                    <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
-                      placeholder="Número de afiliado a SEMPRE">
-                  </div>
-                  <div class="col-md-1 mt-2">
-                    <span class="float-right mb-3 mr-2">
-                      <a style="cursor:pointer;" id="1" class="text-success add-more">
-                        <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
-                      </a>
-                    </span>
+                <div class="form-group">
+                  <div class="form-row">
+                    <div class="col-md-6 mt-2">
+                      <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
+                        <option></option>
+                        {% for afiliado in users %}
+                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                          {{ afiliado.first_name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-5 mt-2">
+                      <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
+                        placeholder="Número de afiliado a SEMPRE">
+                    </div>
+                    <div class="col-md-1 mt-2">
+                      <span class="float-right mb-3 mr-2">
+                        <a style="cursor:pointer;" id="1" class="text-success add-more">
+                          <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
+                        </a>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
               <!-- div que se muestra luego de agregar usuario -->
               <div class="copy d-none d-print-block">
@@ -90,7 +90,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">

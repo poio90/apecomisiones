@@ -55,7 +55,7 @@ class ReportePdfSolicitud(View):
         c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
 
         alto = 745
-        for i in range(len(integrantes)):
+        for i in range(len(integrantes)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
@@ -154,12 +154,8 @@ class ReportePdfSolicitud(View):
         fecha = date.today().strftime("%d/%m/%Y")
 
         c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
-        c.drawString(30, 745, 'Apellido y Nombre'+'       ' +
-                     request.user.last_name + '  '+request.user.first_name)
-        c.drawString(360, 745, 'N° Afiliado a SEMPRE' +
-                     '         ' + str(request.user.num_afiliado))
 
-        alto = 720
+        alto = 745
         for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          nombre[i].last_name + '  '+nombre[i].first_name)
@@ -262,7 +258,8 @@ class ReportePdfAnticipo(View):
         c.drawString(30, 570, 'Medio de transporte')
         c.drawString(200, 570, 'Unidad de legajo: ' +
                      int_x_ant[0].anticipo.transporte.num_legajo)
-        c.drawString(400, 570, 'Patente: ' + int_x_ant[0].anticipo.transporte.patente)
+        c.drawString(400, 570, 'Patente: ' +
+                     int_x_ant[0].anticipo.transporte.patente)
         c.drawString(30, 545, 'Gastos: $' + str(int_x_ant[0].anticipo.gastos))
 
         # tabla.encabezado
@@ -666,7 +663,6 @@ def archivar(request):
         llegadas = request.POST.getlist('llegada[]')
         horas_salida = request.POST.getlist('hora_salida[]')
         horas_llegada = request.POST.getlist('hora_llegada[]')
-
         # Cetalle de trabajo
         km_salida = request.POST['km_salida']
         km_llegada = request.POST['km_llegada']
@@ -688,6 +684,7 @@ def archivar(request):
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
+        messages.success(request,('Rendición de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_comision.html')
 
@@ -697,7 +694,6 @@ def archivarSolicitud(request):
     if request.method == 'POST':
         # usuarios
         pk_users = request.POST.getlist('afiliado[]')
-        print(pk_users)
         # solicitud
         motivo = request.POST['motivo']
         fech_inicio = request.POST['fech_inicio']
@@ -715,6 +711,7 @@ def archivarSolicitud(request):
         for i in range(len(pk_users)):
             Integrantes_x_Solicitud.objects.create(
                 solicitud=nueva_solicitud, user_id=pk_users[i])
+        messages.success(request,('Solicitud de comisión creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_solicitud_comision.html')
 
