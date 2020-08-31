@@ -38,7 +38,7 @@ class LicenciaSolicitud(SuccessMessageMixin,CreateView):
         context['title'] = 'Imprimir'
         context['method'] = 'POST'
         context['target'] = '_blank'
-        context['atr'] = 'btn-success'
+        context['atr'] = 'btn-primary'
         return context
 
     def form_valid(self, form):
