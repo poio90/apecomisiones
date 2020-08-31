@@ -35,7 +35,7 @@ class LicenciaSolicitud(SuccessMessageMixin,CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['list_url'] = reverse_lazy('licencias:licencias_pdf')
-        context['title'] = 'Imprimir'
+        context['title'] = 'Generar PDF'
         context['method'] = 'POST'
         context['target'] = '_blank'
         context['atr'] = 'btn-primary'
@@ -48,12 +48,13 @@ class LicenciaSolicitud(SuccessMessageMixin,CreateView):
         return super(LicenciaSolicitud, self).form_valid(form)
 
 
-class LicenciaEditar(UpdateView):
+class LicenciaEditar(SuccessMessageMixin,UpdateView):
     model = Licencia
     form_class = FormLicencia
     context_object_name = 'licencia'
     template_name = 'licencias/licencia.html'
     success_url = reverse_lazy('licencias:licencias_historico')
+    success_message = "La solicitud de licencia ha sido actualizada correctamente"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
