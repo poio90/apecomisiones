@@ -421,13 +421,8 @@ class ReportePdfAnticipo(View):
         c.drawString(x, 800, text)
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 770, 'Apellido y Nombre'+'       ' +
-                     request.user.last_name + '  '+request.user.first_name)
-        c.drawString(360, 770, 'N° Afiliado a SEMPRE' +
-                     '         ' + str(request.user.num_afiliado))
-
-        alto = 745
-
+        
+        alto = 770
         for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          nombre[i].last_name + '  '+nombre[i].first_name)
