@@ -29,14 +29,11 @@ $(document).ready(function () {
   
   $("body").on("click",'.add-more', function () {
     //Toma el id de full name para
-    var html = $(".copy").html();
     var id = $(this).attr('id');//agregado por mi
-    console.log(html);
     id = parseInt(id) + 1;//agregado por mi
     $(".copy select").attr("indice", id);//agregado por mi
     $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
     $("#after-add-more").append($(".copy").html());
-    
     //$(".copy select").prop('required',true);//agregado por mi
     $(this).attr('id', id = id + 1);//agregado por mi
   });

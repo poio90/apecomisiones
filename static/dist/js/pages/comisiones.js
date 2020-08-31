@@ -16,24 +16,18 @@ $(document).ready(function () {
         });
     })*/
 
-    $('#myform').on('select2:select', function (e) {
+    $('#after-add-more').on('select2:select', function (e) {
         var data = e.params.data;
-        var id = data.element.offsetParent.attributes.indice.nodeValue
+        var form = $(this)
+        var id = e.target.attributes.indice.nodeValue
         var div = document.getElementById('after-add-more');
-        console.log(data.element.offsetParent.attributes.indice.nodeValue);
-        $.ajax({
-            url: div.getAttribute("data-validate-afiliado-url"),
-            data: { pk : data.element.value},
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.data[0].num_afiliado);
-                $('#afiliado' + id).val(data.data[0].num_afiliado);
-                /*$("").parent().children("input[name='" + data.name + "']").val(text);*/
-            }
-        });
+        //console.log(form);
+        $.get(div.getAttribute("data-validate-afiliado-url"),{ pk : data.element.value}, function(response){
+            $('#afiliado' + id).val(response.data[0].num_afiliado);
+        })
     });
 
-    $('#sel').each(function () {
+    $('#after-add-more select').each(function () {
         $(this).select2({
             theme: 'bootstrap4',
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -54,18 +48,12 @@ $(document).ready(function () {
     $("#transporte").change(function () {
         var form = $(this).closest("#transporte");
         var div = document.getElementById(this.id);
-        $.ajax({
-            url: div.getAttribute("data-validate-transporte-url"),
-            data: form.serialize(),
-            dataType: 'json',
-            success: function (data) {
-                $('#patente').val(data.data[0].patente);
-            }
-        });
+        $.get(div.getAttribute("data-validate-transporte-url"),form.serialize(), function(response){
+            $('#patente').val(response.data[0].patente);
+        })
     })
 
     $('#myform').on('submit', function (e) { //use on if jQuery 1.7+
-
         var data = $("input[name='num_afiliado[]']").serializeArray();
         var km_total = $("input[name='km_total']").val();
         control = true;
