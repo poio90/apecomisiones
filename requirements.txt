@@ -4,3 +4,4 @@ django-jet==1.0.8
 django-js-asset>=1.2.2
 django-bootstrap-datepicker-plus==3.0.5
 reportlab
+django_extensions
