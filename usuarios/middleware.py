@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 
 
 class PerfilCompletoMiddlerware:
@@ -16,8 +17,9 @@ class PerfilCompletoMiddlerware:
             if not request.user.is_staff:
                 user = request.user
                 if not user.last_name or not user.first_name or not user.dni or not user.num_tel:
-                    if request.path not in [reverse('usuarios:update_profile'), reverse('usuarios:logout')]:
-                        return redirect('usuarios:update_profile')
+                    if request.path not in [reverse('usuarios:editar_perfil'), reverse('usuarios:logout')]:
+                        messages.success(request,('Por favor complete su datos personales'))
+                        return redirect('usuarios:editar_perfil')
 
         response = self.get_response(request)
         return response

@@ -113,8 +113,7 @@ class ReportePdfSolicitud(View):
         return response
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-
+        
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         motivo = request.POST['motivo']

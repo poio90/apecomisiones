@@ -156,7 +156,7 @@ class ReportePdfLicencia(View):
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, 60))
 
-        texto = 'Santa Rora, ' + str(fecha_solicitud)
+        texto = licencia.ciudad.ciudad +', ' + str(fecha_solicitud)
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, -8))
 
@@ -237,7 +237,8 @@ class ReportePdfLicencia(View):
         fecha_inicio = request.POST['fecha_inicio']
         fecha_fin = request.POST['fecha_fin']
         fecha_reintegro = request.POST['fecha_reintegro']
-
+        ciudad = Ciudad.objects.get(id_ciudad=request.POST['ciudad'])
+        
         buffer = BytesIO()
         response = HttpResponse(content_type='application/pdf')
 
@@ -283,7 +284,7 @@ class ReportePdfLicencia(View):
 
         fecha = date.today().strftime("%d/%m/%Y")
 
-        texto = 'Santa Rora, ' + str(fecha)
+        texto = str(ciudad) +', ' + str(fecha)
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, -8))
 

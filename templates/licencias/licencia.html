@@ -66,7 +66,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
-                                        <label for="inputFechaFin" class="col-sm-4 col-form-label">Días hábiles por traslado</label>
+                                        <label for="inputFechaFin" class="col-sm-4 col-form-label">Días hábiles por
+                                            traslado</label>
                                         <div class="col">
                                             <div class="input-group">
                                                 {{ form.dias_habiles_agregar}}
@@ -87,7 +88,7 @@
                                                             class="far fa-calendar-alt"></i></span>
                                                 </div>
                                                 {{ form.fecha_inicio}}
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +112,7 @@
                             <div class="form-group row">
                                 <div class="col">
                                     <div class="row">
-                                        <label for="inputFechaReintegro" class="col-sm-2 col-form-label">Fecha de
+                                        <label for="inputFechaReintegro" class="col-sm-4 col-form-label">Fecha de
                                             reintegro</label>
                                         <div class="col">
                                             <div class="input-group">
@@ -120,7 +121,19 @@
                                                             class="far fa-calendar-alt"></i></span>
                                                 </div>
                                                 {{ form.fecha_reintegro }}
-                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="inputFechaFin" class="col-sm-4 col-form-label">
+                                            Lugar de pedido
+                                        </label>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                {{ form.ciudad }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -156,9 +169,12 @@
                                 <button type="submit" class="btn {{ atr }}" formmethod="{{ method }}"
                                     formaction="{{ list_url }}" formtarget="{{ target }}">
                                     <i class="fas fa-download"></i>
-                                    {{ title }}</button>
-                                <button type="submit" class="btn btn-success"><i
-                                        class="fas fa-archive"></i>Archivar</button>
+                                    {{ title }}
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-archive"></i>
+                                    Archivar
+                                </button>
                             </div>
                             <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
                         </div>

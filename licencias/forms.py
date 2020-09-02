@@ -9,18 +9,14 @@ class FormLicencia(forms.ModelForm):
             self.fields[myField].widget.attrs['class'] = 'form-control'
         
         self.fields['dias_habiles_acum'].widget.attrs['autofocus'] = 'autofocus'
-        """ atrr name"""
-        self.fields['dias_habiles_acum'].widget.attrs['name'] = 'dias_habiles_acum'
-        self.fields['dias_habiles_agregar'].widget.attrs['name'] = 'dias_habiles_agregar'
-        self.fields['fecha_inicio'].widget.attrs['name'] = 'date_inicio'
-        self.fields['fecha_fin'].widget.attrs['name'] = 'date_fin'
-        self.fields['fecha_reintegro'].widget.attrs['name'] = 'date_reintegro'
         
         """ atrr id"""
         self.fields['fecha_inicio'].widget.attrs['id'] = 'date_inicio'
         self.fields['fecha_fin'].widget.attrs['id'] = 'date_fin'
         self.fields['fecha_reintegro'].widget.attrs['id'] = 'date_reintegro'
+
+        self.fields['ciudad'].widget.attrs['class'] = 'sel'
         
     class Meta:
         model = Licencia
-        fields = ['dias_habiles_acum','dias_habiles_agregar','fecha_inicio','fecha_fin','fecha_reintegro']
+        fields = ['dias_habiles_acum','dias_habiles_agregar','fecha_inicio','fecha_fin','fecha_reintegro','ciudad']
