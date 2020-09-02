@@ -113,6 +113,7 @@ class ReportePdfSolicitud(View):
         return response
 
     def post(self, request, *args, **kwargs):
+        print(request.POST)
 
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
@@ -120,7 +121,7 @@ class ReportePdfSolicitud(View):
 
         fech_inicio = request.POST['fech_inicio']
         duracion_prevista = request.POST['duracion_prevista']
-        ciudad = request.POST['ciudad']
+        pk_ciudad = request.POST['ciudad']
         transporte = request.POST['transporte']
         patente = request.POST['patente']
         gastos_previstos = request.POST['gastos_previstos']
@@ -130,6 +131,8 @@ class ReportePdfSolicitud(View):
         for i in range(len(pk)-1):
             pk1 = str(pk[i])
             nombre.append(User.objects.get(pk=pk1))
+        
+        ciudad = Ciudad.objects.get(id_ciudad=pk_ciudad)
 
         num_legajo_transporte = Transporte.objects.get(
             id_transporte=transporte)
@@ -191,7 +194,7 @@ class ReportePdfSolicitud(View):
         c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
         c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista+' días')
         c.drawString(
-            30, 340, 'Lugar de residencia durante la comisión: '+ciudad)
+            30, 340, 'Lugar de residencia durante la comisión: '+ ciudad.ciudad)
         c.drawString(30, 310, 'Medio de transporte')
         c.drawString(200, 310, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
