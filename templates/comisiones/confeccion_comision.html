@@ -211,12 +211,10 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    <input name="km_salida" class="form-control" type="number" step="any" placeholder="Km de salida"
-                      required>
+                    <input name="km_salida" class="form-control" type="number" step="any" placeholder="Km de salida">
                   </div>
                   <div class="col">
-                    <input name="km_llegada" class="form-control" type="number" step="any" placeholder="Kn de llegada"
-                      required>
+                    <input name="km_llegada" class="form-control" type="number" step="any" placeholder="Kn de llegada">
                   </div>
                   <div class="col">
                     <input name="km_total" class="form-control" type="text" placeholder="Total kms recorridos"
@@ -232,15 +230,16 @@
             <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-                <button id="imprimir" type="submit" class="btn btn-primary"
-                  formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
-                  <i class="fas fa-download"></i>
-                  Generar PDF</button>
+                
                 <button id="archivar" class="btn btn-success">
                   <i class="fas fa-archive"></i>
                   Archivar</button>
               </div>
-              <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>
+              <button id="imprimir" type="submit" class="btn btn-primary"
+                  formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
+                  <i class="fas fa-download"></i>
+                  Generar PDF</button>
+              <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
             </div>
             <!-- /.card-footer -->
           </form>

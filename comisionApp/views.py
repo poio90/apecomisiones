@@ -493,12 +493,12 @@ class ReportePdfAnticipo(View):
 
         # informe de comision
         c.setFont('Helvetica', 16)
-        c.drawString(30, 245, 'Informe de la comision: ')
+        c.drawString(30, 245, 'Informe de Anticipo ')
 
         c.setFont('Helvetica', 12)
-        c.drawString(32, 220, 'km Salida: '+km_salida)
-        c.drawString(180, 220, 'km Llegada: '+km_llegada)
-        c.drawString(350, 220, 'Total km recorrido: '+km_total)
+        #c.drawString(32, 220, 'km Salida: '+km_salida)
+        #c.drawString(180, 220, 'km Llegada: '+km_llegada)
+        #c.drawString(350, 220, 'Total km recorrido: '+km_total)
 
         # Lineas Verticales
         c.line(30, 237, 30, 50)
@@ -506,11 +506,11 @@ class ReportePdfAnticipo(View):
 
         # Lineas Horizontales
         c.line(30, 237, 565, 237)
-        c.line(30, 210, 565, 210)
+        #c.line(30, 210, 565, 210)
         c.line(30, 50, 565, 50)
 
         c.setFont('Helvetica', 12)
-        c.drawString(35, 195, 'Detalle de los trabajos realizados: ')
+        c.drawString(35, 220, 'Nota: ')
 
         # Funcion que agrega saltos de linea
         j = 0
@@ -527,7 +527,7 @@ class ReportePdfAnticipo(View):
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
-        textobject.setTextOrigin(35, 180)
+        textobject.setTextOrigin(35, 208)
         textobject.setFont("Courier", 10)
         textobject.textLines(story)
         c.drawText(textobject)
@@ -660,13 +660,12 @@ def archivar(request):
         llegadas = request.POST.getlist('llegada[]')
         horas_salida = request.POST.getlist('hora_salida[]')
         horas_llegada = request.POST.getlist('hora_llegada[]')
-        # Cetalle de trabajo
+        # Detalle de trabajo
         km_salida = request.POST['km_salida']
         km_llegada = request.POST['km_llegada']
         detalle_trabajo = request.POST['detalle_trabajo']
-
+        
         # Crear anticpo en la BD
-
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
                                   transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
         nuevo_anticipo.save()
@@ -676,8 +675,13 @@ def archivar(request):
                 anticipo=nuevo_anticipo, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
                 hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
 
-        DetalleTrabajo.objects.create(
-            anticipo=nuevo_anticipo, km_salida=km_salida, km_llegada=km_llegada, detalle_trabajo=detalle_trabajo)
+        if km_llegada and km_salida:
+            DetalleTrabajo.objects.create(
+                anticipo=nuevo_anticipo, km_salida=km_salida, km_llegada=km_llegada, detalle_trabajo=detalle_trabajo)
+        else:
+            DetalleTrabajo.objects.create(
+                anticipo=nuevo_anticipo, detalle_trabajo=detalle_trabajo)
+        
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
