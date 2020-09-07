@@ -22,6 +22,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from django.core import serializers
+from django.db.models import Q
 
 
 # Create your views here.
@@ -56,8 +57,8 @@ class ReportePdfSolicitud(View):
 
         alto = 745
         for i in range(len(integrantes)-1):
-            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
-                         integrantes[i].user.last_name + '  '+integrantes[i].user.first_name)
+            c.drawString(30, alto, 'Apellido y Nombre'+'     ' +
+                         integrantes[i].user.get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
                          '         ' + integrantes[i].user.num_afiliado)
             alto = alto - 25
@@ -90,7 +91,7 @@ class ReportePdfSolicitud(View):
         c.drawString(30, 370, 'Fecha de iniciación: ' +
                      str(fecha_inicio))
         c.drawString(320, 370, 'Duracón prevista: ' +
-                     solicitud.duracion_prevista+' días')
+                     solicitud.duracion_prevista)
         c.drawString(
             30, 340, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
         c.drawString(30, 310, 'Medio de transporte')
@@ -100,7 +101,7 @@ class ReportePdfSolicitud(View):
         c.drawString(30, 280, 'Gastos a solicitar: $' +
                      str(solicitud.gastos_previstos))
         c.drawString(30, 250, 'Comisión ordenada por: ' +
-                     request.user.last_name+'  '+request.user.first_name)
+                     solicitud.solicitante.get_full_name())
 
         c.drawString(500, 20, 'Firma')
         c.line(465, 32, 570, 32)
@@ -113,7 +114,7 @@ class ReportePdfSolicitud(View):
         return response
 
     def post(self, request, *args, **kwargs):
-        
+
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         motivo = request.POST['motivo']
@@ -130,7 +131,7 @@ class ReportePdfSolicitud(View):
         for i in range(len(pk)-1):
             pk1 = str(pk[i])
             nombre.append(User.objects.get(pk=pk1))
-        
+
         ciudad = Ciudad.objects.get(id_ciudad=pk_ciudad)
 
         num_legajo_transporte = Transporte.objects.get(
@@ -193,7 +194,7 @@ class ReportePdfSolicitud(View):
         c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
         c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista+' días')
         c.drawString(
-            30, 340, 'Lugar de residencia durante la comisión: '+ ciudad.ciudad)
+            30, 340, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
         c.drawString(30, 310, 'Medio de transporte')
         c.drawString(200, 310, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
@@ -242,8 +243,8 @@ class ReportePdfAnticipo(View):
 
         c.setFont('Helvetica', 12)
         for i in range(len(int_x_ant)-1):
-            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
-                         int_x_ant[i].user.last_name + '  '+int_x_ant[i].user.first_name)
+            c.drawString(30, alto, 'Apellido y Nombre'+'     ' +
+                         int_x_ant[i].user.get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
                          '         ' + int_x_ant[i].user.num_afiliado)
             alto = alto - 25
@@ -423,7 +424,7 @@ class ReportePdfAnticipo(View):
         c.drawString(x, 800, text)
 
         c.setFont('Helvetica', 12)
-        
+
         alto = 770
         for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
@@ -595,8 +596,8 @@ class HistoricoSolicitudes(ListView):
 def historicos(request):
     anticipos = Anticipo.objects.filter(
         integrantes_x_anticipo__user=request.user.pk)
-    solicitudes = Solicitud.objects.filter(
-        integrantes_x_solicitud__user=request.user.pk)
+    solicitudes = Solicitud.objects.filter(Q(integrantes_x_solicitud__user=request.user.pk)
+                                           | Q(solicitante_id=request.user.pk))
     return render(request, 'comisiones/historico.html', {
         'anticipos': anticipos,
         'solicitudes': solicitudes,
@@ -664,7 +665,7 @@ def archivar(request):
         km_salida = request.POST['km_salida']
         km_llegada = request.POST['km_llegada']
         detalle_trabajo = request.POST['detalle_trabajo']
-        
+
         # Crear anticpo en la BD
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
                                   transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
@@ -681,11 +682,12 @@ def archivar(request):
         else:
             DetalleTrabajo.objects.create(
                 anticipo=nuevo_anticipo, detalle_trabajo=detalle_trabajo)
-        
+
         for i in range(len(pk_users)):
             Integrantes_x_Anticipo.objects.create(
                 anticipo=nuevo_anticipo, user_id=pk_users[i])
-        messages.success(request,('Rendición de anticipo creada exitosamente'))
+        messages.success(
+            request, ('Rendición de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_comision.html')
 
@@ -706,13 +708,14 @@ def archivarSolicitud(request):
         # Crear anticpo en la BD
         nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
                                     transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
-                                    motivo=motivo, gastos_previstos=gastos_previstos)
+                                    motivo=motivo, gastos_previstos=gastos_previstos, solicitante=request.user)
         nueva_solicitud.save()
 
         for i in range(len(pk_users)):
             Integrantes_x_Solicitud.objects.create(
                 solicitud=nueva_solicitud, user_id=pk_users[i])
-        messages.success(request,('Solicitud de comisión creada exitosamente'))
+        messages.success(
+            request, ('Solicitud de comisión creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_solicitud_comision.html')
 

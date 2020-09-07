@@ -91,6 +91,13 @@ class Solicitud(models.Model):
         db_column='id_transporte'
     )
 
+    solicitante = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        db_column='id_user'
+    )
+
     fech_inicio = models.DateField()
 
     fecha_pedido = models.DateField(auto_now_add=True)
