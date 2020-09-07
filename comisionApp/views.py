@@ -596,11 +596,12 @@ class HistoricoSolicitudes(ListView):
 def historicos(request):
     anticipos = Anticipo.objects.filter(
         integrantes_x_anticipo__user=request.user.pk)
-    solicitudes = Solicitud.objects.filter(Q(integrantes_x_solicitud__user=request.user.pk)
-                                           | Q(solicitante_id=request.user.pk))
+    solicitudes = Solicitud.objects.filter(integrantes_x_solicitud__user=request.user.pk)
+    solicitudes2 = Solicitud.objects.filter(solicitante_id=request.user.pk)
     return render(request, 'comisiones/historico.html', {
         'anticipos': anticipos,
         'solicitudes': solicitudes,
+        'solicitudes2': solicitudes2,
     })
 
 
@@ -631,6 +632,10 @@ class EliminarSolicitud(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
+        print(self.kwargs['pk'])
+        integrantes_x_solicitud = Integrantes_x_Solicitud.objects.filter(
+            solicitud_id=self.kwargs['pk'])
+        integrantes_x_solicitud.delete()
         return super(EliminarSolicitud, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -715,7 +720,7 @@ def archivarSolicitud(request):
             Integrantes_x_Solicitud.objects.create(
                 solicitud=nueva_solicitud, user_id=pk_users[i])
         messages.success(
-            request, ('Solicitud de comisión creada exitosamente'))
+            request, ('Solicitud de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
     return render(request, 'comisiones/confeccion_solicitud_comision.html')
 
