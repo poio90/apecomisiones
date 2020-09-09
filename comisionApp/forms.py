@@ -1,48 +1,33 @@
 from django import forms
-from .models import Anticipo,Transporte
+from bootstrap_datepicker_plus import DateTimePickerInput, DatePickerInput
+from .models import *
 
 
-class SolicitudForm(forms.Form):
-    """ Formulario para validar los campos de la solicitud """
-    motivo = forms.CharField(
-        min_length=6,
-        required=True
-    )
-
-    fech_inicio = forms.CharField(
-        required=True
-    )
-
-    duracion_prevista = forms.CharField(
-        min_length=2,
-        max_length=10,
-        required=True
-    )
-
-    ciudad = forms.CharField(
-        required=True
-    )
-
-    transporte = forms.CharField(
-        required=True
-    )
-
-    patente = forms.CharField(
-        required=True
-    )
-
-    gastos_previstos = forms.CharField(
-        min_length=2,
-        max_length=10,
-        required=True
-    )
+class DatePickerInput(DatePickerInput):
+    options = {
+        "format": "DD/MM/YYYY",  # moment date-time format
+        "showClose": True,
+        "showClear": True,
+        "showTodayButton": True,
+        "locale": "es"}
 
 
-class Anticipo(forms.ModelForm):
+
+class SolicitudForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+
     class Meta:
-        model: Anticipo
+        model = Solicitud
+        fields = ['fech_inicio', ]
+        widgets = {
+            'fech_inicio': DatePickerInput(),
+        }
+
 
 class TransporteForm(forms.ModelForm):
     class Meta:
         model = Transporte
-        fields = ['num_legajo','patente']
+        fields = ['num_legajo', 'patente']

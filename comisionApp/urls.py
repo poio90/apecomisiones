@@ -27,6 +27,11 @@ urlpatterns = [
     path(route='comisiones/historico',
          view=login_required(views.historicos),
          name='historico_comisiones'),
+#####################################################
+     path(route='comisiones/solicitudes/prueba',
+         view=views.Solicitud.as_view(),
+         name='solicitud_prueba'),
+         #####################################
 
     # Anticipos
     path(route='comisiones/anticipos/reportes',

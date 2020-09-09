@@ -1,15 +1,18 @@
 import datetime
 from datetime import date, datetime
 from django.db import transaction
+from django.forms import formset_factory
 from io import BytesIO
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
+from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView, FormView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
+from .forms import *
+from usuarios.forms import UserForm
 from usuarios.models import User
 from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
@@ -560,6 +563,12 @@ def confeccionSolicitudComision(request):
         'ciudades': ciudades,
         'transportes': transportes,
     })
+
+class Solicitud(FormView):
+    model = User
+    template_name ='comisiones/historico_solicitud.html'
+    form_class = formset_factory(UserForm, extra=2)
+    success_url = '.'
 
 
 @login_required

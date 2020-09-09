@@ -39,4 +39,14 @@ class FormRegistro(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','num_afiliado','dni', 'num_afiliado','password1', 'password2']
+        fields = ['username','num_afiliado','dni','password1', 'password2']
+
+
+class UserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+    class Meta:
+        model = User
+        fields = ['last_name',]
