@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
+{{ solicitud.media }}
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -17,14 +18,11 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
-<!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form id="myform" method="POST" action="{% url 'comisiones:archivar_solicitud' %}"
-                    class="form-horizontal" enctype="multipart/form-data">
+                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="card card-primary card-outline">
                         <div class="card-header">
@@ -70,7 +68,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <!-- div que se muestra luego de agregar usuario -->
                             <div class="copy d-none d-print-block">
@@ -105,36 +102,22 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <textarea name="motivo" type="text" class="form-control"
-                                    placeholder="DETALLE DE LOS TRABAJOS REALIZADOS:"
-                                    required>{% if error %}{{ motivo }}{% else %}{{ motivo }}{% endif %}</textarea>
+                                {{ form.motivo }}
                             </div>
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6 mt-2">
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i
-                                                        class="far fa-calendar-alt"></i></span>
-                                            </div>
-                                            <input type="date" id="date_inicio" name="fech_inicio" class="form-control"
-                                                placeholder="Fecha de iniciación" autocomplete='off' required>
+                                            {{ form.fech_inicio }}
                                         </div>
                                     </div>
                                     <div class="col-md-6 mt-2">
-                                        <input type="text" name="duracion_prevista" class="form-control"
-                                            placeholder="Duración prevista" autocomplete='off' required>
+                                        {{ form.duracion_prevista }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select name="ciudad" class="sel"
-                                    data-placeholder="Lugar de residencia durante la comisión" required>
-                                    <option></option>
-                                    {% for ciudad in ciudades %}
-                                    <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
-                                    {% endfor %}
-                                </select>
+                                {{ form.ciudad }}
                             </div>
                             <div class="row">
                                 <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
@@ -159,8 +142,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input name="gastos_previstos" type="number" step="any" class="form-control"
-                                    placeholder="Gastos a solicitar" required>
+                                {{ form.gastos_previstos }}
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -185,5 +167,7 @@
     <!-- /.row -->
     <!-- /.container-fluid -->
 </section>
+<!-- /.content -->
+
 <!-- /.content -->
 {% endblock %}

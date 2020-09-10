@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
-{{ form.media }}
+{{ solicitud.media }}
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -20,12 +20,153 @@
 </section>
 
 <section class="content">
-    <form method="post">
-        {% csrf_token %}
-        {% for f in form %}
-            {{ f.last_name }}
-        {% endfor %}
-    </form>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <label class="card-title">Solicitud de anticipo</label>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="inputAfiliado" class="col-form-label">Fecha de pedido</label>
+                                    </div>
+                                    <div class="col">
+                                        <!--<input class="form-control">-->
+                                        <label class="col-form-label">{% now "j F Y" %}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="after-add-more"
+                                data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+                                <div class="form-group">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mt-2">
+                                            <select id="sel" indice="0" name="afiliado[]"
+                                                data-placeholder="Apellido y nombre">
+                                                <option></option>
+                                                {% for afiliado in users %}
+                                                <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                                                    {{ afiliado.first_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5 mt-2">
+                                            <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
+                                                placeholder="Número de afiliado a SEMPRE">
+                                        </div>
+                                        <div class="col-md-1 mt-2">
+                                            <span class="float-right mb-3 mr-2">
+                                                <a style="cursor:pointer;" id="0" class="text-success add-more">
+                                                    <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- div que se muestra luego de agregar usuario -->
+                            <div class="copy d-none d-print-block">
+                                <div class="form-group">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mt-2">
+                                            <select name="afiliado[]" data-placeholder="Apellido y nombre">
+                                                <option></option>
+                                                {% for afiliado in users %}
+                                                <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
+                                                    {{ afiliado.first_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5 mt-2">
+                                            <input name="num_afiliado[]" type="text" class="form-control"
+                                                placeholder="Número de afiliado a SEMPRE">
+                                        </div>
+                                        <div class="col-md-1 mt-2">
+                                            <span class="float-right mb-3 mr-2">
+                                                <a style="cursor:pointer;" class="text-danger remove">
+                                                    <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAfiliado" class="col-sm-6 col-form-label">
+                                    <h4>Motivo de la Comisión</h4>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                {{ form.motivo }}
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6 mt-2">
+                                        <div class="input-group">
+                                            {{ form.fech_inicio }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        {{ form.duracion_prevista }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.ciudad }}
+                            </div>
+                            <div class="row">
+                                <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
+                                    transporte:</label>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <select id="transporte" class="sel" name="transporte"
+                                            data-placeholder="Unidad de legajo"
+                                            data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
+                                            <option></option>
+                                            {% for transporte in transportes %}
+                                            <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input id="patente" name="patente" type="text" class="form-control"
+                                            placeholder="Patente" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.gastos_previstos }}
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
+                                    Archivar</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary"
+                                formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
+                                <i class="fas fa-download"></i>
+                                Generar PDF</button>
+                            <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
+                        </div>
+                </form>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 

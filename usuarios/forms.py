@@ -49,4 +49,4 @@ class UserForm(forms.ModelForm):
             self.fields[myField].widget.attrs['class'] = 'form-control'
     class Meta:
         model = User
-        fields = ['last_name',]
+        fields = ['last_name','first_name','num_afiliado']
