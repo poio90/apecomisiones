@@ -1,48 +1,44 @@
 from django import forms
-from .models import Anticipo,Transporte
+from bootstrap_datepicker_plus import DateTimePickerInput, DatePickerInput
+from .models import *
+from usuarios.models import User
+from usuarios.forms import UserForm
 
 
-class SolicitudForm(forms.Form):
-    """ Formulario para validar los campos de la solicitud """
-    motivo = forms.CharField(
-        min_length=6,
-        required=True
-    )
-
-    fech_inicio = forms.CharField(
-        required=True
-    )
-
-    duracion_prevista = forms.CharField(
-        min_length=2,
-        max_length=10,
-        required=True
-    )
-
-    ciudad = forms.CharField(
-        required=True
-    )
-
-    transporte = forms.CharField(
-        required=True
-    )
-
-    patente = forms.CharField(
-        required=True
-    )
-
-    gastos_previstos = forms.CharField(
-        min_length=2,
-        max_length=10,
-        required=True
-    )
+class DatePickerInput(DatePickerInput):
+    options = {
+        "format": "DD/MM/YYYY",  # moment date-time format
+        "showClose": True,
+        "showClear": True,
+        "showTodayButton": True,
+        "locale": "es"}
 
 
-class Anticipo(forms.ModelForm):
+class SolicitudForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+        
+        """ atrr class"""
+        self.fields['ciudad'].widget.attrs['class'] = 'sel'
+
+        """ atrr placeholder"""
+        self.fields['fech_inicio'].widget.attrs['placeholder'] = 'Fecha de iniciación'
+        self.fields['duracion_prevista'].widget.attrs['placeholder'] = 'Duración prevista'
+        self.fields['ciudad'].widget.attrs['data-placeholder'] = 'Lugar de residencia durante la comisión'
+        self.fields['gastos_previstos'].widget.attrs['placeholder'] = 'Gastos a solicitar'
+        self.fields['motivo'].widget.attrs['placeholder'] = 'DETALLE DE LOS TRABAJOS REALIZADOS:'
+
     class Meta:
-        model: Anticipo
+        model = Solicitud
+        fields = ['fech_inicio','gastos_previstos', 'motivo','duracion_prevista', 'ciudad']
+        widgets = {
+            'fech_inicio': DatePickerInput(),
+        }
+
 
 class TransporteForm(forms.ModelForm):
     class Meta:
         model = Transporte
-        fields = ['num_legajo','patente']
+        fields = ['num_legajo', 'patente']

@@ -102,7 +102,7 @@ class Solicitud(models.Model):
 
     fecha_pedido = models.DateField(auto_now_add=True)
     gastos_previstos = models.FloatField()
-    motivo = RichTextField()
+    motivo = models.TextField()
     duracion_prevista = models.CharField(max_length=20)
 
     class Meta:

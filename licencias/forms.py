@@ -4,6 +4,15 @@ from bootstrap_datepicker_plus import DateTimePickerInput, DatePickerInput
 from .models import Licencia
 
 
+class DatePickerInput(DatePickerInput):
+    options = {
+        "format": "DD/MM/YYYY",  # moment date-time format
+        "showClose": True,
+        "showClear": True,
+        "showTodayButton": True,
+        "locale": "es"}
+
+
 class FormLicencia(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,25 +34,7 @@ class FormLicencia(forms.ModelForm):
         fields = ['dias_habiles_acum', 'dias_habiles_agregar',
                   'fecha_inicio', 'fecha_fin', 'fecha_reintegro', 'ciudad']
         widgets = {
-            'fecha_inicio': DatePickerInput(options={
-                "format": "DD/MM/YYYY",  # moment date-time format
-                "showClose": True,
-                "showClear": True,
-                "showTodayButton": True,
-                "locale": "es"
-            }),
-            'fecha_reintegro': DatePickerInput(options={
-                "format": "DD/MM/YYYY",  # moment date-time format
-                "showClose": True,
-                "showClear": True,
-                "showTodayButton": True,
-                "locale": "es"
-            }),
-            'fecha_fin': DatePickerInput(options={
-                "format": "DD/MM/YYYY",  # moment date-time format
-                "showClose": True,
-                "showClear": True,
-                "showTodayButton": True,
-                "locale": "es"
-            }),
+            'fecha_inicio': DatePickerInput(),
+            'fecha_reintegro': DatePickerInput(),
+            'fecha_fin': DatePickerInput(),
         }

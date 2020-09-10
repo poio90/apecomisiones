@@ -1,15 +1,19 @@
 import datetime
 from datetime import date, datetime
 from django.db import transaction
+from django.forms import formset_factory
 from io import BytesIO
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView, FormView
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
+from .forms import *
+from usuarios.forms import UserForm
 from usuarios.models import User
 from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
@@ -22,7 +26,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from django.core import serializers
-from django.db.models import Q
+import pdb
 
 
 # Create your views here.
@@ -33,6 +37,8 @@ class ReportePdfSolicitud(View):
         solicitud = Solicitud.objects.get(pk=kwargs['pk'])
         integrantes = Integrantes_x_Solicitud.objects.filter(
             solicitud_id=kwargs['pk'])
+
+        print(integrantes)
 
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
@@ -56,7 +62,7 @@ class ReportePdfSolicitud(View):
         c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
 
         alto = 745
-        for i in range(len(integrantes)-1):
+        for i in range(len(integrantes)):
             c.drawString(30, alto, 'Apellido y Nombre'+'     ' +
                          integrantes[i].user.get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
@@ -187,11 +193,8 @@ class ReportePdfSolicitud(View):
         textobject.textLines(story)
         c.drawText(textobject)
 
-        fecha_inicio = datetime.strptime(
-            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
-
         c.setFont('Helvetica', 12)
-        c.drawString(30, 370, 'Fecha de iniciación: '+fecha_inicio)
+        c.drawString(30, 370, 'Fecha de iniciación: '+fech_inicio)
         c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista+' días')
         c.drawString(
             30, 340, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
@@ -549,17 +552,41 @@ class ReportePdfAnticipo(View):
         return response
 
 
-@login_required
-@transaction.atomic
-def confeccionSolicitudComision(request):
-    users = User.objects.all().order_by('last_name')
-    ciudades = Ciudad.objects.all()
-    transportes = Transporte.objects.all()
-    return render(request, 'comisiones/confeccion_sol_comision.html', {
-        'users': users,
-        'ciudades': ciudades,
-        'transportes': transportes,
-    })
+class SolicitudAnticipo(SuccessMessageMixin, CreateView):
+    model = Solicitud
+    template_name = 'comisiones/historico_solicitud.html'
+    form_class = SolicitudForm
+    context_object_name = 'solicitud'
+    success_message = "Solicitud de anticipo creada exitosamente"
+    success_url = reverse_lazy('comisiones:historico_comisiones')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all().order_by('last_name')
+        context['transportes'] = Transporte.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return super().post(request, *args, **kwargs)
+        else:
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['form'] = form
+            return render(request,self.template_name,context)
+
+    def form_valid(self, form):
+        object = form.save(commit=False)
+        object.transporte_id = self.request.POST['transporte']
+        object.solicitante = self.request.user
+        object.save()
+        pk_users = self.request.POST.getlist('afiliado[]')
+        for i in range(len(pk_users)-1):
+            Integrantes_x_Solicitud.objects.create(
+                solicitud=object, user_id=pk_users[i])
+        return super(SolicitudAnticipo, self).form_valid(form)
 
 
 @login_required
@@ -575,7 +602,7 @@ def confeccionAnticipo(request):
     })
 
 
-"""class HistoricoAnticipos(ListView):
+class Historicos(ListView):
     model = Anticipo
     context_object_name = 'anticipos'
     template_name = 'comisiones/historico.html'
@@ -583,26 +610,13 @@ def confeccionAnticipo(request):
     def get_queryset(self):
         return Anticipo.objects.filter(integrantes_x_anticipo__user=self.request.user.id)
 
-class HistoricoSolicitudes(ListView):
-    model = Solicitud
-    context_object_name = 'solicitudes'
-    template_name = 'comisiones/historico_solicitud.html'
-
-    def get_queryset(self):
-        return Solicitud.objects.filter(integrantes_x_solicitud__user=self.request.user.id)"""
-
-
-@login_required
-def historicos(request):
-    anticipos = Anticipo.objects.filter(
-        integrantes_x_anticipo__user=request.user.pk)
-    solicitudes = Solicitud.objects.filter(integrantes_x_solicitud__user=request.user.pk)
-    solicitudes2 = Solicitud.objects.filter(solicitante_id=request.user.pk)
-    return render(request, 'comisiones/historico.html', {
-        'anticipos': anticipos,
-        'solicitudes': solicitudes,
-        'solicitudes2': solicitudes2,
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['solicitudes'] = Solicitud.objects.filter(
+            integrantes_x_solicitud__user=self.request.user.pk)
+        context['solicitudes_pedidas'] = Solicitud.objects.filter(
+            solicitante_id=self.request.user.pk)
+        return context
 
 
 class EliminarAnticipo(DeleteView):
@@ -632,7 +646,6 @@ class EliminarSolicitud(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
-        print(self.kwargs['pk'])
         integrantes_x_solicitud = Integrantes_x_Solicitud.objects.filter(
             solicitud_id=self.kwargs['pk'])
         integrantes_x_solicitud.delete()
@@ -697,7 +710,7 @@ def archivar(request):
     return render(request, 'comisiones/confeccion_comision.html')
 
 
-@login_required
+"""@login_required
 def archivarSolicitud(request):
     if request.method == 'POST':
         # usuarios
@@ -722,7 +735,7 @@ def archivarSolicitud(request):
         messages.success(
             request, ('Solicitud de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
-    return render(request, 'comisiones/confeccion_solicitud_comision.html')
+    return render(request, 'comisiones/confeccion_solicitud_comision.html')"""
 
 
 @login_required
