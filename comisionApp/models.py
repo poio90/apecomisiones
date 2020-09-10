@@ -250,7 +250,7 @@ class DetalleTrabajo(models.Model):
     id_det_trabajo = models.AutoField(primary_key=True)
     km_salida = models.IntegerField(blank=True,null=True)
     km_llegada = models.IntegerField(blank=True,null=True)
-    detalle_trabajo = RichTextField()
+    detalle_trabajo = models.TextField()
 
     anticipo = models.ForeignKey(
         Anticipo,

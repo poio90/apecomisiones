@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
+{{ rendicion.media }}
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
@@ -94,32 +95,15 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                      </div>
-                      <input type="date" id="date_inicio" name="fecha_inicio" class="form-control"
-                        placeholder="Fecha de inicio" autocomplete='off' required>
-                    </div>
+                    {{ rendicion.fech_inicio }}
                   </div>
                   <div class="col">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                      </div>
-                      <input type="date" id="date_fin" name="fecha_fin" class="form-control"
-                        placeholder="Fecha de finalización" autocomplete='off' required>
-                    </div>
+                    {{ rendicion.fech_fin }}
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <select name="ciudad" class="sel" data-placeholder="Lugar de residencia durante la comisión" required>
-                  <option></option>
-                  {% for ciudad in ciudades %}
-                  <option value="{{ ciudad.pk }}">{{ ciudad.ciudad }}</option>
-                  {% endfor %}
-                </select>
+                {{ rendicion.ciudad }}
               </div>
               <div class="row">
                 <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
@@ -211,10 +195,10 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    <input name="km_salida" class="form-control" type="number" step="any" placeholder="Km de salida">
+                    {{ detalle.km_salida }}
                   </div>
                   <div class="col">
-                    <input name="km_llegada" class="form-control" type="number" step="any" placeholder="Kn de llegada">
+                    {{ detalle.km_llegada }}
                   </div>
                   <div class="col">
                     <input name="km_total" class="form-control" type="text" placeholder="Total kms recorridos"
@@ -223,8 +207,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <textarea name="detalle_trabajo" class="form-control" type="text" placeholder="NOTA:"
-                  required>{% if error %}{{ detalle_trabajo }}{% else %}{{ detalle_trabajo }}{% endif %}</textarea>
+                {{ detalle.detalle_trabajo }}
               </div>
             </div>
             <!-- /.card-body -->

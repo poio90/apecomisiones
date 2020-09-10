@@ -29,7 +29,6 @@ from django.core import serializers
 import pdb
 
 
-# Create your views here.
 class ReportePdfSolicitud(View):
     """Regresa Pdf"""
 
@@ -372,8 +371,8 @@ class ReportePdfAnticipo(View):
 
     def post(self, request, *args, **kwargs):
 
-        fech_inicio = request.POST['fecha_inicio']
-        fech_fin = request.POST['fecha_fin']
+        fech_inicio = request.POST['fech_inicio']
+        fech_fin = request.POST['fech_fin']
 
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
@@ -436,13 +435,8 @@ class ReportePdfAnticipo(View):
                          '         ' + num_afiliados[i])
             alto = alto - 25
 
-        fecha_inicio = datetime.strptime(
-            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_fin = datetime.strptime(
-            fech_fin, "%Y-%m-%d").strftime("%d/%m/%Y")
-
-        c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
-        c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
+        c.drawString(30, 620, 'Fecha de inicio: ' + fech_inicio)
+        c.drawString(320, 620, 'Fecha de finalización: ' + fech_fin)
         c.drawString(
             30, 595, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
@@ -554,7 +548,7 @@ class ReportePdfAnticipo(View):
 
 class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     model = Solicitud
-    template_name = 'comisiones/historico_solicitud.html'
+    template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
     context_object_name = 'solicitud'
     success_message = "Solicitud de anticipo creada exitosamente"
@@ -589,16 +583,35 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
         return super(SolicitudAnticipo, self).form_valid(form)
 
 
+class RendicionAnticipo(CreateView):
+    model = Anticipo
+    template_name = 'comisiones/rendicion.html'
+    form_class = RendicionForm
+    context_object_name = 'anticipo'
+    success_message = "Rendición de anticipo creada exitosamente"
+    success_url = reverse_lazy('comisiones:historico_comisiones')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all().order_by('last_name')
+        context['transportes'] = Transporte.objects.all()
+        context['detalle'] = DetalleTrabajoForm()
+        return context
+
+
+
 @login_required
 @transaction.atomic
 def confeccionAnticipo(request):
     users = User.objects.all().order_by('last_name')
-    ciudades = Ciudad.objects.all()
+    rendicion = RendicionForm()
     transportes = Transporte.objects.all()
-    return render(request, 'comisiones/confeccion_comision.html', {
+    detalle = DetalleTrabajoForm()
+    return render(request, 'comisiones/rendicion.html', {
         'users': users,
-        'ciudades': ciudades,
+        'rendicion': rendicion,
         'transportes': transportes,
+        'detalle': detalle,
     })
 
 
@@ -666,8 +679,8 @@ def archivar(request):
         # ciudad
         pk_ciudad = request.POST['ciudad']
         # comision
-        fech_inicio = request.POST['fecha_inicio']
-        fech_fin = request.POST['fecha_fin']
+        fech_inicio = request.POST['fech_inicio']
+        fech_fin = request.POST['fech_fin']
         pk_transporte = request.POST['transporte']
         patente = request.POST.get('patente')
         gastos = request.POST.get('gastos')
@@ -684,9 +697,14 @@ def archivar(request):
         km_llegada = request.POST['km_llegada']
         detalle_trabajo = request.POST['detalle_trabajo']
 
+        fecha_inicio = datetime.strptime(
+            str(fech_inicio), "%d/%m/%Y").strftime("%Y-%m-%d")
+        fecha_fin = datetime.strptime(
+            str(fech_fin), "%d/%m/%Y").strftime("%Y-%m-%d")
+
         # Crear anticpo en la BD
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
-                                  transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
+                                  transporte_id=pk_transporte, fech_inicio=fecha_inicio, fech_fin=fecha_fin, gastos=gastos)
         nuevo_anticipo.save()
 
         for i in range(len(nombres)):
@@ -707,7 +725,7 @@ def archivar(request):
         messages.success(
             request, ('Rendición de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
-    return render(request, 'comisiones/confeccion_comision.html')
+    return render(request, 'comisiones/rendicion.html')
 
 
 """@login_required
