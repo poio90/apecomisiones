@@ -19,6 +19,32 @@
   </div><!-- /.container-fluid -->
 </section>
 
+<!-- errores -->
+<section class="content">
+  <div class="container-fluid">
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">
+          <i class="icon fas fa-exclamation-triangle"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <ul class="errorlist">
+              {% for error in form.fecha_inicio.errors %}
+              <li><b>Comienzo de la licencia:</b> {{ error }}</li>
+              {% endfor %}
+              {% for error in form.fecha_fin.errors %}
+              <li><b>Fin de la licencia:</b> {{ error }}</li>
+              {% endfor %}
+              {% for error in form.fecha_reintegro.errors %}
+              <li><b>Fecha de reintegro:</b> {{ error }}</li>
+              {% endfor %}
+          </ul>
+      </div>
+      {% endif %}
+  </div>
+</section>
+<!-- fin errores -->
+
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">

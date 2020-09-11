@@ -11,7 +11,8 @@ class DatePickerInput(DatePickerInput):
         "showClose": True,
         "showClear": True,
         "showTodayButton": True,
-        "locale": "es"}
+        "locale": "es"
+        }
 
 
 class SolicitudForm(forms.ModelForm):
