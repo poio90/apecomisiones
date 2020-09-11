@@ -25,7 +25,7 @@ urlpatterns = [
          name='historico_comisiones'),
 #####################################################
      path(route='comisiones/solicitudes/prueba',
-         view=views.SolicitudAnticipo.as_view(),
+         view=views.RendicionAnticipo.as_view(),
          name='solicitud_prueba'),
          #####################################
 

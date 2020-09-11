@@ -72,14 +72,14 @@
                                             <td>{{ solicitud.fech_inicio }}</td>
                                             <td>{{ solicitud.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfSolicitud' solicitud.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Eliminar">
                                                     <a href="{% url 'comisiones:solicitud_eliminar' solicitud.pk %}"
                                                         class="btn btn-danger btn-rounded btn-sm my-0">
                                                         <i class="fas fa-trash"></i>
@@ -117,14 +117,14 @@
                                             <td>{{ solicitud.fech_inicio }}</td>
                                             <td>{{ solicitud.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfSolicitud' solicitud.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Eliminar">
                                                     <a href="{% url 'comisiones:solicitud_eliminar' solicitud.pk %}"
                                                         class="btn btn-danger btn-rounded btn-sm my-0">
                                                         <i class="fas fa-trash"></i>
@@ -160,16 +160,16 @@
                                             <td>{{ anticipo.fech_inicio }}</td>
                                             <td>{{ anticipo.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfAnticipo' anticipo.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span class="table-remove" data-toggle="tooltip" title="Eliminar">
                                                     <a href="{% url 'comisiones:eliminar_anticipo' anticipo.pk %}"
-                                                        class="btn btn-danger btn-rounded btn-sm my-0">
+                                                        class="btn btn-danger btn-rounded btn-sm my-0" >
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </span>

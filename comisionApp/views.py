@@ -585,9 +585,9 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
 
 class RendicionAnticipo(CreateView):
     model = Anticipo
-    template_name = 'comisiones/rendicion.html'
+    template_name = 'comisiones/historico_solicitud.html'
     form_class = RendicionForm
-    context_object_name = 'anticipo'
+    context_object_name = 'rendicion'
     success_message = "Rendición de anticipo creada exitosamente"
     success_url = reverse_lazy('comisiones:historico_comisiones')
 
@@ -595,7 +595,7 @@ class RendicionAnticipo(CreateView):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all().order_by('last_name')
         context['transportes'] = Transporte.objects.all()
-        context['detalle'] = DetalleTrabajoForm()
+        context['detalle'] = DetalleTrabajoForm
         return context
 
 

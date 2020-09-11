@@ -39,6 +39,7 @@ class LicenciaSolicitud(SuccessMessageMixin,CreateView):
         context['method'] = 'POST'
         context['target'] = '_blank'
         context['atr'] = 'btn-primary'
+        context['icon'] = 'fas fa-download'
         return context
 
     def form_valid(self, form):
@@ -63,6 +64,7 @@ class LicenciaEditar(SuccessMessageMixin,UpdateView):
         context['method'] = 'GET'
         context['target'] = '_self'
         context['atr'] = 'btn-danger'
+        context['icon'] = 'fas fa-times'
         return context
 
 
@@ -98,7 +100,6 @@ class ReportePdfLicencia(View):
     def get(self, request, *args, **kwargs):
 
         licencia = Licencia.objects.get(pk=kwargs['pk'])
-
         buffer = BytesIO()
 
         response = HttpResponse(content_type='application/pdf')
