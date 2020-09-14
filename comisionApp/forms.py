@@ -66,8 +66,8 @@ class RendicionForm(forms.ModelForm):
         model = Anticipo
         fields = ['fech_inicio', 'fech_fin', 'gastos', 'ciudad']
         widgets = {
-            'fech_inicio': DatePickerInput(),
-            'fech_fin': DatePickerInput(),
+            'fech_inicio': DatePickerInput().start_of('event days'),
+            'fech_fin': DatePickerInput().end_of('event days'),
         }
 
 

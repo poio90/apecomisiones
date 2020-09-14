@@ -29,14 +29,11 @@
               <span aria-hidden="true">&times;</span>
           </button>
           <ul class="errorlist">
-              {% for error in form.fecha_inicio.errors %}
-              <li><b>Comienzo de la licencia:</b> {{ error }}</li>
+              {% for error in form.fech_inicio.errors %}
+              <li><b>Fecha de inicio:</b> {{ error }}</li>
               {% endfor %}
-              {% for error in form.fecha_fin.errors %}
-              <li><b>Fin de la licencia:</b> {{ error }}</li>
-              {% endfor %}
-              {% for error in form.fecha_reintegro.errors %}
-              <li><b>Fecha de reintegro:</b> {{ error }}</li>
+              {% for error in form.fech_fin.errors %}
+              <li><b>Fecha de finalización:</b> {{ error }}</li>
               {% endfor %}
           </ul>
       </div>
