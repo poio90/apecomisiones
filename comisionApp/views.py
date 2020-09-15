@@ -29,7 +29,6 @@ from django.core import serializers
 import pdb
 
 
-# Create your views here.
 class ReportePdfSolicitud(View):
     """Regresa Pdf"""
 
@@ -37,8 +36,6 @@ class ReportePdfSolicitud(View):
         solicitud = Solicitud.objects.get(pk=kwargs['pk'])
         integrantes = Integrantes_x_Solicitud.objects.filter(
             solicitud_id=kwargs['pk'])
-
-        print(integrantes)
 
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
@@ -372,8 +369,8 @@ class ReportePdfAnticipo(View):
 
     def post(self, request, *args, **kwargs):
 
-        fech_inicio = request.POST['fecha_inicio']
-        fech_fin = request.POST['fecha_fin']
+        fech_inicio = request.POST['fech_inicio']
+        fech_fin = request.POST['fech_fin']
 
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
@@ -436,13 +433,8 @@ class ReportePdfAnticipo(View):
                          '         ' + num_afiliados[i])
             alto = alto - 25
 
-        fecha_inicio = datetime.strptime(
-            fech_inicio, "%Y-%m-%d").strftime("%d/%m/%Y")
-        fecha_fin = datetime.strptime(
-            fech_fin, "%Y-%m-%d").strftime("%d/%m/%Y")
-
-        c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
-        c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
+        c.drawString(30, 620, 'Fecha de inicio: ' + fech_inicio)
+        c.drawString(320, 620, 'Fecha de finalización: ' + fech_fin)
         c.drawString(
             30, 595, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
         c.drawString(30, 570, 'Medio de transporte')
@@ -554,7 +546,7 @@ class ReportePdfAnticipo(View):
 
 class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     model = Solicitud
-    template_name = 'comisiones/historico_solicitud.html'
+    template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
     context_object_name = 'solicitud'
     success_message = "Solicitud de anticipo creada exitosamente"
@@ -563,42 +555,92 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all().order_by('last_name')
-        context['transportes'] = Transporte.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if form.is_valid():
-            return super().post(request, *args, **kwargs)
+            solicitud = form.save(commit=False)
+            solicitud.solicitante = self.request.user
+            solicitud.save()
+
+            pk_users = self.request.POST.getlist('afiliado[]')
+            for i in range(len(pk_users)-1):
+                Integrantes_x_Solicitud.objects.create(
+                    solicitud=solicitud, user_id=pk_users[i])
+            return self.form_valid(form)
         else:
             self.object = None
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return render(request,self.template_name,context)
 
-    def form_valid(self, form):
-        object = form.save(commit=False)
-        object.transporte_id = self.request.POST['transporte']
-        object.solicitante = self.request.user
-        object.save()
-        pk_users = self.request.POST.getlist('afiliado[]')
-        for i in range(len(pk_users)-1):
-            Integrantes_x_Solicitud.objects.create(
-                solicitud=object, user_id=pk_users[i])
-        return super(SolicitudAnticipo, self).form_valid(form)
+
+
+class RendicionAnticipo(SuccessMessageMixin, CreateView):
+    model = Anticipo
+    template_name = 'comisiones/historico_solicitud.html'
+    form_class = RendicionForm
+    context_object_name = 'rendicion'
+    success_message = "Rendición de anticipo creada exitosamente"
+    success_url = reverse_lazy('comisiones:historico_comisiones')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all().order_by('last_name')
+        context['detalle'] = DetalleTrabajoForm
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        detalle = DetalleTrabajoForm(request.POST)
+        if form.is_valid() and detalle.is_valid():
+            f = form.save()
+            d = detalle.save(commit=False)
+            d.anticipo = f
+            d.save()
+            # Itinerario -> remplazar por formset mas adelante al igual que users
+            nombres = request.POST.getlist('name[]')
+            dias = request.POST.getlist('dia[]')
+            meses = request.POST.getlist('mes[]')
+            salidas = request.POST.getlist('salida[]')
+            llegadas = request.POST.getlist('llegada[]')
+            horas_salida = request.POST.getlist('hora_salida[]')
+            horas_llegada = request.POST.getlist('hora_llegada[]')
+
+            for i in range(len(nombres)):
+                Itineraio.objects.create(
+                    anticipo=f, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
+                        hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
+
+            pk_users = self.request.POST.getlist('afiliado[]')
+            for i in range(len(pk_users)-1):
+                Integrantes_x_Anticipo.objects.create(
+                    anticipo=f, user_id=pk_users[i])
+            return self.form_valid(form)
+        else:
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['form'] = form
+            context['detalle'] = detalle
+            return render(request,self.template_name,context)
+        
 
 
 @login_required
 @transaction.atomic
 def confeccionAnticipo(request):
     users = User.objects.all().order_by('last_name')
-    ciudades = Ciudad.objects.all()
+    rendicion = RendicionForm()
     transportes = Transporte.objects.all()
-    return render(request, 'comisiones/confeccion_comision.html', {
+    detalle = DetalleTrabajoForm()
+    return render(request, 'comisiones/rendicion.html', {
         'users': users,
-        'ciudades': ciudades,
+        'rendicion': rendicion,
         'transportes': transportes,
+        'detalle': detalle,
     })
 
 
@@ -666,8 +708,8 @@ def archivar(request):
         # ciudad
         pk_ciudad = request.POST['ciudad']
         # comision
-        fech_inicio = request.POST['fecha_inicio']
-        fech_fin = request.POST['fecha_fin']
+        fech_inicio = request.POST['fech_inicio']
+        fech_fin = request.POST['fech_fin']
         pk_transporte = request.POST['transporte']
         patente = request.POST.get('patente')
         gastos = request.POST.get('gastos')
@@ -684,9 +726,14 @@ def archivar(request):
         km_llegada = request.POST['km_llegada']
         detalle_trabajo = request.POST['detalle_trabajo']
 
+        fecha_inicio = datetime.strptime(
+            str(fech_inicio), "%d/%m/%Y").strftime("%Y-%m-%d")
+        fecha_fin = datetime.strptime(
+            str(fech_fin), "%d/%m/%Y").strftime("%Y-%m-%d")
+
         # Crear anticpo en la BD
         nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
-                                  transporte_id=pk_transporte, fech_inicio=fech_inicio, fech_fin=fech_fin, gastos=gastos)
+                                  transporte_id=pk_transporte, fech_inicio=fecha_inicio, fech_fin=fecha_fin, gastos=gastos)
         nuevo_anticipo.save()
 
         for i in range(len(nombres)):
@@ -707,7 +754,7 @@ def archivar(request):
         messages.success(
             request, ('Rendición de anticipo creada exitosamente'))
         return redirect('comisiones:historico_comisiones')
-    return render(request, 'comisiones/confeccion_comision.html')
+    return render(request, 'comisiones/rendicion.html')
 
 
 """@login_required

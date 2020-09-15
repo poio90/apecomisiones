@@ -34,7 +34,7 @@ class FormLicencia(forms.ModelForm):
         fields = ['dias_habiles_acum', 'dias_habiles_agregar',
                   'fecha_inicio', 'fecha_fin', 'fecha_reintegro', 'ciudad']
         widgets = {
-            'fecha_inicio': DatePickerInput(),
-            'fecha_reintegro': DatePickerInput(),
-            'fecha_fin': DatePickerInput(),
+            'fecha_inicio': DatePickerInput().start_of('event days'),
+            'fecha_reintegro': DatePickerInput().end_of('event days'),
+            'fecha_fin': DatePickerInput().end_of('event days'),
         }

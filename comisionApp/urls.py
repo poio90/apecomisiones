@@ -25,7 +25,7 @@ urlpatterns = [
          name='historico_comisiones'),
 #####################################################
      path(route='comisiones/solicitudes/prueba',
-         view=views.SolicitudAnticipo.as_view(),
+         view=views.RendicionAnticipo.as_view(),
          name='solicitud_prueba'),
          #####################################
 
@@ -43,7 +43,7 @@ urlpatterns = [
          name='eliminar_anticipo'),
 
     path(route='comisiones/anticipos',
-         view=login_required(views.confeccionAnticipo),
+         view=views.RendicionAnticipo.as_view(),
          name='rendicion_anticipo'),
 
     path(route='anticipos/archivar',

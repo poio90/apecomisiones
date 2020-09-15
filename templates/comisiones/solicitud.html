@@ -18,6 +18,25 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+
+<!-- errores -->
+<section class="content">
+    <div class="container-fluid">
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="icon fas fa-exclamation-triangle"></i>
+            {% for field in form.visible_fields %}
+            <h5>{{ field.errors }}</h5>
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+<!-- fin errores -->
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -124,20 +143,7 @@
                                     transporte:</label>
                                 <div class="col">
                                     <div class="form-group">
-                                        <select id="transporte" class="sel" name="transporte"
-                                            data-placeholder="Unidad de legajo"
-                                            data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
-                                            <option></option>
-                                            {% for transporte in transportes %}
-                                            <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input id="patente" name="patente" type="text" class="form-control"
-                                            placeholder="Patente" readonly="readonly">
+                                        {{ form.transporte }}
                                     </div>
                                 </div>
                             </div>
