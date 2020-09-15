@@ -133,21 +133,10 @@
                   transporte:</label>
                 <div class="col">
                   <div class="form-group">
-                    <select id="transporte" name="transporte" class="sel" data-placeholder="Unidad de legajo"
-                      data-validate-transporte-url="{% url 'comisiones:get_patente' %}" required>
-                      <option></option>
-                      {% for transporte in transportes %}
-                      <option value="{{ transporte.pk }}">{{ transporte.num_legajo }}</option>
-                      {% endfor %}
-                    </select>
+                    {{ rendicion.transporte }}
                   </div>
                 </div>
-                <div class="col">
-                  <div class="form-group">
-                    <input id="patente" name="patente" type="text" class="form-control" placeholder="Patente"
-                      readonly="readonly">
-                  </div>
-                </div>
+                
               </div>
               <div class="form-group">
                 <input name="gastos" type="number" step="any" class="form-control" placeholder="Gastos" required>

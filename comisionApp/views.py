@@ -557,7 +557,6 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all().order_by('last_name')
-        context['transportes'] = Transporte.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -573,7 +572,6 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         object = form.save(commit=False)
-        object.transporte_id = self.request.POST['transporte']
         object.solicitante = self.request.user
         object.save()
         pk_users = self.request.POST.getlist('afiliado[]')
@@ -594,7 +592,6 @@ class RendicionAnticipo(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all().order_by('last_name')
-        context['transportes'] = Transporte.objects.all()
         context['detalle'] = DetalleTrabajoForm
         return context
     
