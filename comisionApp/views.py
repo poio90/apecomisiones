@@ -126,7 +126,7 @@ class ReportePdfSolicitud(View):
         duracion_prevista = request.POST['duracion_prevista']
         pk_ciudad = request.POST['ciudad']
         transporte = request.POST['transporte']
-        patente = request.POST['patente']
+        #patente = request.POST['patente']
         gastos_previstos = request.POST['gastos_previstos']
 
         # este for recupera los usuarios cuyos id estan contenidos en la lista pk
@@ -198,14 +198,13 @@ class ReportePdfSolicitud(View):
         c.drawString(30, 310, 'Medio de transporte')
         c.drawString(200, 310, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
-        c.drawString(400, 310, 'Patente: ' + patente)
+        c.drawString(400, 310, 'Patente: ' + num_legajo_transporte.patente)
         c.drawString(30, 280, 'Gastos a solicitar: $' + gastos_previstos)
         c.drawString(30, 250, 'Anticipo ordenado por: ' +
                      request.user.last_name + '  ' + request.user.first_name)
 
         c.drawString(500, 20, 'Firma')
         c.line(465, 32, 570, 32)
-
         c.save()
         pdf = buffer.getvalue()
         buffer.close()
@@ -222,7 +221,7 @@ class ReportePdfAnticipo(View):
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
         int_x_ant = Integrantes_x_Anticipo.objects.filter(
             anticipo_id=kwargs['pk'])
-
+        
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
@@ -242,7 +241,7 @@ class ReportePdfAnticipo(View):
         alto = 770
 
         c.setFont('Helvetica', 12)
-        for i in range(len(int_x_ant)-1):
+        for i in range(len(int_x_ant)):
             c.drawString(30, alto, 'Apellido y Nombre'+'     ' +
                          int_x_ant[i].user.get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
@@ -364,14 +363,13 @@ class ReportePdfAnticipo(View):
         pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Dispotition'] = 'filename=Reporte-Anticipo.pdf'
+        response['Content-Disposition'] = 'filename=Anticipo.pdf'
         return response
 
     def post(self, request, *args, **kwargs):
 
         fech_inicio = request.POST['fech_inicio']
         fech_fin = request.POST['fech_fin']
-
         pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         # ciudad
@@ -379,7 +377,7 @@ class ReportePdfAnticipo(View):
         # comision
 
         transporte = request.POST['transporte']
-        patente = request.POST.get('patente')
+        #patente = request.POST.get('patente')
         gastos = request.POST.get('gastos')
 
         # Itinerario
@@ -440,7 +438,7 @@ class ReportePdfAnticipo(View):
         c.drawString(30, 570, 'Medio de transporte')
         c.drawString(200, 570, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
-        c.drawString(400, 570, 'Patente: ' + patente)
+        c.drawString(400, 570, 'Patente: ' +num_legajo_transporte.patente)
         c.drawString(30, 545, 'Gastos: $' + gastos)
 
         # tabla.encabezado
@@ -463,7 +461,7 @@ class ReportePdfAnticipo(View):
         styleN.alignment = TA_CENTER
         styleN.fontSize = 7
 
-        # tabla.contenico
+        # tabla.contenido
         comisiones = []
         for i in range(len(nombres)):
             comisiones.append({'name': nombres[i], 'b1': dias[i], 'b2': meses[i], 'b3': salidas[i],
@@ -540,7 +538,7 @@ class ReportePdfAnticipo(View):
         pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Dispotition'] = 'filename=Reporte-Anticipo.pdf'
+        response['Content-Disposition'] = 'filename=Anticipo.pdf'
         return response
 
 
@@ -564,7 +562,6 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
             solicitud = form.save(commit=False)
             solicitud.solicitante = self.request.user
             solicitud.save()
-
             pk_users = self.request.POST.getlist('afiliado[]')
             for i in range(len(pk_users)-1):
                 Integrantes_x_Solicitud.objects.create(
@@ -670,6 +667,9 @@ class EliminarAnticipo(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
+        integrantes_x_anticipo = Integrantes_x_Anticipo.objects.filter(
+            anticipo_id=self.kwargs['pk'])
+        integrantes_x_anticipo.delete()
         return super(EliminarAnticipo, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
