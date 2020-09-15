@@ -37,8 +37,6 @@ class ReportePdfSolicitud(View):
         integrantes = Integrantes_x_Solicitud.objects.filter(
             solicitud_id=kwargs['pk'])
 
-        print(integrantes)
-
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
@@ -563,25 +561,24 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if form.is_valid():
-            return super().post(request, *args, **kwargs)
+            solicitud = form.save(commit=False)
+            solicitud.solicitante = self.request.user
+            solicitud.save()
+
+            pk_users = self.request.POST.getlist('afiliado[]')
+            for i in range(len(pk_users)-1):
+                Integrantes_x_Solicitud.objects.create(
+                    solicitud=solicitud, user_id=pk_users[i])
+            return self.form_valid(form)
         else:
             self.object = None
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return render(request,self.template_name,context)
 
-    def form_valid(self, form):
-        object = form.save(commit=False)
-        object.solicitante = self.request.user
-        object.save()
-        pk_users = self.request.POST.getlist('afiliado[]')
-        for i in range(len(pk_users)-1):
-            Integrantes_x_Solicitud.objects.create(
-                solicitud=object, user_id=pk_users[i])
-        return super(SolicitudAnticipo, self).form_valid(form)
 
 
-class RendicionAnticipo(CreateView):
+class RendicionAnticipo(SuccessMessageMixin, CreateView):
     model = Anticipo
     template_name = 'comisiones/historico_solicitud.html'
     form_class = RendicionForm
@@ -598,14 +595,38 @@ class RendicionAnticipo(CreateView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        if form.is_valid():
-            return super().post(request, *args, **kwargs)
+        detalle = DetalleTrabajoForm(request.POST)
+        if form.is_valid() and detalle.is_valid():
+            f = form.save()
+            d = detalle.save(commit=False)
+            d.anticipo = f
+            d.save()
+            # Itinerario -> remplazar por formset mas adelante al igual que users
+            nombres = request.POST.getlist('name[]')
+            dias = request.POST.getlist('dia[]')
+            meses = request.POST.getlist('mes[]')
+            salidas = request.POST.getlist('salida[]')
+            llegadas = request.POST.getlist('llegada[]')
+            horas_salida = request.POST.getlist('hora_salida[]')
+            horas_llegada = request.POST.getlist('hora_llegada[]')
+
+            for i in range(len(nombres)):
+                Itineraio.objects.create(
+                    anticipo=f, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
+                        hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
+
+            pk_users = self.request.POST.getlist('afiliado[]')
+            for i in range(len(pk_users)-1):
+                Integrantes_x_Anticipo.objects.create(
+                    anticipo=f, user_id=pk_users[i])
+            return self.form_valid(form)
         else:
             self.object = None
             context = self.get_context_data(**kwargs)
             context['form'] = form
+            context['detalle'] = detalle
             return render(request,self.template_name,context)
-
+        
 
 
 @login_required

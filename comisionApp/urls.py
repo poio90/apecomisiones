@@ -43,7 +43,7 @@ urlpatterns = [
          name='eliminar_anticipo'),
 
     path(route='comisiones/anticipos',
-         view=login_required(views.confeccionAnticipo),
+         view=views.RendicionAnticipo.as_view(),
          name='rendicion_anticipo'),
 
     path(route='anticipos/archivar',
