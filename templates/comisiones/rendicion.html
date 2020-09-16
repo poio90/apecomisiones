@@ -64,17 +64,19 @@
                 <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6 mt-2">
-                      <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
+                      <label id="0" class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
+                      <!--<select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
                         <option></option>
                         {% for afiliado in users %}
                         <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
                           {{ afiliado.first_name }}</option>
                         {% endfor %}
-                      </select>
+                      </select>-->
                     </div>
                     <div class="col-md-5 mt-2">
-                      <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
-                        placeholder="Número de afiliado a SEMPRE">
+                      <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
+                      <!--<input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
+                        placeholder="Número de afiliado a SEMPRE">-->
                     </div>
                     <div class="col-md-1 mt-2">
                       <span class="float-right mb-3 mr-2">

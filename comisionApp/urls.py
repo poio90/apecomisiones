@@ -46,10 +46,6 @@ urlpatterns = [
          view=views.RendicionAnticipo.as_view(),
          name='rendicion_anticipo'),
 
-    path(route='anticipos/archivar',
-         view=login_required(views.archivar),
-         name='archivar'),
-
     path(route='get_patente',
          view=login_required(views.get_patente),
          name='get_patente'),
@@ -58,16 +54,3 @@ urlpatterns = [
          view=login_required(views.get_num_afiliado),
          name='get_num_afiliado'),
 ]
-
-"""path(route='usuarios/anticipos/historico/solicitudes',
-         view=login_required(views.HistoricoSolicitudes.as_view()),
-         name='historico_solicitud'),
-         
-     path(route='usuarios/anticipos/historico',
-         view=login_required(views.HistoricoAnticipos.as_view()),
-         name='historico_anticipo'),
-
-
-    path(route='comisiones/solicitudes/archivar',
-         view=login_required(views.archivarSolicitud),
-         name='archivar_solicitud'),"""
