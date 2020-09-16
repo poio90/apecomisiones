@@ -49,8 +49,7 @@
       <div class="col-md-12">
 
         <div class="card card-primary card-outline">
-          <form id="myform" class="form-horizontal" method="POST" action="{% url 'comisiones:archivar' %}"
-            enctype="multipart/form-data">
+          <form id="myform" class="form-horizontal" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="card-header">
               <div class="form-row">
@@ -118,28 +117,28 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    {{ rendicion.fech_inicio }}
+                    {{ form.fech_inicio }}
                   </div>
                   <div class="col">
-                    {{ rendicion.fech_fin }}
+                    {{ form.fech_fin }}
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                {{ rendicion.ciudad }}
+                {{ form.ciudad }}
               </div>
               <div class="row">
                 <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
                   transporte:</label>
                 <div class="col">
                   <div class="form-group">
-                    {{ rendicion.transporte }}
+                    {{ form.transporte }}
                   </div>
                 </div>
                 
               </div>
               <div class="form-group">
-                <input name="gastos" type="number" step="any" class="form-control" placeholder="Gastos" required>
+                {{ form.gastos }}
               </div>
               <!--- Tabla para el armado del itinenario--->
               <div class="form-group">
@@ -200,7 +199,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputAfiliado" class="col-sm-6 col-form-label">
+                <label for="inputAfiliado" class="col-form-label">
                   <h4>Informe de Anticipo:</h4>
                 </label>
               </div>

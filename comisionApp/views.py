@@ -577,7 +577,7 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
 
 class RendicionAnticipo(SuccessMessageMixin, CreateView):
     model = Anticipo
-    template_name = 'comisiones/historico_solicitud.html'
+    template_name = 'comisiones/rendicion.html'
     form_class = RendicionForm
     context_object_name = 'rendicion'
     success_message = "Rendición de anticipo creada exitosamente"
