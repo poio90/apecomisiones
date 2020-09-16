@@ -221,7 +221,7 @@ class ReportePdfAnticipo(View):
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
         int_x_ant = Integrantes_x_Anticipo.objects.filter(
             anticipo_id=kwargs['pk'])
-        
+
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
@@ -423,7 +423,10 @@ class ReportePdfAnticipo(View):
 
         c.setFont('Helvetica', 12)
 
-        alto = 770
+        c.drawString(30, 770, 'Apellido y Nombre'+'       ' + request.user.last_name +'  '+request.user.first_name)
+        c.drawString(360, 770, 'N° Afiliado a SEMPRE' +'         ' + str(request.user.num_afiliado))
+
+        alto = 745
         for i in range(len(pk)-1):
             c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
                          nombre[i].last_name + '  '+nombre[i].first_name)
@@ -438,7 +441,7 @@ class ReportePdfAnticipo(View):
         c.drawString(30, 570, 'Medio de transporte')
         c.drawString(200, 570, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
-        c.drawString(400, 570, 'Patente: ' +num_legajo_transporte.patente)
+        c.drawString(400, 570, 'Patente: ' + num_legajo_transporte.patente)
         c.drawString(30, 545, 'Gastos: $' + gastos)
 
         # tabla.encabezado
@@ -552,7 +555,8 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all().order_by('last_name')
+        context['users'] = User.objects.filter(
+            is_active=1).order_by('last_name')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -571,8 +575,7 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
             self.object = None
             context = self.get_context_data(**kwargs)
             context['form'] = form
-            return render(request,self.template_name,context)
-
+            return render(request, self.template_name, context)
 
 
 class RendicionAnticipo(SuccessMessageMixin, CreateView):
@@ -585,10 +588,11 @@ class RendicionAnticipo(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all().order_by('last_name')
+        context['users'] = User.objects.filter(
+            is_active=1).order_by('last_name').exclude(pk=self.request.user.pk)
         context['detalle'] = DetalleTrabajoForm
         return context
-    
+
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -610,7 +614,9 @@ class RendicionAnticipo(SuccessMessageMixin, CreateView):
             for i in range(len(nombres)):
                 Itineraio.objects.create(
                     anticipo=f, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
-                        hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
+                    hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
+            
+            Integrantes_x_Anticipo.objects.create(anticipo=f, user=self.request.user)
 
             pk_users = self.request.POST.getlist('afiliado[]')
             for i in range(len(pk_users)-1):
@@ -622,23 +628,7 @@ class RendicionAnticipo(SuccessMessageMixin, CreateView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             context['detalle'] = detalle
-            return render(request,self.template_name,context)
-        
-
-
-@login_required
-@transaction.atomic
-def confeccionAnticipo(request):
-    users = User.objects.all().order_by('last_name')
-    rendicion = RendicionForm()
-    transportes = Transporte.objects.all()
-    detalle = DetalleTrabajoForm()
-    return render(request, 'comisiones/rendicion.html', {
-        'users': users,
-        'rendicion': rendicion,
-        'transportes': transportes,
-        'detalle': detalle,
-    })
+            return render(request, self.template_name, context)
 
 
 class Historicos(ListView):
@@ -698,91 +688,6 @@ class EliminarSolicitud(DeleteView):
         context['entity'] = 'Solicitud'
         context['list_url'] = reverse_lazy('comisiones:historico_comisiones')
         return context
-
-
-@login_required
-def archivar(request):
-    if request.method == 'POST':
-        # usuarios
-        pk_users = request.POST.getlist('afiliado[]')
-        # ciudad
-        pk_ciudad = request.POST['ciudad']
-        # comision
-        fech_inicio = request.POST['fech_inicio']
-        fech_fin = request.POST['fech_fin']
-        pk_transporte = request.POST['transporte']
-        patente = request.POST.get('patente')
-        gastos = request.POST.get('gastos')
-        # Itinerario
-        nombres = request.POST.getlist('name[]')
-        dias = request.POST.getlist('dia[]')
-        meses = request.POST.getlist('mes[]')
-        salidas = request.POST.getlist('salida[]')
-        llegadas = request.POST.getlist('llegada[]')
-        horas_salida = request.POST.getlist('hora_salida[]')
-        horas_llegada = request.POST.getlist('hora_llegada[]')
-        # Detalle de trabajo
-        km_salida = request.POST['km_salida']
-        km_llegada = request.POST['km_llegada']
-        detalle_trabajo = request.POST['detalle_trabajo']
-
-        fecha_inicio = datetime.strptime(
-            str(fech_inicio), "%d/%m/%Y").strftime("%Y-%m-%d")
-        fecha_fin = datetime.strptime(
-            str(fech_fin), "%d/%m/%Y").strftime("%Y-%m-%d")
-
-        # Crear anticpo en la BD
-        nuevo_anticipo = Anticipo(ciudad_id=pk_ciudad,
-                                  transporte_id=pk_transporte, fech_inicio=fecha_inicio, fech_fin=fecha_fin, gastos=gastos)
-        nuevo_anticipo.save()
-
-        for i in range(len(nombres)):
-            Itineraio.objects.create(
-                anticipo=nuevo_anticipo, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
-                hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
-
-        if km_llegada and km_salida:
-            DetalleTrabajo.objects.create(
-                anticipo=nuevo_anticipo, km_salida=km_salida, km_llegada=km_llegada, detalle_trabajo=detalle_trabajo)
-        else:
-            DetalleTrabajo.objects.create(
-                anticipo=nuevo_anticipo, detalle_trabajo=detalle_trabajo)
-
-        for i in range(len(pk_users)):
-            Integrantes_x_Anticipo.objects.create(
-                anticipo=nuevo_anticipo, user_id=pk_users[i])
-        messages.success(
-            request, ('Rendición de anticipo creada exitosamente'))
-        return redirect('comisiones:historico_comisiones')
-    return render(request, 'comisiones/rendicion.html')
-
-
-"""@login_required
-def archivarSolicitud(request):
-    if request.method == 'POST':
-        # usuarios
-        pk_users = request.POST.getlist('afiliado[]')
-        # solicitud
-        motivo = request.POST['motivo']
-        fech_inicio = request.POST['fech_inicio']
-        duracion_prevista = request.POST['duracion_prevista']
-        pk_ciudad = request.POST['ciudad']
-        pk_transporte = request.POST['transporte']
-        gastos_previstos = request.POST['gastos_previstos']
-
-        # Crear anticpo en la BD
-        nueva_solicitud = Solicitud(ciudad_id=pk_ciudad,
-                                    transporte_id=pk_transporte, fech_inicio=fech_inicio, duracion_prevista=duracion_prevista,
-                                    motivo=motivo, gastos_previstos=gastos_previstos, solicitante=request.user)
-        nueva_solicitud.save()
-
-        for i in range(len(pk_users)):
-            Integrantes_x_Solicitud.objects.create(
-                solicitud=nueva_solicitud, user_id=pk_users[i])
-        messages.success(
-            request, ('Solicitud de anticipo creada exitosamente'))
-        return redirect('comisiones:historico_comisiones')
-    return render(request, 'comisiones/confeccion_solicitud_comision.html')"""
 
 
 @login_required
