@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import model_to_dict
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
@@ -55,8 +56,8 @@ class Transporte(models.Model):
         managed = True
         db_table = 'transporte'
     
-    def get_patente(self):
-        return self.patente
+    def toJSON(self):
+        return model_to_dict(self)
 
     def __str__(self):
         return '{} {}'.format(self.num_legajo,self.patente)
