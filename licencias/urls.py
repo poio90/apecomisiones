@@ -14,14 +14,14 @@ urlpatterns = [
         views.HistoricoLicencias.as_view()), name='licencias_historico'),
 
     path(route='licencias/<pk>/eliminar/',
-         view=views.EliminarLicencia.as_view(),
+         view=login_required(views.EliminarLicencia.as_view()),
          name='licencias_eliminar'),
 
     path(route='licencias/<pk>/reportes/',
-         view=views.ReportePdfLicencia.as_view(),
+         view=login_required(views.ReportePdfLicencia.as_view()),
          name='licencias_pdf'),
 
     path(route='licencias/reportes/',
-         view=views.ReportePdfLicencia.as_view(),
+         view=(views.ReportePdfLicencia.as_view()),
          name='licencias_pdf'),
 ]
