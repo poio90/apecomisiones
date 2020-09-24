@@ -20,6 +20,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, letter
 from reportlab.lib.units import cm, inch
 from reportlab.lib import colors
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -40,6 +41,17 @@ class ReportePdfSolicitud(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
+        # Header
+        logo = ImageReader('static/dist/img/logoApe.png')
+        c.drawImage(logo, 30, 750,  1 * inch, 1 * inch)
+
+        text = 'Administración Provincial de Energía de La Pampa'
+        text2 = 'Departamento Telecontrol'
+        c.setFont('Helvetica', 12)
+        c.drawString(120, 790, text)
+        c.drawString(120, 775, text2)
+        
+
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
@@ -48,17 +60,16 @@ class ReportePdfSolicitud(View):
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
 
-        # Header
         c.setLineWidth(.3)
         c.setFont('Helvetica', 18)
-        c.drawString(x, 800, text)
+        c.drawString(x, 730, text)
         c.setFont('Helvetica', 12)
 
         fecha = date.today().strftime("%d/%m/%Y")
 
-        c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
+        c.drawString(400, 700, 'Fecha de pedido: ' + str(fecha))
 
-        alto = 745
+        alto = 675
         for i in range(len(integrantes)):
             c.drawString(30, alto, 'Apellido y Nombre'+'     ' +
                          integrantes[i].user.get_full_name())
@@ -66,7 +77,7 @@ class ReportePdfSolicitud(View):
                          '         ' + integrantes[i].user.num_afiliado)
             alto = alto - 25
 
-        c.drawString(30, 570, 'Motivo de la comisión: ')
+        c.drawString(30, 475, 'Motivo de la comisión: ')
         # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
         j = 0
         n = 87
@@ -82,7 +93,7 @@ class ReportePdfSolicitud(View):
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
-        textobject.setTextOrigin(35, 555)
+        textobject.setTextOrigin(35, 455)
         textobject.setFont("Courier", 10)
         textobject.textLines(story)
         c.drawText(textobject)
@@ -91,29 +102,30 @@ class ReportePdfSolicitud(View):
             str(solicitud.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 370, 'Fecha de iniciación: ' +
+        c.drawString(30, 295, 'Fecha de iniciación: ' +
                      str(fecha_inicio))
-        c.drawString(320, 370, 'Duracón prevista: ' +
+        c.drawString(320, 295, 'Duracón prevista: ' +
                      solicitud.duracion_prevista)
         c.drawString(
-            30, 340, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
-        c.drawString(30, 310, 'Medio de transporte')
-        c.drawString(200, 310, 'Unidad de legajo: ' +
+            30, 265, 'Lugar de residencia durante la comisión: '+solicitud.ciudad.ciudad)
+        c.drawString(30, 235, 'Medio de transporte')
+        c.drawString(200, 235, 'Unidad de legajo: ' +
                      solicitud.transporte.num_legajo)
-        c.drawString(400, 310, 'Patente: '+solicitud.transporte.patente)
-        c.drawString(30, 280, 'Gastos a solicitar: $' +
+        c.drawString(400, 235, 'Patente: '+solicitud.transporte.patente)
+        c.drawString(30, 205, 'Gastos a solicitar: $' +
                      str(solicitud.gastos_previstos))
-        c.drawString(30, 250, 'Comisión ordenada por: ' +
-                     solicitud.solicitante.get_full_name())
+        solicitante = solicitud.solicitante.get_full_name()
+        c.drawString(30, 175, 'Anticipo ordenado por: ' + solicitante)
 
         c.drawString(500, 20, 'Firma')
         c.line(465, 32, 570, 32)
 
         c.save()
+        titulo = 'filename=' +str(fecha)+'.pdf'
         pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'filename=Solicitud.pdf'
+        response['Content-Disposition'] = titulo
         return response
 
     def post(self, request, *args, **kwargs):
@@ -143,6 +155,15 @@ class ReportePdfSolicitud(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
+        logo = ImageReader('static/dist/img/logoApe.png')
+        c.drawImage(logo, 30, 750,  1 * inch, 1 * inch)
+
+        text = 'Administración Provincial de Energía de La Pampa'
+        text2 = 'Departamento Telecontrol'
+        c.setFont('Helvetica', 12)
+        c.drawString(120, 790, text)
+        c.drawString(120, 775, text2)
+
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
@@ -154,22 +175,21 @@ class ReportePdfSolicitud(View):
         # Header
         c.setLineWidth(.3)
         c.setFont('Helvetica', 18)
-        c.drawString(x, 800, text)
+        c.drawString(x, 730, text)
         c.setFont('Helvetica', 12)
 
         fecha = date.today().strftime("%d/%m/%Y")
 
-        c.drawString(400, 770, 'Fecha de pedido: ' + str(fecha))
+        c.drawString(400, 700, 'Fecha de pedido: ' + str(fecha))
 
-        alto = 745
+        alto = 675
         for i in range(len(pk)-1):
-            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +
-                         nombre[i].last_name + '  '+nombre[i].first_name)
+            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +nombre[i].get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
                          '         ' + num_afiliados[i])
             alto = alto - 25
 
-        c.drawString(30, 570, 'Motivo de la comisión: ')
+        c.drawString(30, 475, 'Motivo de la comisión: ')
         # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
         j = 0
         n = 87
@@ -185,23 +205,25 @@ class ReportePdfSolicitud(View):
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
-        textobject.setTextOrigin(35, 555)
+        textobject.setTextOrigin(35, 455)
         textobject.setFont("Courier", 10)
         textobject.textLines(story)
         c.drawText(textobject)
 
         c.setFont('Helvetica', 12)
-        c.drawString(30, 370, 'Fecha de iniciación: '+fech_inicio)
-        c.drawString(320, 370, 'Duracón prevista: '+duracion_prevista+' días')
+        c.drawString(30, 295, 'Fecha de iniciación: '+fech_inicio)
+        c.drawString(320, 295, 'Duracón prevista: '+duracion_prevista+' días')
         c.drawString(
-            30, 340, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
-        c.drawString(30, 310, 'Medio de transporte')
-        c.drawString(200, 310, 'Unidad de legajo: ' +
+            30, 265, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
+        c.drawString(30, 235, 'Medio de transporte')
+        c.drawString(200, 235, 'Unidad de legajo: ' +
                      num_legajo_transporte.num_legajo)
-        c.drawString(400, 310, 'Patente: ' + num_legajo_transporte.patente)
-        c.drawString(30, 280, 'Gastos a solicitar: $' + gastos_previstos)
-        c.drawString(30, 250, 'Anticipo ordenado por: ' +
-                     request.user.last_name + '  ' + request.user.first_name)
+        c.drawString(400, 235, 'Patente: ' + num_legajo_transporte.patente)
+        c.drawString(30, 205, 'Gastos a solicitar: $' + gastos_previstos)
+
+        solicitante = request.user.get_full_name()
+        c.drawString(30, 175, 'Anticipo ordenado por: ' +
+                     solicitante)
 
         c.drawString(500, 20, 'Firma')
         c.line(465, 32, 570, 32)
@@ -209,7 +231,8 @@ class ReportePdfSolicitud(View):
         pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'filename=Solicitud.pdf'
+        nombre_pdf = str(fecha)+request.user.last_name
+        response['Content-Disposition'] = 'filename='+nombre_pdf+'.pdf'
         return response
 
 
@@ -225,10 +248,17 @@ class ReportePdfAnticipo(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
+        logo = ImageReader('static/dist/img/logoApe.png')
+        c.drawImage(logo, 30, 788,  0.45 * inch, 0.45 * inch)
+
+        c.setFont('Helvetica', 8)
+        c.drawString(65, 805, 'Departamento')
+        c.drawString(65, 795, 'de Telecontrol')
+
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Rendición de comisión'
+        text = 'Rendicion de comisión N° ___________'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
@@ -408,6 +438,13 @@ class ReportePdfAnticipo(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
+        logo = ImageReader('static/dist/img/logoApe.png')
+        c.drawImage(logo, 30, 788,  0.45 * inch, 0.45 * inch)
+
+        c.setFont('Helvetica', 8)
+        c.drawString(65, 805, 'Departamento')
+        c.drawString(65, 795, 'de Telecontrol')
+
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
@@ -423,7 +460,7 @@ class ReportePdfAnticipo(View):
 
         c.setFont('Helvetica', 12)
 
-        c.drawString(30, 770, 'Apellido y Nombre'+'       ' + request.user.last_name +'  '+request.user.first_name)
+        c.drawString(30, 770, 'Apellido y Nombre'+'       ' + request.user.get_full_name())
         c.drawString(360, 770, 'N° Afiliado a SEMPRE' +'         ' + str(request.user.num_afiliado))
 
         alto = 745
