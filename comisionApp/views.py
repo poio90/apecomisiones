@@ -55,7 +55,7 @@ class ReportePdfSolicitud(View):
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Solicitud de comisión'
+        text = 'Solicitud de Anticipo'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
@@ -165,7 +165,7 @@ class ReportePdfSolicitud(View):
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
 
-        text = 'Solicitud de comisión'
+        text = 'Solicitud de Anticipo'
 
         width = stringWidth(text, 'Helvetica', 16)
         x = (PAGE_WIDTH/2)-(width/2)
