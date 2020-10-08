@@ -1,8 +1,8 @@
 from django import forms
+from django.forms.models import inlineformset_factory, modelformset_factory
 from bootstrap_datepicker_plus import DateTimePickerInput, DatePickerInput
 from .models import *
 from usuarios.models import User
-from usuarios.forms import UserForm
 
 
 class DatePickerInput(DatePickerInput):
@@ -12,7 +12,7 @@ class DatePickerInput(DatePickerInput):
         "showClear": True,
         "showTodayButton": True,
         "locale": "es"
-        }
+    }
 
 
 class SolicitudForm(forms.ModelForm):
@@ -39,7 +39,7 @@ class SolicitudForm(forms.ModelForm):
     class Meta:
         model = Solicitud
         fields = ['fech_inicio', 'gastos_previstos',
-                  'motivo', 'duracion_prevista', 'ciudad','transporte']
+                  'motivo', 'duracion_prevista', 'ciudad', 'transporte']
         widgets = {
             'fech_inicio': DatePickerInput(),
         }
@@ -68,7 +68,7 @@ class RendicionForm(forms.ModelForm):
 
     class Meta:
         model = Anticipo
-        fields = ['fech_inicio', 'fech_fin', 'gastos', 'ciudad','transporte']
+        fields = ['fech_inicio', 'fech_fin', 'gastos', 'ciudad', 'transporte']
         widgets = {
             'fech_inicio': DatePickerInput().start_of('event days'),
             'fech_fin': DatePickerInput().end_of('event days'),
@@ -80,7 +80,7 @@ class DetalleTrabajoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
-        
+
         """ atrr placeholder"""
         self.fields['km_salida'].widget.attrs['placeholder'] = 'Km de salida'
         self.fields['km_llegada'].widget.attrs['placeholder'] = 'Kn de llegada'
@@ -95,3 +95,24 @@ class TransporteForm(forms.ModelForm):
     class Meta:
         model = Transporte
         fields = ['num_legajo', 'patente']
+
+
+class CollectionUserForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(CollectionUserForm, self).__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].label = ''
+
+        self.fields['user'].queryset = User.objects.all().order_by('last_name')
+        self.fields['user'].widget.attrs['class'] = 'sel'
+        self.fields['user'].widget.attrs['data-placeholder'] = 'Apellido y Nombre'
+
+    class Meta:
+        model = Integrantes_x_Solicitud
+        fields = ['user']
+
+
+CollectionUserFormSet = inlineformset_factory(Solicitud, Integrantes_x_Solicitud,
+                                              form=CollectionUserForm, can_delete=False, extra=1)

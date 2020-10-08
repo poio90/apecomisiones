@@ -12,6 +12,7 @@ class CiudadAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Ciudad, CiudadAdmin)
+admin.site.register(Provincia)
 admin.site.register(Transporte, TransporteAdmin)
 
 # admin.site.register(Itineraio)

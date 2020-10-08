@@ -52,12 +52,7 @@ class User(AbstractUser):
         verbose_name_plural = 'Afiliados'
 
     def __str__(self):
-        return '{} {} {} {} {} {} {}'.format(
-            self.username,
-            self.dni,
-            self.num_afiliado,
+        return '{} {}'.format(
             self.last_name,
             self.first_name,
-            self.email,
-            self.num_tel
         )

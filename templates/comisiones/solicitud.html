@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="after-add-more"
+                            <!-- <div id="after-add-more"
                                 data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                                 <div class="form-group">
                                     <div class="form-row">
@@ -88,7 +88,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- div que se muestra luego de agregar usuario -->
+                            div que se muestra luego de agregar usuario 
                             <div class="copy d-none d-print-block">
                                 <div class="form-group">
                                     <div class="form-row">
@@ -114,55 +114,93 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
+
                             <div class="form-group">
-                                <label for="inputAfiliado" class="col-sm-6 col-form-label">
-                                    <h4>Motivo de la Comisión</h4>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                {{ form.motivo }}
-                            </div>
-                            <div class="form-group">
+                                <div id="form-wrapper" class="form-wrapper">
+                                    <div class="form-repaet">
+                                        {{ users.management_form }}
+                                        {% for f in users %}
+                                        <div class="form-row">
+                                            <div class="col-md-10 mt-2 col">
+                                                {{ f }}
+                                            </div>
+                                            <div class="col-md-2 mt-2">
+                                                <span class="float-right mb-3 mr-2">
+                                                    <button type="button" class="remove btn btn-danger">Remover</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                                 <div class="form-row">
-                                    <div class="col-md-6 mt-2">
-                                        <div class="input-group">
-                                            {{ form.fech_inicio }}
+                                    <div class="col-md-4 mt-2">
+                                        <button id="add-more" type="button" class="btn btn-success">Agregar
+                                            usuario</i></button>
+                                    </div>
+                                </div>
+                                <div class="copy d-none d-print-block">
+                                    <div class="form-row">
+                                        <div class="col-md-10 mt-2 col">
+                                            {{ single_user }}
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <span class="float-right mb-3 mr-2">
+                                                <button type="button" class="remove btn btn-danger">Remover</button>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-2">
-                                        {{ form.duracion_prevista }}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="inputAfiliado" class="col-sm-6 col-form-label">
+                                        <h4>Motivo de la Comisión</h4>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    {{ form.motivo }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mt-2">
+                                            <div class="input-group">
+                                                {{ form.fech_inicio }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            {{ form.duracion_prevista }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                {{ form.ciudad }}
-                            </div>
-                            <div class="row">
-                                <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
-                                    transporte:</label>
-                                <div class="col">
-                                    <div class="form-group">
-                                        {{ form.transporte }}
+                                <div class="form-group">
+                                    {{ form.ciudad }}
+                                </div>
+                                <div class="row">
+                                    <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
+                                        transporte:</label>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            {{ form.transporte }}
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    {{ form.gastos_previstos }}
+                                </div>
                             </div>
-                            <div class="form-group">
-                                {{ form.gastos_previstos }}
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
+                                        Archivar</button>
+                                </div>
+                                <button type="submit" class="btn btn-primary"
+                                    formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
+                                    <i class="fas fa-download"></i>
+                                    Generar PDF</button>
+                                <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
                             </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <div class="float-right">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
-                                    Archivar</button>
-                            </div>
-                            <button type="submit" class="btn btn-primary"
-                                formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
-                                <i class="fas fa-download"></i>
-                                Generar PDF</button>
-                            <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
-                        </div>
                 </form>
                 <!-- /.card-footer -->
             </div>

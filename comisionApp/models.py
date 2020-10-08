@@ -13,7 +13,6 @@ class Provincia(models.Model):
         verbose_name = 'Provincia'
         verbose_name_plural = 'Provincias'
         managed = True
-        db_table = 'provincia'
 
     def __str__(self):
         return self.provincia
@@ -25,7 +24,6 @@ class Ciudad(models.Model):
     id_provincia = models.ForeignKey(
         'Provincia',
         on_delete=models.CASCADE,
-        db_column='id_provincia'
     )
 
     class Meta:
@@ -82,21 +80,27 @@ class Solicitud(models.Model):
         Ciudad,
         on_delete=models.SET_NULL,
         null=True,
-        db_column='id_ciudad'
     )
 
     transporte = models.ForeignKey(
         Transporte,
         on_delete=models.SET_NULL,
         null=True,
-        db_column='id_transporte'
     )
 
-    solicitante = models.ForeignKey(
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='usersolicitud',
+        through='Integrantes_x_Solicitud'
+    )
+
+    creado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
+        related_name='creadopor',
+        blank=True,
         null=True,
-        db_column='id_user'
     )
 
     fech_inicio = models.DateField()
@@ -159,19 +163,8 @@ class Anticipo(models.Model):
 
 
 class Integrantes_x_Solicitud(models.Model):
-    solicitud = models.ForeignKey(
-        Solicitud,
-        on_delete=models.SET_NULL,
-        null=True,
-        db_column='id_solicitud'
-    )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        db_column='id_user'
-    )
+    solicitud = models.ForeignKey(Solicitud,on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,)
 
     fecha_de_registro = models.DateField(auto_now_add=True)
 
@@ -192,14 +185,12 @@ class Integrantes_x_Anticipo(models.Model):
         Anticipo,
         on_delete=models.CASCADE,
         null=True,
-        db_column='id_anticipo'
     )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        db_column='id_user'
     )
 
     fecha_de_registro = models.DateField(auto_now_add=True)
@@ -228,7 +219,6 @@ class Itineraio(models.Model):
     anticipo = models.ForeignKey(
         Anticipo,
         on_delete=models.CASCADE,
-        db_column='id_anticipo'
     )
 
     class Meta:
@@ -256,7 +246,6 @@ class DetalleTrabajo(models.Model):
     anticipo = models.OneToOneField(
         Anticipo,
         on_delete=models.CASCADE,
-        db_column='id_anticipo'
     )
 
     class Meta:

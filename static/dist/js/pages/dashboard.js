@@ -21,25 +21,36 @@ $(document).ready(function () {
   })
 
   //-----funcion que agrega y elimina input para agregar afiliados a confeccion de comisiones-----//
-  
-  
-  
-  
-  
-  
-  $("body").on("click",'.add-more', function () {
+
+  $('#id_user').prop('required',false)
+
+  $("body").on("click", '#add-more', function () {
     //Toma el id de full name para
-    var id = $(this).attr('id');//agregado por mi
-    id = parseInt(id) + 1;//agregado por mi
-    $(".copy select").attr("indice", id);//agregado por mi
-    $(".copy input").attr("id", 'afiliado' + id);//agregado por mi
-    $("#after-add-more").append($(".copy").html());
-    //$(".copy select").prop('required',true);//agregado por mi
-    $(this).attr('id', id = id + 1);//agregado por mi
+    var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
+    var select = $('.copy div').first().clone();
+    select[0].firstElementChild.firstElementChild.id = "id_integrantes_x_solicitud_set-" + form.value + "-user";
+    select[0].firstElementChild.firstElementChild.name = "integrantes_x_solicitud_set-" + form.value + "-user";
+    $('.form-wrapper').append(select)
+    $('#id_integrantes_x_solicitud_set-' + form.value + '-user').last().next().remove()
+    $('#id_integrantes_x_solicitud_set-' + form.value + '-user').prop('required',true)
+    form.value = parseInt(form.value) + 1;
   });
 
+
+  /*$("body").on("click",'#add-more', function () {
+    //Toma el id de full name para
+    var id = $(this).attr('id');//agregado por mi
+    //id = parseInt(id) + 1;//agregado por mi
+    //$(".copy select").attr("indice", id);//agregado por mi
+    //$(".copy input").attr("id", 'afiliado' + id);//agregado por mi
+    //$("#after-add-more").append($("#copy").html());
+    console.log($("#copy").html())
+    //$(".copy select").prop('required',true);//agregado por mi
+    //$(this).attr('id', id = id + 1);//agregado por mi
+  });*/
+
   // select the target node (con esto se logra que los select sean funcionales)
-  var target = document.getElementById('after-add-more');
+  var target = document.getElementById('form-wrapper');
 
   if (target) {
     // create an observer instance
@@ -50,8 +61,10 @@ $(document).ready(function () {
         if (mutation && mutation.addedNodes) {
           mutation.addedNodes.forEach(function (elm) {
             //only apply select2 to select elements
+            var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
+            var indice = parseInt(form.value) - 1
             if (elm && elm.nodeName === "DIV") {
-              $(elm).find('select[name="afiliado[]"]').select2({
+              $(elm).find('select[name="integrantes_x_solicitud_set-' + indice + '-user"]').select2({
                 theme: 'bootstrap4',
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
                 placeholder: $(this).data('placeholder'),
@@ -62,7 +75,6 @@ $(document).ready(function () {
         }
       });
     });
-
     // pass in the target node, as well as the observer options
     observer.observe(target, {
       childList: true
@@ -73,10 +85,10 @@ $(document).ready(function () {
   }
 
   $("body").on("click", ".remove", function () {
-    $(this).parents(".form-group").remove();
-    //var id = $(".add-more").attr('id')//agregado por mi
-    //id = parseInt(id);//agregado por mi
-    //$(".add-more").attr('id', id = id - 1);//agregado por mi
+    console.log($(this).parents(".form-row"));
+    $(this).parents(".form-row").remove()
+    var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
+    form.value = parseInt(form.value) - 1;
   });
   //---------------------------------------------------------------------------------------------//
 

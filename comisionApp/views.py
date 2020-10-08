@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import View, CreateView, DeleteView, ListView, TemplateView, FormView
+from django.views.generic import *
 from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
@@ -27,7 +27,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from django.core import serializers
-import pdb
+
 
 
 class ReportePdfSolicitud(View):
@@ -50,7 +50,6 @@ class ReportePdfSolicitud(View):
         c.setFont('Helvetica', 12)
         c.drawString(120, 790, text)
         c.drawString(120, 775, text2)
-        
 
         PAGE_WIDTH = defaultPageSize[0]
         PAGE_HEIGHT = defaultPageSize[1]
@@ -121,7 +120,7 @@ class ReportePdfSolicitud(View):
         c.line(465, 32, 570, 32)
 
         c.save()
-        titulo = 'filename=' +str(fecha)+'.pdf'
+        titulo = 'filename=' + str(fecha)+'.pdf'
         pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -184,7 +183,8 @@ class ReportePdfSolicitud(View):
 
         alto = 675
         for i in range(len(pk)-1):
-            c.drawString(30, alto, 'Apellido y Nombre'+'       ' +nombre[i].get_full_name())
+            c.drawString(30, alto, 'Apellido y Nombre' +
+                         '       ' + nombre[i].get_full_name())
             c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
                          '         ' + num_afiliados[i])
             alto = alto - 25
@@ -460,8 +460,10 @@ class ReportePdfAnticipo(View):
 
         c.setFont('Helvetica', 12)
 
-        c.drawString(30, 770, 'Apellido y Nombre'+'       ' + request.user.get_full_name())
-        c.drawString(360, 770, 'N° Afiliado a SEMPRE' +'         ' + str(request.user.num_afiliado))
+        c.drawString(30, 770, 'Apellido y Nombre' +
+                     '       ' + request.user.get_full_name())
+        c.drawString(360, 770, 'N° Afiliado a SEMPRE' +
+                     '         ' + str(request.user.num_afiliado))
 
         alto = 745
         for i in range(len(pk)-1):
@@ -582,7 +584,7 @@ class ReportePdfAnticipo(View):
         return response
 
 
-class SolicitudAnticipo(SuccessMessageMixin, CreateView):
+"""class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
@@ -612,7 +614,72 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
             self.object = None
             context = self.get_context_data(**kwargs)
             context['form'] = form
-            return render(request, self.template_name, context)
+            return render(request, self.template_name, context)"""
+
+
+class SolicitudAnticipo(SuccessMessageMixin, CreateView):
+    model = Solicitud
+    template_name = 'comisiones/solicitud.html'
+    form_class = SolicitudForm
+    success_message = "Solicitud de anticipo creada exitosamente"
+
+    def get_context_data(self, **kwargs):
+        data = super(SolicitudAnticipo, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['users'] = CollectionUserFormSet(self.request.POST)
+        else:
+            data['users'] = CollectionUserFormSet()
+            data['single_user'] = CollectionUserForm()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        users = context['users']
+        with transaction.atomic():
+            form.instance.creado_por = self.request.user
+            self.object = form.save()
+            if users.is_valid():
+                users.instance = self.object
+                users.save()
+        return super(SolicitudAnticipo, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('comisiones:historico_comisiones')
+
+
+class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
+    model = Solicitud
+    template_name = 'comisiones/solicitud.html'
+    form_class = SolicitudForm
+    success_message = "Solicitud de anticipo editada exitosamente"
+
+    def get_context_data(self, **kwargs):
+        data = super(SolicitudAnticipoUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['users'] = CollectionUserFormSet(
+                self.request.POST, instance=self.object)
+            #data['num_afiliado'] = User.objects.filter(integrantes_x_solicitud__solicitud=self.kwargs['pk'])
+
+        else:
+            data['users'] = CollectionUserFormSet(instance=self.object)
+            data['single_user'] = CollectionUserForm()
+            #data['num_afiliado'] = User.objects.filter(integrantes_x_solicitud__solicitud=self.kwargs['pk'])
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        users = context['users']
+        with transaction.atomic():
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            self.object = form.save()
+            if users.is_valid():
+                users.instance = self.object
+                users.save()
+        return super(SolicitudAnticipoUpdate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('comisiones:historico_comisiones')
 
 
 class RendicionAnticipo(SuccessMessageMixin, CreateView):
@@ -652,8 +719,9 @@ class RendicionAnticipo(SuccessMessageMixin, CreateView):
                 Itineraio.objects.create(
                     anticipo=f, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
                     hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
-            
-            Integrantes_x_Anticipo.objects.create(anticipo=f, user=self.request.user)
+
+            Integrantes_x_Anticipo.objects.create(
+                anticipo=f, user=self.request.user)
 
             pk_users = self.request.POST.getlist('afiliado[]')
             for i in range(len(pk_users)-1):
@@ -681,7 +749,7 @@ class Historicos(ListView):
         context['solicitudes'] = Solicitud.objects.filter(
             integrantes_x_solicitud__user=self.request.user.pk)
         context['solicitudes_pedidas'] = Solicitud.objects.filter(
-            solicitante_id=self.request.user.pk)
+            creado_por_id=self.request.user.pk)
         return context
 
 
