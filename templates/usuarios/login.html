@@ -2,6 +2,10 @@
 {% load staticfiles %}
 
 {% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
 <div class="card-body login-card-body">
   <p class="login-box-msg">Inicia sesión para comenzar</p>
   <form method="post" action=".">

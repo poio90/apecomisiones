@@ -25,7 +25,6 @@ class Ciudad(models.Model):
     id_provincia = models.ForeignKey(
         'Provincia',
         on_delete=models.CASCADE,
-        db_column='id_provincia'
     )
 
     class Meta:
@@ -82,25 +81,30 @@ class Solicitud(models.Model):
         Ciudad,
         on_delete=models.SET_NULL,
         null=True,
-        db_column='id_ciudad'
     )
 
     transporte = models.ForeignKey(
         Transporte,
         on_delete=models.SET_NULL,
         null=True,
-        db_column='id_transporte'
     )
 
-    solicitante = models.ForeignKey(
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='usersolicitud',
+        through='Integrantes_x_Solicitud'
+    )
+
+    creado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
+        related_name='creadopor',
+        blank=True,
         null=True,
-        db_column='id_user'
     )
 
-    fech_inicio = models.DateField()
-
+    fecha_inicio = models.DateField()
     fecha_pedido = models.DateField(auto_now_add=True)
     gastos_previstos = models.FloatField()
     motivo = models.TextField()
@@ -131,9 +135,15 @@ class Anticipo(models.Model):
         db_column='id_transporte'
     )
 
-    fech_inicio = models.DateField()
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='userrendicion',
+        through='Integrantes_x_Anticipo'
+    )
 
-    fech_fin = models.DateField()
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
     gastos = models.FloatField()
 
     class Meta:
@@ -144,9 +154,9 @@ class Anticipo(models.Model):
 
     def __str__(self):
         return '{} {} {} {} {} {}'.format(
-            self.fech_inicio,
+            self.fecha_inicio,
             self.ciudad.ciudad,
-            self.fech_fin,
+            self.fecha_fin,
             self.gastos,
             self.transporte.num_legajo,
             self.transporte.patente)
@@ -159,19 +169,8 @@ class Anticipo(models.Model):
 
 
 class Integrantes_x_Solicitud(models.Model):
-    solicitud = models.ForeignKey(
-        Solicitud,
-        on_delete=models.SET_NULL,
-        null=True,
-        db_column='id_solicitud'
-    )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        db_column='id_user'
-    )
+    solicitud = models.ForeignKey(Solicitud,on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,)
 
     fecha_de_registro = models.DateField(auto_now_add=True)
 
@@ -188,19 +187,8 @@ class Integrantes_x_Solicitud(models.Model):
 
 class Integrantes_x_Anticipo(models.Model):
 
-    anticipo = models.ForeignKey(
-        Anticipo,
-        on_delete=models.CASCADE,
-        null=True,
-        db_column='id_anticipo'
-    )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        db_column='id_user'
-    )
+    anticipo = models.ForeignKey(Anticipo,on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,)
 
     fecha_de_registro = models.DateField(auto_now_add=True)
 
@@ -228,7 +216,6 @@ class Itineraio(models.Model):
     anticipo = models.ForeignKey(
         Anticipo,
         on_delete=models.CASCADE,
-        db_column='id_anticipo'
     )
 
     class Meta:
@@ -256,7 +243,6 @@ class DetalleTrabajo(models.Model):
     anticipo = models.OneToOneField(
         Anticipo,
         on_delete=models.CASCADE,
-        db_column='id_anticipo'
     )
 
     class Meta:

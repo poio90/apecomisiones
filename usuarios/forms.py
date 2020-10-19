@@ -8,6 +8,7 @@ from .models import User
 
 class FormLogin(AuthenticationForm):
     """ Formulario para validar los datos de login """
+
     def __init__(self, *args, **kwargs):
         super(FormLogin, self).__init__(*args, **kwargs)
         for myField in self.fields:
@@ -17,15 +18,53 @@ class FormLogin(AuthenticationForm):
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
 
-class FormUpdateProfile(forms.ModelForm):
-    """ Formulario para validar los datos de usuario """
+class UserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['readonly'] = 'true'
+        self.fields['reemplazo'].widget.attrs['disabled'] = ''
+        self.fields['categoria'].widget.attrs['disabled'] = ''
+        self.fields['categoria'].widget.attrs['class'] = 'sel'
+        self.fields['categoria_reemplazo'].widget.attrs['disabled'] = ''
+        self.fields['categoria_reemplazo'].widget.attrs['class'] = 'sel'
+        self.fields['categoria_reemplazo'].label = 'Categoría de reemplazo'
+
     class Meta:
         model = User
-        fields = ['last_name','first_name','dni','email','num_tel']
+        fields = ['last_name', 'first_name', 'dni',
+                  'email', 'num_tel', 'categoria', 'reemplazo', 'categoria_reemplazo']
+        widget = {
+            'reemplazo': forms.ChoiceField(
+                widget=forms.CheckboxSelectMultiple,
+            )
+        }
+
+
+class FormUpdateProfile(forms.ModelForm):
+    """ Formulario para validar los datos de usuario """
+
+    def __init__(self, *args, **kwargs):
+        super(FormUpdateProfile, self).__init__(*args, **kwargs)
+        self.fields['categoria'].widget.attrs['class'] = 'sel'
+        self.fields['categoria'].widget.attrs['required'] = 'true'
+        self.fields['categoria_reemplazo'].widget.attrs['class'] = 'sel'
+        self.fields['categoria_reemplazo'].label = 'Categoría de reemplazo'
+        
+    class Meta:
+        model = User
+        fields = ['num_afiliado','last_name', 'first_name', 'dni',
+                  'email', 'num_tel', 'categoria', 'reemplazo', 'categoria_reemplazo']
+        widget = {
+            'reemplazo': forms.ChoiceField(
+                widget=forms.CheckboxSelectMultiple,
+            )
+        }
 
 
 class FormRegistro(UserCreationForm):
     """ Formulario para validar los datos de registro """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for myField in self.fields:
@@ -39,14 +78,4 @@ class FormRegistro(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','num_afiliado','dni','password1', 'password2']
-
-
-class UserForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for myField in self.fields:
-            self.fields[myField].widget.attrs['class'] = 'form-control'
-    class Meta:
-        model = User
-        fields = ['last_name','first_name','num_afiliado']
+        fields = ['username', 'num_afiliado', 'dni', 'password1', 'password2']

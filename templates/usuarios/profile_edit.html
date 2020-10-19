@@ -1,6 +1,9 @@
 {% extends "index.html" %}
 
 {% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{{ form.media }}
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -35,91 +38,9 @@
                 <form method="POST" class="form-horizontal" 
                   enctype="multipart/form-data">
                   {% csrf_token %}
-                  <div class="form-group row">
-                    <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
-                    <div class="col-sm-10">
-                      <input type="text"
-                        class="form-control {% if form.last_name.errors %} is-invalid {% endif %}"
-                        placeholder="Apellido" name="last_name"
-                        value="{% if form.errors %}{{ form.last_name.value }}{% else %}{{ usuario.last_name }}{% endif %}">
-                    </div>
-                  </div>
-                  {% for error in form.last_name.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Apellido: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
-                  <div class="form-group row">
-                    <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
-                    <div class="col-sm-10">
-                      <input type="text"
-                        class="form-control {% if form.first_name.errors %} is-invalid {% endif %}"
-                        placeholder="Nombre" name="first_name"
-                        value="{% if form.errors %}{{ form.first_name.value }}{% else %}{{ usuario.first_name }}{% endif %}">
-                    </div>
-                  </div>
-                  {% for error in form.first_name.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Nombre: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
-                  <div class="form-group row">
-                    <label id="dni_label" for="inputDni" class="col-sm-2 col-form-label">DNI</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control {% if form.dni.errors %} is-invalid {% endif %}"
-                        placeholder="DNI" name="dni"
-                        value="{% if form.errors %}{{ form.dni.value }}{% else %}{{ usuario.dni }}{% endif %}">
-                    </div>
-                  </div>
-                  {% for error in form.dni.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>DNI: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
-                  <div class="form-group row">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="email"
-                        class="form-control {% if form.email.errors %} is-invalid {% endif %}"
-                        placeholder="Email" name="email"
-                        value="{% if form.errors %}{{ form.email.value }} {% else %} {{ usuario.email }} {% endif %}">
-                    </div>
-                  </div>
-                  {% for error in afiliado_form.email.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Email: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
-                  <div class="form-group row">
-                    <label for="inpuTel" class="col-sm-2 col-form-label">Número de tel.</label>
-                    <div class="col-sm-10">
-                      <input type="tel" 
-                        class="form-control {% if form.num_tel.errors %} is-invalid {% endif %}"
-                        placeholder="Número de telefono" name="num_tel"
-                        value="{% if form.errors %}{{ form.num_tel.value }}{% else %}{{ usuario.num_tel }}{% endif %}"
-                        required>
-                    </div>
-                  </div>
-                  {% for error in form.num_tel.errors %}
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 alert alert-danger">
-                      <b>Número de telefono: </b>{{ error }}
-                    </div>
-                  </div>
-                  {% endfor %}
+                  
+                  {% bootstrap_form form layout='horizontal' %}        
+                  
                   <div class="card-footer">
                     <div class="float-right">
                       <button type="submit" class="btn btn-success">
@@ -142,5 +63,18 @@
     <!-- /.row -->
   </div><!-- /.container-fluid -->
 </section>
-
+<script>
+  if ($('#id_reemplazo').is(':checked') ) {
+        $( "#id_categoria_reemplazo").prop( "disabled", false);
+     } else {
+        $( "#id_categoria_reemplazo" ).prop( "disabled", true );
+    }
+    $('#id_reemplazo').on('change', function() {
+        if ($(this).is(':checked') ) {
+           $( "#id_categoria_reemplazo").prop( "disabled", false);
+        } else {
+           $( "#id_categoria_reemplazo" ).prop( "disabled", true );
+       }
+   });
+</script>
 {% endblock %}

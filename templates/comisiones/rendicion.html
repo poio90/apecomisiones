@@ -1,7 +1,8 @@
 {% extends "index.html" %}
 
 {% block content %}
-{{ rendicion.media }}
+{% load bootstrap4 %}
+{{ form.media }}
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
@@ -22,22 +23,22 @@
 <!-- errores -->
 <section class="content">
   <div class="container-fluid">
-      {% if form.errors %}
-      <div class="alert alert-danger" role="alert">
-          <i class="icon fas fa-exclamation-triangle"></i>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-          </button>
-          <ul class="errorlist">
-              {% for error in form.fech_inicio.errors %}
-              <li><b>Fecha de inicio:</b> {{ error }}</li>
-              {% endfor %}
-              {% for error in form.fech_fin.errors %}
-              <li><b>Fecha de finalización:</b> {{ error }}</li>
-              {% endfor %}
-          </ul>
-      </div>
-      {% endif %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+      <i class="icon fas fa-exclamation-triangle"></i>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <ul class="errorlist">
+        {% for error in form.fech_inicio.errors %}
+        <li><b>Fecha de inicio:</b> {{ error }}</li>
+        {% endfor %}
+        {% for error in form.fech_fin.errors %}
+        <li><b>Fecha de finalización:</b> {{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
   </div>
 </section>
 <!-- fin errores -->
@@ -60,23 +61,23 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <div id="after-add-more" data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
+              <!--<div id="after-add-more" data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                 <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6 mt-2">
                       <label id="0" class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
-                      <!--<select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
+                      <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
                         <option></option>
                         {% for afiliado in users %}
                         <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
                           {{ afiliado.first_name }}</option>
                         {% endfor %}
-                      </select>-->
+                      </select>
                     </div>
                     <div class="col-md-5 mt-2">
                       <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
-                      <!--<input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
-                        placeholder="Número de afiliado a SEMPRE">-->
+                      <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
+                        placeholder="Número de afiliado a SEMPRE">
                     </div>
                     <div class="col-md-1 mt-2">
                       <span class="float-right mb-3 mr-2">
@@ -88,7 +89,7 @@
                   </div>
                 </div>
               </div>
-              <!-- div que se muestra luego de agregar usuario -->
+               div que se muestra luego de agregar usuario 
               <div class="copy d-none d-print-block">
                 <div class="form-group">
                   <div class="form-row">
@@ -114,32 +115,33 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    {{ form.fech_inicio }}
+                    <label for="inputTransporte" class="col-form-label">Fecha de inicio:</label>
+                    {{ form.fecha_inicio }}
                   </div>
                   <div class="col">
-                    {{ form.fech_fin }}
+                    <label for="inputTransporte" class="col-form-label">Fecha de finalización:</label>
+                    {{ form.fecha_fin }}
                   </div>
                 </div>
               </div>
               <div class="form-group">
+                {{ form.ciudad.label_tag }}
                 {{ form.ciudad }}
               </div>
-              <div class="row">
-                <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
-                  transporte:</label>
-                <div class="col">
-                  <div class="form-group">
-                    {{ form.transporte }}
-                  </div>
-                </div>
-                
-              </div>
               <div class="form-group">
+                <label for="inputTransporte" class="col-form-label">Medio de
+                  transporte:</label>
+                {{ form.transporte }}
+                <small class="form-text text-muted">Puede filtrar por número de lagajo o patente</small>
+              </div>
+
+              <div class="form-group">
+                {{ form.gastos.label_tag }}
                 {{ form.gastos }}
               </div>
               <!--- Tabla para el armado del itinenario--->
@@ -226,15 +228,15 @@
             <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-                
+
                 <button id="archivar" class="btn btn-success">
                   <i class="fas fa-archive"></i>
-                  Archivar</button>
+                  Guardar</button>
               </div>
               <button id="imprimir" type="submit" class="btn btn-primary"
-                  formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
-                  <i class="fas fa-download"></i>
-                  Generar PDF</button>
+                formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
+                <i class="fas fa-download"></i>
+                Generar PDF</button>
               <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
             </div>
             <!-- /.card-footer -->
