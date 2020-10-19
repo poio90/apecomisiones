@@ -1,7 +1,8 @@
 {% extends "index.html" %}
 
 {% block content %}
-{{ solicitud.media }}
+{% load bootstrap4 %}
+{{ form.media }}
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -21,12 +22,16 @@
 
 <!-- errores -->
 <section class="content">
+
     <div class="container-fluid">
-        {% if form.errors %}
+        {% if form.errors  or users.errors %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="icon fas fa-exclamation-triangle"></i>
             {% for field in form.visible_fields %}
             <h5>{{ field.errors }}</h5>
+            {% endfor %}
+            {% for field in users.errors %}
+            <h5>{{ field }}</h5>
             {% endfor %}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -41,7 +46,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data"
+                    data-validate-url="{{ list_url }}" data-url="{{ url }}">
                     {% csrf_token %}
                     <div class="card card-primary card-outline">
                         <div class="card-header">
@@ -60,73 +66,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div id="after-add-more"
-                                data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-                                <div class="form-group">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mt-2">
-                                            <select id="sel" indice="0" name="afiliado[]"
-                                                data-placeholder="Apellido y nombre">
-                                                <option></option>
-                                                {% for afiliado in users %}
-                                                <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
-                                                    {{ afiliado.first_name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-5 mt-2">
-                                            <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
-                                                placeholder="Número de afiliado a SEMPRE">
-                                        </div>
-                                        <div class="col-md-1 mt-2">
-                                            <span class="float-right mb-3 mr-2">
-                                                <a style="cursor:pointer;" id="0" class="text-success add-more">
-                                                    <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            div que se muestra luego de agregar usuario 
-                            <div class="copy d-none d-print-block">
-                                <div class="form-group">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mt-2">
-                                            <select name="afiliado[]" data-placeholder="Apellido y nombre">
-                                                <option></option>
-                                                {% for afiliado in users %}
-                                                <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
-                                                    {{ afiliado.first_name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-5 mt-2">
-                                            <input name="num_afiliado[]" type="text" class="form-control"
-                                                placeholder="Número de afiliado a SEMPRE">
-                                        </div>
-                                        <div class="col-md-1 mt-2">
-                                            <span class="float-right mb-3 mr-2">
-                                                <a style="cursor:pointer;" class="text-danger remove">
-                                                    <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-
                             <div class="form-group">
+                                <label for="inputAfiliado" class=" col-form-label">
+                                    <h4>Personal afectado a la comisión</h4>
+                                </label>
                                 <div id="form-wrapper" class="form-wrapper">
-                                    <div class="form-repaet">
-                                        {{ users.management_form }}
+                                    {{ users.management_form }}
+                                    <div id="form-repaet" class="form-repaet">
                                         {% for f in users %}
                                         <div class="form-row">
-                                            <div class="col-md-10 mt-2 col">
+                                            <div class="col-md-6 mt-2 col">
                                                 {{ f }}
                                             </div>
-                                            <div class="col-md-2 mt-2">
-                                                <span class="float-right mb-3 mr-2">
+                                            <div class="col-md-5 mt-2 col">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Número de afiliado a SEMPRE" readonly>
+                                            </div>
+                                            <div class="col-md-1 mt-2">
+                                                <span class="mb-3 mr-2">
                                                     <button type="button" class="remove btn btn-danger">Remover</button>
                                                 </span>
                                             </div>
@@ -142,19 +99,26 @@
                                 </div>
                                 <div class="copy d-none d-print-block">
                                     <div class="form-row">
-                                        <div class="col-md-10 mt-2 col">
+                                        <div class="col-md-6 mt-2 col">
                                             {{ single_user }}
                                         </div>
-                                        <div class="col-md-2 mt-2">
-                                            <span class="float-right mb-3 mr-2">
+                                        <input type="checkbox" style="display: none;">
+                                        <div class="col-md-5 mt-2 col">
+                                            <input type="text" class="form-control"
+                                                placeholder="Número de afiliado a SEMPRE" readonly>
+                                        </div>
+                                        <div class="col-md-1 mt-2">
+                                            <span class="mb-3 mr-2">
                                                 <button type="button" class="remove btn btn-danger">Remover</button>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="caja d-none d-print-block"></div>
+                                <input id="contador" type="hidden" >
                                 <br>
                                 <div class="form-group">
-                                    <label for="inputAfiliado" class="col-sm-6 col-form-label">
+                                    <label for="inputAfiliado" class=" col-form-label">
                                         <h4>Motivo de la Comisión</h4>
                                     </label>
                                 </div>
@@ -165,27 +129,30 @@
                                     <div class="form-row">
                                         <div class="col-md-6 mt-2">
                                             <div class="input-group">
-                                                {{ form.fech_inicio }}
+                                                {{ form.fecha_inicio.label_tag }}
+                                                {{ form.fecha_inicio }}
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-2">
+                                            {{ form.duracion_prevista.label_tag }}
                                             {{ form.duracion_prevista }}
+                                            <small class="form-text text-muted">Ejemplo: 5 días</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    {{ form.ciudad.label_tag }}
                                     {{ form.ciudad }}
                                 </div>
-                                <div class="row">
-                                    <label for="inputTransporte" class="col-sm-2 col-form-label">Medio de
+                                <div class="form-group">
+                                    <label for="inputTransporte" class="col-form-label">Medio de
                                         transporte:</label>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            {{ form.transporte }}
-                                        </div>
-                                    </div>
+                                    {{ form.transporte }}
+                                    <small class="form-text text-muted">Puede filtrar por número de lagajo o
+                                        patente</small>
                                 </div>
                                 <div class="form-group">
+                                    {{ form.gastos_previstos.label_tag }}
                                     {{ form.gastos_previstos }}
                                 </div>
                             </div>
@@ -193,12 +160,10 @@
                             <div class="card-footer">
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
-                                        Archivar</button>
+                                        Guardar</button>
                                 </div>
-                                <button type="submit" class="btn btn-primary"
-                                    formaction="{% url 'comisiones:reportePdfSolicitud' %}" formtarget="_blank">
-                                    <i class="fas fa-download"></i>
-                                    Generar PDF</button>
+                                <a type="button" class="btn btn-danger" href="{{ url }}">
+                                    <i class="fas fa-times"></i> Cancelar</a>
                                 <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
                             </div>
                 </form>
@@ -212,6 +177,9 @@
     <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-
+<script>
+    $('.form-wrapper label').hide()
+    $('input[type=checkbox]').hide()
+</script>
 <!-- /.content -->
 {% endblock %}

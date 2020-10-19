@@ -13,16 +13,21 @@ from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
-from .forms import FormLogin, FormRegistro, FormUpdateProfile
+from .forms import FormLogin, FormRegistro, FormUpdateProfile, UserForm
 
 
 class Inicio(TemplateView):
-    template_name = 'index.html'
+    template_name = 'inicio.html'
 
 
 class Perfil(DetailView):
     model = User
     template_name = 'usuarios/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Perfil, self).get_context_data(**kwargs)
+        context['form'] = UserForm(instance=self.object)
+        return context
 
 
 class EditarPerfil(SuccessMessageMixin, UpdateView):
@@ -61,8 +66,8 @@ class LoginUsuario(FormView):
     def get_success_url(self):
         # if you are passing 'pk' from 'urls' to 'UpdateView' for user
         # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
-        user_pk = self.request.user.pk
-        return reverse_lazy('usuarios:perfil', kwargs={'pk': user_pk})
+        #user_pk = self.request.user.pk
+        return reverse_lazy('usuarios:index')
 
 
 class RegistroUsuario(CreateView):

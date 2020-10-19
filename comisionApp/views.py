@@ -29,7 +29,6 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, 
 from django.core import serializers
 
 
-
 class ReportePdfSolicitud(View):
     """Regresa Pdf"""
 
@@ -98,7 +97,7 @@ class ReportePdfSolicitud(View):
         c.drawText(textobject)
 
         fecha_inicio = datetime.strptime(
-            str(solicitud.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
+            str(solicitud.fecha_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.setFont('Helvetica', 12)
         c.drawString(30, 295, 'Fecha de iniciación: ' +
@@ -113,7 +112,7 @@ class ReportePdfSolicitud(View):
         c.drawString(400, 235, 'Patente: '+solicitud.transporte.patente)
         c.drawString(30, 205, 'Gastos a solicitar: $' +
                      str(solicitud.gastos_previstos))
-        solicitante = solicitud.solicitante.get_full_name()
+        solicitante = solicitud.creado_por.get_full_name()
         c.drawString(30, 175, 'Anticipo ordenado por: ' + solicitante)
 
         c.drawString(500, 20, 'Firma')
@@ -128,12 +127,11 @@ class ReportePdfSolicitud(View):
         return response
 
     def post(self, request, *args, **kwargs):
-
-        pk = request.POST.getlist('afiliado[]')
+        """pk = request.POST.getlist('afiliado[]')
         num_afiliados = request.POST.getlist('num_afiliado[]')
         motivo = request.POST['motivo']
 
-        fech_inicio = request.POST['fech_inicio']
+        fech_inicio = request.POST['fecha_inicio']
         duracion_prevista = request.POST['duracion_prevista']
         pk_ciudad = request.POST['ciudad']
         transporte = request.POST['transporte']
@@ -229,10 +227,13 @@ class ReportePdfSolicitud(View):
         c.line(465, 32, 570, 32)
         c.save()
         pdf = buffer.getvalue()
+        buffer.close()"""
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer, pagesize=A4)
+        pdf = buffer.getvalue()
         buffer.close()
         response = HttpResponse(pdf, content_type='application/pdf')
-        nombre_pdf = str(fecha)+request.user.last_name
-        response['Content-Disposition'] = 'filename='+nombre_pdf+'.pdf'
+        response['Content-Disposition'] = 'filename=.pdf'
         return response
 
 
@@ -584,39 +585,7 @@ class ReportePdfAnticipo(View):
         return response
 
 
-"""class SolicitudAnticipo(SuccessMessageMixin, CreateView):
-    model = Solicitud
-    template_name = 'comisiones/solicitud.html'
-    form_class = SolicitudForm
-    context_object_name = 'solicitud'
-    success_message = "Solicitud de anticipo creada exitosamente"
-    success_url = reverse_lazy('comisiones:historico_comisiones')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.filter(
-            is_active=1).order_by('last_name')
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            solicitud = form.save(commit=False)
-            solicitud.solicitante = self.request.user
-            solicitud.save()
-            pk_users = self.request.POST.getlist('afiliado[]')
-            for i in range(len(pk_users)-1):
-                Integrantes_x_Solicitud.objects.create(
-                    solicitud=solicitud, user_id=pk_users[i])
-            return self.form_valid(form)
-        else:
-            self.object = None
-            context = self.get_context_data(**kwargs)
-            context['form'] = form
-            return render(request, self.template_name, context)"""
-
-
+""" Esta vista podria escribirla como la de update pero asi anda bien """
 class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
@@ -626,22 +595,36 @@ class SolicitudAnticipo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(SolicitudAnticipo, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['users'] = CollectionUserFormSet(self.request.POST)
+            data['users'] = SolicitudFormSet(self.request.POST)
         else:
-            data['users'] = CollectionUserFormSet()
+            data['users'] = SolicitudFormSet()
             data['single_user'] = CollectionUserForm()
+            data['list_url'] = reverse_lazy('comisiones:solicitud_anticipo')
+            data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        users = context['users']
-        with transaction.atomic():
-            form.instance.creado_por = self.request.user
-            self.object = form.save()
-            if users.is_valid():
-                users.instance = self.object
-                users.save()
-        return super(SolicitudAnticipo, self).form_valid(form)
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = self.get_form()
+            users = SolicitudFormSet(request.POST)
+            if form.is_valid():
+                if users.is_valid():
+                    self.object = form.save()
+                    with transaction.atomic():
+                        form.instance.creado_por = self.request.user
+                        self.object = form.save()
+                        users.instance = self.object
+                        users.save()
+                    data['pdf_url'] = reverse_lazy(
+                        'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
+                else:
+                    data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+            else:
+                data = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
@@ -656,27 +639,36 @@ class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(SolicitudAnticipoUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['users'] = CollectionUserFormSet(
+            data['users'] = SolicitudFormSet(
                 self.request.POST, instance=self.object)
-            #data['num_afiliado'] = User.objects.filter(integrantes_x_solicitud__solicitud=self.kwargs['pk'])
-
         else:
-            data['users'] = CollectionUserFormSet(instance=self.object)
+            data['users'] = SolicitudFormSet(instance=self.object)
             data['single_user'] = CollectionUserForm()
-            #data['num_afiliado'] = User.objects.filter(integrantes_x_solicitud__solicitud=self.kwargs['pk'])
+            data['list_url'] = reverse_lazy(
+                'comisiones:solicitud_editar', kwargs={'pk': self.object.pk})
+            data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         users = context['users']
-        with transaction.atomic():
-            form_class = self.get_form_class()
-            form = self.get_form(form_class)
-            self.object = form.save()
+        data = {}
+        try:
             if users.is_valid():
-                users.instance = self.object
-                users.save()
-        return super(SolicitudAnticipoUpdate, self).form_valid(form)
+                with transaction.atomic():
+                    self.object = form.save()
+                    users.instance = self.object
+                    users.save()
+                    data['pdf_url'] = reverse_lazy(
+                        'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
+            else:
+                data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def form_invalid(self, form):
+        return JsonResponse(form.errors)
 
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
@@ -783,9 +775,6 @@ class EliminarSolicitud(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
-        integrantes_x_solicitud = Integrantes_x_Solicitud.objects.filter(
-            solicitud_id=self.kwargs['pk'])
-        integrantes_x_solicitud.delete()
         return super(EliminarSolicitud, self).delete(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -793,6 +782,24 @@ class EliminarSolicitud(DeleteView):
         context['entity'] = 'Solicitud'
         context['list_url'] = reverse_lazy('comisiones:historico_comisiones')
         return context
+
+
+class Error404View(TemplateView):
+    template_name = 'error_404.html'
+
+
+class Error500View(TemplateView):
+    template_name = 'error_500.html'
+
+    @classmethod
+    def as_error_view(cls):
+        v = cls.as_view()
+
+        def view(request):
+            r = v(request)
+            r.render()
+            return r
+        return view
 
 
 @login_required

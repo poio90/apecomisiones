@@ -1,0 +1,129 @@
+
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+
+{{ form.media }}
+
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-light-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link navbar-warning">
+        <img src="{% static 'dist/img/LogoApe.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light"><b>APE</b> Comisiones</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+                <li class="nav-header">Administrativo</li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Comisiones
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'comisiones:solicitud_anticipo' %}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Solicitud</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'comisiones:rendicion_anticipo' %}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Rendición</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'comisiones:historico_comisiones' %}" class="nav-link">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>Histórico</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-road"></i>
+                        <p>
+                            Licencias
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'licencias:licencias_solicitud' %}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Confeccionar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'licencias:licencias_historico' %}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Registro</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Compras y Servicios
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Solicitar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Registro</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-friends"></i>
+                        <p>
+                            Subresponsables
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Confeccionar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Registro</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

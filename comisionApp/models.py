@@ -13,6 +13,7 @@ class Provincia(models.Model):
         verbose_name = 'Provincia'
         verbose_name_plural = 'Provincias'
         managed = True
+        db_table = 'provincia'
 
     def __str__(self):
         return self.provincia
@@ -103,8 +104,7 @@ class Solicitud(models.Model):
         null=True,
     )
 
-    fech_inicio = models.DateField()
-
+    fecha_inicio = models.DateField()
     fecha_pedido = models.DateField(auto_now_add=True)
     gastos_previstos = models.FloatField()
     motivo = models.TextField()
@@ -135,9 +135,15 @@ class Anticipo(models.Model):
         db_column='id_transporte'
     )
 
-    fech_inicio = models.DateField()
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='userrendicion',
+        through='Integrantes_x_Anticipo'
+    )
 
-    fech_fin = models.DateField()
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
     gastos = models.FloatField()
 
     class Meta:
@@ -148,9 +154,9 @@ class Anticipo(models.Model):
 
     def __str__(self):
         return '{} {} {} {} {} {}'.format(
-            self.fech_inicio,
+            self.fecha_inicio,
             self.ciudad.ciudad,
-            self.fech_fin,
+            self.fecha_fin,
             self.gastos,
             self.transporte.num_legajo,
             self.transporte.patente)
@@ -181,17 +187,8 @@ class Integrantes_x_Solicitud(models.Model):
 
 class Integrantes_x_Anticipo(models.Model):
 
-    anticipo = models.ForeignKey(
-        Anticipo,
-        on_delete=models.CASCADE,
-        null=True,
-    )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
+    anticipo = models.ForeignKey(Anticipo,on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,)
 
     fecha_de_registro = models.DateField(auto_now_add=True)
 

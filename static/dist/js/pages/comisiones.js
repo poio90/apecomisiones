@@ -16,18 +16,18 @@ $(document).ready(function () {
         });
     })*/
 
-    
 
-    /*$('#after-add-more').on('select2:select', function (e) {
+
+    $('.form-repaet').on('select2:select', function (e) {
         var data = e.params.data;
         var form = $(this)
-        var id = e.target.attributes.indice.nodeValue
-        var div = document.getElementById('after-add-more');
-        //console.log(form);
-        $.get(div.getAttribute("data-validate-afiliado-url"),{ pk : data.element.value}, function(response){
+        var id = e.target.attributes
+        //var div = document.getElementById('after-add-more');
+        console.log(e.target);
+        /*$.get(div.getAttribute("data-validate-afiliado-url"),{ pk : data.element.value}, function(response){
             $('#afiliado' + id).val(response.data[0].num_afiliado);
-        })
-    });*/
+        })*/
+    });
 
     /*$('#after-add-more select').each(function () {
         $(this).select2({
@@ -55,44 +55,6 @@ $(document).ready(function () {
         })
     })
 
-    $('#myform').on('submit', function (e) { //use on if jQuery 1.7+
-        var data = $("input[name='num_afiliado[]']").serializeArray();
-        var km_total = $("input[name='km_total']").val();
-        control = true;
-        indice = 0;
-
-        for (i = 0; i < data.length; i++) {
-            for (var j = 0; j < data.length; j++) {
-                if (i != j) {
-                    if (data[i].value === data[j].value) {
-                        control = false;
-                        indice = j;
-                        j = data.length;
-                        i = j;
-                    }
-                }
-            }
-        }
-        if (control && (km_total < 0)) {
-            control = false;
-        }
-        if (!control) {
-            e.preventDefault();  //prevent form from submitting
-            if (km_total < 0) {
-                msg = "Los kilomtros recorridos no pueden ser valores negativos.";
-            } else if (data[indice].value === "") {
-                msg = "Hay un campo vacío para algún usuario."
-            } else {
-                msg = "Está intentando cargar el afiliado " + data[indice].value + " más de una vez."
-            }
-            swal({
-                title: "Revise los campos!",
-                text: msg,
-                icon: "warning",
-                dangerMode: true,
-            });
-        }
-    })
 
     $('input[name="km_salida"]').change(function () {
         var km_salida = $(this).val()
@@ -113,4 +75,84 @@ $(document).ready(function () {
             $('input[name="km_total"]').val(km_llegada - km_salida);
         }
     })
+
+    /* Función que muestra mensaje de error en alertas */
+    function message_error(obj) {
+        var html = '';
+        $.each(obj, function (key, value) {
+            html += value;
+        })
+
+        swal.fire({
+            title: 'Oops...!',
+            text: html,
+            icon: 'error',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+        });
+    }
+
+    /* Estilos de los botones cuando pregunta si desea imprimir el docuemnto*/
+    const swalWithBootstrapButtons = swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success ml-2',
+            cancelButton: 'btn btn-danger mr-2'
+        },
+        buttonsStyling: false
+    })
+
+    $('#myform').on('submit', function (e) {
+        e.preventDefault();
+        var parametros = $(this).serializeArray();
+        var div = document.getElementById(this.id);
+        if ($(".form-repaet")[0].children.length > 0) {
+            $.ajax({
+                url: div.getAttribute("data-validate-url"),
+                type: 'POST',
+                data: parametros,
+                dataType: 'json',
+            }).done(function (data) {
+                /** mas adelante acomodar todo en una sola función */
+                if (!data.hasOwnProperty('pdf_url')) {
+                    message_error(data)
+                } else {
+                    var url = '';
+                    $.each(data, function (key, value) {
+                        url += value;
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Solicitud de anticipo creada con exito!',
+                        text: "Desea imprimir el documento?",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.open(url);
+                            window.location.href = div.getAttribute("data-url")
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            window.location.href = div.getAttribute("data-url")
+                        }
+                    })
+                }
+
+            })
+        } else {
+            swal.fire({
+                title: 'Oops...!',
+                text: 'Lista de usuarios vacía',
+                icon: 'error',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+            });
+        }
+    })
+
 });

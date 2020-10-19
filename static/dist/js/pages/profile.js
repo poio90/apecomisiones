@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     /*-----------------------Notifica que el perfil se acualizo correctamente-------------*/
-    $(document).on('submit', '#updateProfile', function (e) {
+    /*$(document).on('submit', '#updateProfile', function (e) {
         e.preventDefault();
         var form = $(this).closest("form");
         $.ajax({
@@ -20,11 +20,11 @@ $(document).ready(function () {
                 }
             }
         });
-    });
+    });*/
     /*------------------------------------------------------------------------------------*/
 
     /*--------------------Valida DNI------------------------------------------------------*/
-    $("#id_dni").change(function () {
+    /*$("#id_dni").change(function () {
         var form = $(this).closest("form");
         var div = document.getElementById("dni_label");
         var ex_regular_dni;
@@ -44,12 +44,6 @@ $(document).ready(function () {
         } else {
             $("#id_dni").notify('Dni erroneo, formato no válido', { position: 'bottom left' });
         }
-    })
+    })*/
     /*------------------------------------------------------------------------------------*/
-
-    /*----Desactiva boton Guardar hasta que se completen los campos del formulario--------*/
-
-    SNButton.init("updateButtonProfile", {
-        fields: ["id_num_afiliado","id_last_name","id_first_name","id_dni","id_e mail","id_num_tel"],
-    })
 })
