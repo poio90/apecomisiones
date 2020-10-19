@@ -1,94 +1,99 @@
 {% extends "index.html" %}
-
 {% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Mis documentos</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{% url 'usuarios:index' %}">Inicio</a></li>
-                    <li class="breadcrumb-item active">Mis documentos</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-<!-- Content Header (Page header) -->
-
-<section class="content">
-    <div class="container-fluid">
-        <!-- Small Box (Stat card) -->
-        <section class="content">
-            <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    {%for categoria in categorias%}
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{categoria.titulo|title|truncatechars:11}}</h3>
-                                <!--<p>{{documento.texto|capfirst|truncatechars:16}}...</p>-->
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-image"></i>
-                            </div>
-                            {% ifequal user.tipo '1' %}
-                            <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
-                            {%else%}
-                            
-                            <a href="#" class="small-box-footer"> Editar <i class="fas fa-arrow-circle-right"></i></a>
-                            <a href="#" class="small-box-footer bg-danger">Eliminar <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                            {%endifequal%}
-                        </div>
-                    </div>
-                    {%endfor%}
-                    <!-- ./col -->
-                </div>
-                <!-- /.row -->
-                <div class="row">
-                    <div class=" paginations-steps">
-                        <nav aria-label="Navegación de páguina">
-                            <ul class="pagination  ">
-                                {% if page_obj.has_previous %}
-                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
-                                <li class="page-item"><a class="page-link"
-                                        href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-                                </li>
-                                {% endif %}
-
-                                <li class="page-item active">
-                                    <span class="page-link">
-                                        {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                                        <span class="sr-only">(current)</span>
-                                    </span>
-                                </li>
-                                {% if page_obj.has_next %}
-                                <li class="page-item"><a class="page-link"
-                                        href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-                                </li>
-                                <li class="page-item"><a class="page-link"
-                                        href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-
-            </div><!-- /.container-fluid -->
-
-        </section>
-        <!-- /.row -->
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Bienvenido</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{% url 'usuarios:index' %}">Inicio</a></li>
+          <li class="breadcrumb-item active">Bienvenido</li>
+        </ol>
+      </div>
     </div>
+  </div><!-- /.container-fluid -->
 </section>
 
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <h5 class="mb-2 mt-4">Secciones</h5>
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h4>Comisiones</h4>
 
-<!-- /.content -->
+            <p>Históricos</p>
+          </div>
+          <div class="icon">
+            <i class="fas fas fa-copy"></i>
+          </div>
+          <a href="{% url 'comisiones:historico_comisiones' %}" class="small-box-footer">
+            Ir <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h4>Licencias</h4>
+
+            <p>Registro</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-road"></i>
+          </div>
+          <a href="{% url 'licencias:licencias_historico' %}" class="small-box-footer">
+            Ir <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h4>Compras y Servicios</h4>
+
+            <p>Registro</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <a href="#" class="small-box-footer">
+            Ir <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h4>Subresponsables</h4>
+
+            <p>Registro</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <a href="#" class="small-box-footer">
+            Ir <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
+  </div>
+</section>
 
 {% endblock %}

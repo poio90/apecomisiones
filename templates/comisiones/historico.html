@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
+{% load bootstrap4 %}
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -69,7 +70,7 @@
                                         {% for solicitud in solicitudes %}
                                         <tr>
                                             <td>{{ solicitud.fecha_pedido }}</td>
-                                            <td>{{ solicitud.fech_inicio }}</td>
+                                            <td>{{ solicitud.fecha_inicio }}</td>
                                             <td>{{ solicitud.ciudad.ciudad }}</td>
                                             <td class="text-center">
                                                 <span class="table-remove" data-toggle="tooltip" title="Ver">
@@ -77,6 +78,12 @@
                                                         href="{% url 'comisiones:reportePdfSolicitud' solicitud.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </span>
+                                                <span class="table-remove">
+                                                    <a href="{% url 'comisiones:solicitud_editar' solicitud.pk %}"
+                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
+                                                       <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
                                                 <span class="table-remove" data-toggle="tooltip" title="Eliminar">
@@ -114,7 +121,7 @@
                                         {% for solicitud in solicitudes_pedidas %}
                                         <tr>
                                             <td>{{ solicitud.fecha_pedido }}</td>
-                                            <td>{{ solicitud.fech_inicio }}</td>
+                                            <td>{{ solicitud.fecha_inicio }}</td>
                                             <td>{{ solicitud.ciudad.ciudad }}</td>
                                             <td class="text-center">
                                                 <span class="table-remove" data-toggle="tooltip" title="Ver">
@@ -122,6 +129,12 @@
                                                         href="{% url 'comisiones:reportePdfSolicitud' solicitud.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </span>
+                                                <span class="table-remove">
+                                                    <a href="{% url 'comisiones:solicitud_editar' solicitud.pk %}"
+                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
+                                                       <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
                                                 <span class="table-remove" data-toggle="tooltip" title="Eliminar">

@@ -2,6 +2,10 @@
 
 
 {% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
 <div class="card-body register-card-body">
     <p class="login-box-msg">Registrarme</p>
     {% if form.errors %}<div class="alert alert-danger" role="alert">
@@ -27,7 +31,7 @@
             {{ form.num_afiliado }}
             <div class="input-group-append">
                 <div class="input-group-text">
-                    <span class="fas fa-address-card"></span>
+                    <span class="fas fa-id-card-alt"></span>
                 </div>
             </div>
         </div>
@@ -36,7 +40,7 @@
             {{ form.dni }}
             <div class="input-group-append">
                 <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
+                    <span class="fas fa-address-card"></span>
                 </div>
             </div>
         </div>

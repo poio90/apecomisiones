@@ -20,14 +20,18 @@ urlpatterns = [
          view=login_required(views.SolicitudAnticipo.as_view()),
          name='solicitud_anticipo'),
 
+    path(route='comisiones/solicitudes/<pk>/editar',
+         view=login_required(views.SolicitudAnticipoUpdate.as_view()),
+         name='solicitud_editar'),
+
     path(route='comisiones/historico',
          view=login_required(views.Historicos.as_view()),
          name='historico_comisiones'),
-#####################################################
-     path(route='comisiones/solicitudes/prueba',
+    #####################################################
+    path(route='comisiones/solicitudes/prueba',
          view=login_required(views.RendicionAnticipo.as_view()),
          name='solicitud_prueba'),
-         #####################################
+    #####################################
 
     # Anticipos
     path(route='comisiones/anticipos/reportes',
@@ -43,7 +47,7 @@ urlpatterns = [
          name='eliminar_anticipo'),
 
     path(route='comisiones/anticipos',
-         view=login_required(views.RendicionAnticipo.as_view()),
+         view=login_required(views.Error404View.as_view()),
          name='rendicion_anticipo'),
 
     path(route='get_patente',
