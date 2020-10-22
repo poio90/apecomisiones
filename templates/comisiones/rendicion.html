@@ -50,7 +50,8 @@
       <div class="col-md-12">
 
         <div class="card card-primary card-outline">
-          <form id="myform" class="form-horizontal" method="POST" enctype="multipart/form-data">
+          <form id="myform" class="form-horizontal" method="POST" enctype="multipart/form-data"
+          data-validate-url="{{ list_url }}" data-url="{{ url }}">
             {% csrf_token %}
             <div class="card-header">
               <div class="form-row">
@@ -116,6 +117,55 @@
                   </div>
                 </div>
               </div>-->
+
+              <label for="inputAfiliado" class=" col-form-label">
+                <h4>Personal afectado a la comisión</h4>
+            </label>
+            <div id="form-wrapper" class="form-wrapper">
+                {{ users.management_form }}
+                <div id="form-repaet" class="form-repaet">
+                    {% for f in users %}
+                    <div class="form-row">
+                        <div class="col-md-6 mt-2 col">
+                            {{ f }}
+                        </div>
+                        <div class="col-md-5 mt-2 col">
+                            <input type="text" class="form-control"
+                                placeholder="Número de afiliado a SEMPRE" readonly>
+                        </div>
+                        <div class="col-md-1 mt-2">
+                            <span class="mb-3 mr-2">
+                                <button type="button" class="remove btn btn-danger">Remover</button>
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4 mt-2">
+                    <button id="add-more-anticipo" type="button" class="btn btn-success">Agregar
+                        usuario</i></button>
+                </div>
+            </div>
+            <div class="copy d-none d-print-block">
+                <div class="form-row">
+                    <div class="col-md-6 mt-2 col">
+                        {{ single_user }}
+                    </div>
+                    <input type="checkbox" style="display: none;">
+                    <div class="col-md-5 mt-2 col">
+                        <input type="text" class="form-control"
+                            placeholder="Número de afiliado a SEMPRE" readonly>
+                    </div>
+                    <div class="col-md-1 mt-2">
+                        <span class="mb-3 mr-2">
+                            <button type="button" class="remove btn btn-danger">Remover</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="caja d-none d-print-block"></div>
 
               <div class="form-group">
                 <div class="form-row">
@@ -226,19 +276,16 @@
               </div>
             </div>
             <!-- /.card-body -->
+            <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-
-                <button id="archivar" class="btn btn-success">
-                  <i class="fas fa-archive"></i>
-                  Guardar</button>
+                  <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
+                      Guardar</button>
               </div>
-              <button id="imprimir" type="submit" class="btn btn-primary"
-                formaction="{% url 'comisiones:reportePdfAnticipo' %}" formtarget="_blank">
-                <i class="fas fa-download"></i>
-                Generar PDF</button>
+              <a type="button" class="btn btn-danger" href="{{ url }}">
+                  <i class="fas fa-times"></i> Cancelar</a>
               <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
-            </div>
+          </div>
             <!-- /.card-footer -->
           </form>
         </div>
@@ -253,6 +300,10 @@
 <!-- /.content -->
 
 <script>
+
+    $('.form-wrapper label').hide()
+    $('input[type=checkbox]').hide()
+
   function resizable(el, factor) {
     var int = Number(factor) || 7.7;
     function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }

@@ -110,6 +110,7 @@ class CollectionUserForm(forms.ModelForm):
         self.fields['user'].queryset = User.objects.all().order_by('last_name')
         self.fields['user'].widget.attrs['class'] = 'sel'
         self.fields['user'].widget.attrs['data-placeholder'] = 'Apellido y Nombre'
+        self.fields['user'].widget.attrs['required'] = 'true'
 
     class Meta:
         model = Integrantes_x_Solicitud

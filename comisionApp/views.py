@@ -126,122 +126,13 @@ class ReportePdfSolicitud(View):
         response['Content-Disposition'] = titulo
         return response
 
-    def post(self, request, *args, **kwargs):
-        """pk = request.POST.getlist('afiliado[]')
-        num_afiliados = request.POST.getlist('num_afiliado[]')
-        motivo = request.POST['motivo']
-
-        fech_inicio = request.POST['fecha_inicio']
-        duracion_prevista = request.POST['duracion_prevista']
-        pk_ciudad = request.POST['ciudad']
-        transporte = request.POST['transporte']
-        #patente = request.POST['patente']
-        gastos_previstos = request.POST['gastos_previstos']
-
-        # este for recupera los usuarios cuyos id estan contenidos en la lista pk
-        nombre = []
-        for i in range(len(pk)-1):
-            pk1 = str(pk[i])
-            nombre.append(User.objects.get(pk=pk1))
-
-        ciudad = Ciudad.objects.get(id_ciudad=pk_ciudad)
-
-        num_legajo_transporte = Transporte.objects.get(
-            id_transporte=transporte)
-
-        buffer = BytesIO()
-        c = canvas.Canvas(buffer, pagesize=A4)
-
-        logo = ImageReader('static/dist/img/logoApe.png')
-        c.drawImage(logo, 30, 750,  1 * inch, 1 * inch)
-
-        text = 'Administración Provincial de Energía de La Pampa'
-        text2 = 'Departamento Telecontrol'
-        c.setFont('Helvetica', 12)
-        c.drawString(120, 790, text)
-        c.drawString(120, 775, text2)
-
-        PAGE_WIDTH = defaultPageSize[0]
-        PAGE_HEIGHT = defaultPageSize[1]
-
-        text = 'Solicitud de Anticipo'
-
-        width = stringWidth(text, 'Helvetica', 16)
-        x = (PAGE_WIDTH/2)-(width/2)
-
-        # Header
-        c.setLineWidth(.3)
-        c.setFont('Helvetica', 18)
-        c.drawString(x, 730, text)
-        c.setFont('Helvetica', 12)
-
-        fecha = date.today().strftime("%d/%m/%Y")
-
-        c.drawString(400, 700, 'Fecha de pedido: ' + str(fecha))
-
-        alto = 675
-        for i in range(len(pk)-1):
-            c.drawString(30, alto, 'Apellido y Nombre' +
-                         '       ' + nombre[i].get_full_name())
-            c.drawString(360, alto, 'N° Afiliado a SEMPRE' +
-                         '         ' + num_afiliados[i])
-            alto = alto - 25
-
-        c.drawString(30, 475, 'Motivo de la comisión: ')
-        # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
-        j = 0
-        n = 87
-        story = ''
-        for i in range(len(motivo)):
-            if motivo[i] == '\n':
-                n = i + 88
-            if i == n:
-                story = story + motivo[j:n] + '\n'
-                j = n
-                n = n + 86
-        story = story + motivo[j:len(motivo)]
-
-        # Texto que va contenido dentro de los detalles de trabajo
-        textobject = c.beginText()
-        textobject.setTextOrigin(35, 455)
-        textobject.setFont("Courier", 10)
-        textobject.textLines(story)
-        c.drawText(textobject)
-
-        c.setFont('Helvetica', 12)
-        c.drawString(30, 295, 'Fecha de iniciación: '+fech_inicio)
-        c.drawString(320, 295, 'Duracón prevista: '+duracion_prevista+' días')
-        c.drawString(
-            30, 265, 'Lugar de residencia durante la comisión: ' + ciudad.ciudad)
-        c.drawString(30, 235, 'Medio de transporte')
-        c.drawString(200, 235, 'Unidad de legajo: ' +
-                     num_legajo_transporte.num_legajo)
-        c.drawString(400, 235, 'Patente: ' + num_legajo_transporte.patente)
-        c.drawString(30, 205, 'Gastos a solicitar: $' + gastos_previstos)
-
-        solicitante = request.user.get_full_name()
-        c.drawString(30, 175, 'Anticipo ordenado por: ' +
-                     solicitante)
-
-        c.drawString(500, 20, 'Firma')
-        c.line(465, 32, 570, 32)
-        c.save()
-        pdf = buffer.getvalue()
-        buffer.close()"""
-        buffer = BytesIO()
-        c = canvas.Canvas(buffer, pagesize=A4)
-        pdf = buffer.getvalue()
-        buffer.close()
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'filename=.pdf'
-        return response
 
 
 class ReportePdfAnticipo(View):
 
     def get(self, request, *args, **kwargs):
         anticipo = Anticipo.objects.get(pk=kwargs['pk'])
-        itineraio = Itineraio.objects.filter(anticipo_id=kwargs['pk'])
+        #itineraio = Itineraio.objects.filter(anticipo_id=kwargs['pk'])
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
         int_x_ant = Integrantes_x_Anticipo.objects.filter(
             anticipo_id=kwargs['pk'])
@@ -280,9 +171,9 @@ class ReportePdfAnticipo(View):
             alto = alto - 25
 
         fecha_inicio = datetime.strptime(
-            str(anticipo.fech_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
+            str(anticipo.fecha_inicio), "%Y-%m-%d").strftime("%d/%m/%Y")
         fecha_fin = datetime.strptime(
-            str(anticipo.fech_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
+            str(anticipo.fecha_fin), "%Y-%m-%d").strftime("%d/%m/%Y")
 
         c.drawString(30, 620, 'Fecha de inicio: ' + fecha_inicio)
         c.drawString(320, 620, 'Fecha de finalización: ' + fecha_fin)
@@ -316,7 +207,7 @@ class ReportePdfAnticipo(View):
         styleN.fontSize = 7
 
         # tabla.contenico
-        comisiones = []
+        """comisiones = []
         for i in range(len(itineraio)):
             comisiones.append({'name': itineraio[i].nombre_afiliado, 'b1': itineraio[i].dia, 'b2': itineraio[i].mes, 'b3': itineraio[i].salida,
                                'b4': itineraio[i].hora_salida, 'b5': itineraio[i].llegada, 'b6': itineraio[i].hora_llegada, })
@@ -337,7 +228,7 @@ class ReportePdfAnticipo(View):
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black), ]))
 
         table.wrapOn(c, width, height)
-        table.drawOn(c, 30, hight1)
+        table.drawOn(c, 30, hight1)"""
 
         # informe de comision
         c.setFont('Helvetica', 16)
@@ -586,14 +477,14 @@ class ReportePdfAnticipo(View):
 
 
 """ Esta vista podria escribirla como la de update pero asi anda bien """
-class SolicitudAnticipo(SuccessMessageMixin, CreateView):
+class SolicitudAnticipoCreate(SuccessMessageMixin, CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
     success_message = "Solicitud de anticipo creada exitosamente"
 
     def get_context_data(self, **kwargs):
-        data = super(SolicitudAnticipo, self).get_context_data(**kwargs)
+        data = super(SolicitudAnticipoCreate, self).get_context_data(**kwargs)
         if self.request.POST:
             data['users'] = SolicitudFormSet(self.request.POST)
         else:
@@ -674,22 +565,59 @@ class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
         return reverse_lazy('comisiones:historico_comisiones')
 
 
-class RendicionAnticipo(SuccessMessageMixin, CreateView):
+class RendicionAnticipoCreate(SuccessMessageMixin, CreateView):
     model = Anticipo
     template_name = 'comisiones/rendicion.html'
     form_class = RendicionForm
-    context_object_name = 'rendicion'
     success_message = "Rendición de anticipo creada exitosamente"
-    success_url = reverse_lazy('comisiones:historico_comisiones')
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.filter(
-            is_active=1).order_by('last_name').exclude(pk=self.request.user.pk)
-        context['detalle'] = DetalleTrabajoForm
-        return context
+        data = super(RendicionAnticipoCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['users'] = RendicionFormSet(self.request.POST)
+            data['detalle'] = DetalleTrabajoForm(self.request.POST)
+        else:
+            data['users'] = RendicionFormSet()
+            data['single_user'] = CollectionUserForm()
+            data['detalle'] = DetalleTrabajoForm()
+            data['list_url'] = reverse_lazy('comisiones:rendicion_anticipo')
+            data['url'] = reverse_lazy('comisiones:historico_comisiones')
+        return data
+    
+    def form_valid(self, form):
+        context = self.get_context_data()
+        users = context['users']
+        detalle = context['detalle']
+        print(detalle)
+        data = {}
+        try:
+            if users.is_valid():
+                if detalle.is_valid():
+                    with transaction.atomic():
+                        self.object = form.save()
+                        users.instance = self.object
+                        users.save()
+                        d = detalle.save(commit=False)
+                        d.anticipo = self.object
+                        d.save()
+                        data['pdf_url'] = reverse_lazy(
+                            'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
+                else:
+                    data['error'] = 'Revise los campos del informe de anticipo.'
+            else:
+                data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
-    def post(self, request, *args, **kwargs):
+    def form_invalid(self, form):
+        return JsonResponse(form.errors)
+    
+    def get_success_url(self):
+        return reverse_lazy('comisiones:historico_comisiones')
+       
+
+    """def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         detalle = DetalleTrabajoForm(request.POST)
@@ -725,7 +653,7 @@ class RendicionAnticipo(SuccessMessageMixin, CreateView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             context['detalle'] = detalle
-            return render(request, self.template_name, context)
+            return render(request, self.template_name, context)"""
 
 
 class Historicos(ListView):
