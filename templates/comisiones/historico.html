@@ -170,7 +170,7 @@
                                     <tbody>
                                         {% for anticipo in anticipos %}
                                         <tr>
-                                            <td>{{ anticipo.fech_inicio }}</td>
+                                            <td>{{ anticipo.fecha_inicio }}</td>
                                             <td>{{ anticipo.ciudad.ciudad }}</td>
                                             <td class="text-center">
                                                 <span class="table-remove" data-toggle="tooltip" title="Ver">
@@ -178,6 +178,12 @@
                                                         href="{% url 'comisiones:reportePdfAnticipo' anticipo.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </span>
+                                                <span class="table-remove">
+                                                    <a href="{% url 'comisiones:anticipo_editar' anticipo.pk %}"
+                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
+                                                       <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
                                                 <span class="table-remove" data-toggle="tooltip" title="Eliminar">

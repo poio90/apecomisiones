@@ -30,6 +30,7 @@ class SolicitudForm(forms.ModelForm):
         self.fields['fecha_inicio'].widget.attrs['placeholder'] = 'Fecha de iniciación'
         self.fields['duracion_prevista'].widget.attrs['placeholder'] = 'Duración prevista'
         self.fields['ciudad'].widget.attrs['data-placeholder'] = 'Lugar de residencia durante la comisión'
+        self.fields['ciudad'].label = 'Lugar de residencia durante la comisión'
         self.fields['transporte'].widget.attrs['data-placeholder'] = 'Unidad de legajo y Patente'
         self.fields['gastos_previstos'].widget.attrs['placeholder'] = 'Gastos a solicitar'
         self.fields['motivo'].widget.attrs['placeholder'] = 'DETALLE DE LOS TRABAJOS REALIZADOS:'
@@ -60,6 +61,7 @@ class RendicionForm(forms.ModelForm):
         self.fields['fecha_inicio'].widget.attrs['placeholder'] = 'Fecha de inicio'
         self.fields['fecha_fin'].widget.attrs['placeholder'] = 'Fecha de finalización'
         self.fields['ciudad'].widget.attrs['data-placeholder'] = 'Lugar de residencia durante la comisión'
+        self.fields['ciudad'].label = 'Lugar de residencia durante la comisión'
         self.fields['transporte'].widget.attrs['data-placeholder'] = 'Unidad de legajo y Patente'
         self.fields['gastos'].widget.attrs['placeholder'] = 'Gastos'
 
@@ -76,10 +78,16 @@ class RendicionForm(forms.ModelForm):
             'fecha_fin': DatePickerInput().end_of('event days'),
         }
 
+class ItinerarioForm(forms.ModelForm):
+    
+    class Meta:
+        model = Itineraio
+        exclude = ('id_itinerario','anticipo')
+
 
 class DetalleTrabajoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(DetalleTrabajoForm, self).__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
 
@@ -94,13 +102,18 @@ class DetalleTrabajoForm(forms.ModelForm):
 
 
 class TransporteForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+    
     class Meta:
         model = Transporte
         fields = ['num_legajo', 'patente']
 
 
 class CollectionUserForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(CollectionUserForm, self).__init__(*args, **kwargs)
         for myField in self.fields:

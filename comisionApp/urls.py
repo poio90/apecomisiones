@@ -50,6 +50,10 @@ urlpatterns = [
          view=login_required(views.RendicionAnticipoCreate.as_view()),
          name='rendicion_anticipo'),
 
+     path(route='comisiones/anticipos/<pk>/editar',
+         view=login_required(views.RendicionAnticipoUpdate.as_view()),
+         name='anticipo_editar'),
+
     path(route='get_patente',
          view=login_required(views.get_patente),
          name='get_patente'),

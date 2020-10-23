@@ -5,6 +5,7 @@
 __pycache__
 db.sqlite3
 db2.sqlite3
+dbPrueba.sqlite3
 media
 comisionManager/settings.py
 licencias/views.py

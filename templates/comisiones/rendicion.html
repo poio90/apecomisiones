@@ -51,7 +51,7 @@
 
         <div class="card card-primary card-outline">
           <form id="myform" class="form-horizontal" method="POST" enctype="multipart/form-data"
-          data-validate-url="{{ list_url }}" data-url="{{ url }}">
+            data-validate-url="{{ list_url }}" data-url="{{ url }}">
             {% csrf_token %}
             <div class="card-header">
               <div class="form-row">
@@ -62,111 +62,52 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <!--<div id="after-add-more" data-validate-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
-                <div class="form-group">
+              <label for="inputAfiliado" class=" col-form-label">
+                <h4>Personal afectado a la comisión</h4>
+              </label>
+              <div id="form-wrapper" class="form-wrapper">
+                {{ users.management_form }}
+                <div id="form-repaet" class="form-repaet">
+                  {% for f in users %}
                   <div class="form-row">
-                    <div class="col-md-6 mt-2">
-                      <label id="0" class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
-                      <select indice="0" id="sel" name="afiliado[]" data-placeholder="Apellido y nombre">
-                        <option></option>
-                        {% for afiliado in users %}
-                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
-                          {{ afiliado.first_name }}</option>
-                        {% endfor %}
-                      </select>
+                    <div class="col-md-6 mt-2 col">
+                      {{ f }}
                     </div>
-                    <div class="col-md-5 mt-2">
-                      <label class="form-control col-form-label">{{ user.num_afiliado }}</label>
-                      <input id="afiliado0" name="num_afiliado[]" type="text" class="form-control"
-                        placeholder="Número de afiliado a SEMPRE">
+                    <div class="col-md-5 mt-2 col">
+                      <input type="text" class="form-control" placeholder="Número de afiliado a SEMPRE" readonly>
                     </div>
                     <div class="col-md-1 mt-2">
-                      <span class="float-right mb-3 mr-2">
-                        <a style="cursor:pointer;" id="1" class="text-success add-more">
-                          <i class="fas fa-user-plus fa-2x" aria-hidden="true"></i>
-                        </a>
+                      <span class="mb-3 mr-2">
+                        <button type="button" class="remove btn btn-danger">Remover</button>
                       </span>
                     </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-4 mt-2">
+                  <button id="add-more-anticipo" type="button" class="btn btn-success">Agregar
+                    usuario</i></button>
+                </div>
+              </div>
+              <div class="copy d-none d-print-block">
+                <div class="form-row">
+                  <div class="col-md-6 mt-2 col">
+                    {{ single_user }}
+                  </div>
+                  <input type="checkbox" style="display: none;">
+                  <div class="col-md-5 mt-2 col">
+                    <input type="text" class="form-control" placeholder="Número de afiliado a SEMPRE" readonly>
+                  </div>
+                  <div class="col-md-1 mt-2">
+                    <span class="mb-3 mr-2">
+                      <button type="button" class="remove btn btn-danger">Remover</button>
+                    </span>
                   </div>
                 </div>
               </div>
-               div que se muestra luego de agregar usuario 
-              <div class="copy d-none d-print-block">
-                <div class="form-group">
-                  <div class="form-row">
-                    <div class="col-md-6 mt-2">
-                      <select name="afiliado[]" data-placeholder="Apellido y nombre">
-                        <option></option>
-                        {% for afiliado in users %}
-                        <option value="{{ afiliado.pk }}">{{ afiliado.last_name }}
-                          {{ afiliado.first_name }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="col-md-5 mt-2">
-                      <input name="num_afiliado[]" type="text" class="form-control"
-                        placeholder="Número de afiliado a SEMPRE">
-                    </div>
-                    <div class="col-md-1 mt-2">
-                      <span class="float-right mb-3 mr-2">
-                        <a style="cursor:pointer;" class="text-danger remove">
-                          <i class="fas fa-user-times fa-2x" aria-hidden="true"></i>
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>-->
-
-              <label for="inputAfiliado" class=" col-form-label">
-                <h4>Personal afectado a la comisión</h4>
-            </label>
-            <div id="form-wrapper" class="form-wrapper">
-                {{ users.management_form }}
-                <div id="form-repaet" class="form-repaet">
-                    {% for f in users %}
-                    <div class="form-row">
-                        <div class="col-md-6 mt-2 col">
-                            {{ f }}
-                        </div>
-                        <div class="col-md-5 mt-2 col">
-                            <input type="text" class="form-control"
-                                placeholder="Número de afiliado a SEMPRE" readonly>
-                        </div>
-                        <div class="col-md-1 mt-2">
-                            <span class="mb-3 mr-2">
-                                <button type="button" class="remove btn btn-danger">Remover</button>
-                            </span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-4 mt-2">
-                    <button id="add-more-anticipo" type="button" class="btn btn-success">Agregar
-                        usuario</i></button>
-                </div>
-            </div>
-            <div class="copy d-none d-print-block">
-                <div class="form-row">
-                    <div class="col-md-6 mt-2 col">
-                        {{ single_user }}
-                    </div>
-                    <input type="checkbox" style="display: none;">
-                    <div class="col-md-5 mt-2 col">
-                        <input type="text" class="form-control"
-                            placeholder="Número de afiliado a SEMPRE" readonly>
-                    </div>
-                    <div class="col-md-1 mt-2">
-                        <span class="mb-3 mr-2">
-                            <button type="button" class="remove btn btn-danger">Remover</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="caja d-none d-print-block"></div>
-
+              <div class="caja d-none d-print-block"></div>
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
@@ -189,7 +130,6 @@
                 {{ form.transporte }}
                 <small class="form-text text-muted">Puede filtrar por número de lagajo o patente</small>
               </div>
-
               <div class="form-group">
                 {{ form.gastos.label_tag }}
                 {{ form.gastos }}
@@ -279,13 +219,13 @@
             <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-                  <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
-                      Guardar</button>
+                <button type="submit" class="btn btn-success"><i class="fas fa-archive"></i>
+                  Guardar</button>
               </div>
               <a type="button" class="btn btn-danger" href="{{ url }}">
-                  <i class="fas fa-times"></i> Cancelar</a>
+                <i class="fas fa-times"></i> Cancelar</a>
               <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
-          </div>
+            </div>
             <!-- /.card-footer -->
           </form>
         </div>
@@ -301,8 +241,8 @@
 
 <script>
 
-    $('.form-wrapper label').hide()
-    $('input[type=checkbox]').hide()
+  $('.form-wrapper label').hide()
+  $('input[type=checkbox]').hide()
 
   function resizable(el, factor) {
     var int = Number(factor) || 7.7;

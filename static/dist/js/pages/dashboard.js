@@ -28,7 +28,7 @@ $(document).ready(function () {
     //Toma el id de full name para
     var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
     var select = $('.copy div').first().clone();
-    console.log("select")
+    //console.log("select")
     //accede al primer elemento del objeto select
     select[0].firstElementChild.firstElementChild.id = "id_integrantes_x_solicitud_set-" + form.value + "-user"
     select[0].firstElementChild.firstElementChild.name = "integrantes_x_solicitud_set-" + form.value + "-user"
@@ -58,8 +58,8 @@ $(document).ready(function () {
     select[0].firstElementChild.nextElementSibling.name = "integrantes_x_anticipo_set-" + form.value + "-DELETE";
 
     $('.form-repaet').append(select);
-    $('#id_integrantes_x_solicitud_set-' + form.value + '-user').last().next().remove();
-    $('#id_integrantes_x_solicitud_set-' + form.value + '-user').prop('required', true);
+    $('#id_integrantes_x_anticipo_set-' + form.value + '-user').last().next().remove();
+    $('#id_integrantes_x_anticipo_set-' + form.value + '-user').prop('required', true);
 
     form.value = parseInt(form.value) + 1;
 
@@ -78,16 +78,16 @@ $(document).ready(function () {
         //addedNodes contains all detected new controls
         if (mutation && mutation.addedNodes) {
           mutation.addedNodes.forEach(function (elm) {
-            //only apply select2 to select elements
-            var text_name = elm.firstElementChild.firstElementChild.name
-            
-            var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
-            var indice = parseInt(form.value) - 1
-            console.log(text_name)
-            //console.log(text_name.replace(indice, text_name));
-            console.log(form.value)
+            //solo se aplica select2 al elemento select
+            var text_name = elm.firstElementChild.firstElementChild.name;
+            //obtiene el valor del primer hijo del padre del padre del elemento en cuestion 
+            //que en este caso es el select
+            var indice = parseInt(elm.parentElement.parentElement.firstElementChild.value) - 1;
+            //text_name.match(/[0-9]/)[0] devuelve cualquier numero encontrado en la cadena text_name
+            //y replace() remplaza el numero encontrado por match por indice
+            text_name = text_name.replace( text_name.match(/[0-9]/)[0],indice);
             if (elm && elm.nodeName === "DIV") {
-              $(elm).find('select[name="integrantes_x_solicitud_set-' + indice + '-user"]').select2({
+              $(elm).find('select[name="' + text_name + '"]').select2({
                 theme: 'bootstrap4',
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
                 placeholder: $(this).data('placeholder'),
