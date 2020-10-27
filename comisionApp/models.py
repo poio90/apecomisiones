@@ -203,13 +203,13 @@ class Integrantes_x_Anticipo(models.Model):
         return '{} {}'.format(self.anticipo,self.user)
 
 
-class Itineraio(models.Model):
+class Itinerario(models.Model):
     id_itinerario = models.AutoField(primary_key=True)
     nombre_afiliado = models.CharField(max_length=150)
     dia = models.CharField(max_length=10)
     mes = models.CharField(max_length=10)
-    hora_salida = models.CharField(max_length=6)
-    hora_llegada = models.CharField(max_length=6)
+    hora_salida = models.TimeField()
+    hora_llegada = models.TimeField()
     salida = models.CharField(max_length=45)
     llegada = models.CharField(max_length=45)
 
@@ -243,6 +243,7 @@ class DetalleTrabajo(models.Model):
     anticipo = models.OneToOneField(
         Anticipo,
         on_delete=models.CASCADE,
+        related_name='detalletrabajo',
     )
 
     class Meta:

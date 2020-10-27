@@ -8,7 +8,7 @@ urlpatterns = [
         views.LicenciaSolicitud.as_view()), name='licencias_solicitud'),
 
     path('licencias/<pk>/editar/', login_required(
-        views.LicenciaEditar.as_view()), name='licencias_editar'),
+        views.LicenciaUpdate.as_view()), name='licencias_editar'),
 
     path('licencias/historico', login_required(
         views.HistoricoLicencias.as_view()), name='licencias_historico'),
@@ -21,7 +21,4 @@ urlpatterns = [
          view=login_required(views.ReportePdfLicencia.as_view()),
          name='licencias_pdf'),
 
-    path(route='licencias/reportes/',
-         view=(views.ReportePdfLicencia.as_view()),
-         name='licencias_pdf'),
 ]

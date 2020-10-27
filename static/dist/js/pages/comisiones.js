@@ -77,20 +77,37 @@ $(document).ready(function () {
     })
 
     /* Función que muestra mensaje de error en alertas */
-    function message_error(obj) {
-        var html = '';
-        $.each(obj, function (key, value) {
-            html += value;
-        })
-
+    function message_error(message) {
         swal.fire({
             title: 'Oops...!',
-            text: html,
+            text: message,
             icon: 'error',
             allowOutsideClick: false,
             allowEscapeKey: false,
             allowEnterKey: false,
         });
+    }
+
+    function message_succes(message, pdf_url, url) {
+        swalWithBootstrapButtons.fire({
+            title: message,
+            text: "Desea imprimir el documento?",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.open(pdf_url);
+                window.location.href = url
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                window.location.href = url
+            }
+        })
     }
 
     /* Estilos de los botones cuando pregunta si desea imprimir el docuemnto*/
@@ -102,46 +119,26 @@ $(document).ready(function () {
         buttonsStyling: false
     })
 
+    /*esta funcion envia los datos del formulario de solicitud y rendicion de anticipo*/
     $('#myform').on('submit', function (e) {
         e.preventDefault();
         var parametros = $(this).serializeArray();
         var div = document.getElementById(this.id);
+        var url = div.getAttribute("data-url")
         if ($(".form-repaet")[0].children.length > 0) {
             $.ajax({
                 url: div.getAttribute("data-validate-url"),
                 type: 'POST',
                 data: parametros,
                 dataType: 'json',
-            }).done(function (data) {
+            }).done(function (response) {
                 /** mas adelante acomodar todo en una sola función */
-                if (!data.hasOwnProperty('pdf_url')) {
-                    message_error(data)
+                console.log(response)
+                if (!response.hasOwnProperty('success_message')) {
+                    message_error(response.error,);
                 } else {
-                    var url = '';
-                    $.each(data, function (key, value) {
-                        url += value;
-                    })
-                    swalWithBootstrapButtons.fire({
-                        title: 'Solicitud de anticipo creada con exito!',
-                        text: "Desea imprimir el documento?",
-                        icon: 'success',
-                        showCancelButton: true,
-                        confirmButtonText: 'Si',
-                        cancelButtonText: 'No',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.open(url);
-                            window.location.href = div.getAttribute("data-url")
-                        } else if (
-                            /* Read more about handling dismissals below */
-                            result.dismiss === Swal.DismissReason.cancel
-                        ) {
-                            window.location.href = div.getAttribute("data-url")
-                        }
-                    })
+                    message_succes(response.success_message, response.pdf_url, url);
                 }
-
             })
         } else {
             swal.fire({
