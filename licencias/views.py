@@ -3,6 +3,7 @@ import time
 import datetime
 from datetime import date, datetime
 from io import BytesIO, StringIO
+from django.db import transaction
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
@@ -25,52 +26,70 @@ from .forms import FormLicencia
 # Create your views here.
 
 
-class LicenciaSolicitud(SuccessMessageMixin,CreateView):
+class LicenciaSolicitud(CreateView):
     model = Licencia
     form_class = FormLicencia
     context_object_name = 'licencia'
     template_name = 'licencias/licencia.html'
-    success_url = reverse_lazy('licencias:licencias_historico')
-    success_message = "La solicitud de licencia ha sido creada exitosamente"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['list_url'] = reverse_lazy('licencias:licencias_pdf')
-        context['title'] = 'Generar PDF'
-        context['method'] = 'POST'
-        context['target'] = '_blank'
-        context['atr'] = 'btn-primary'
-        context['icon'] = 'fas fa-download'
+        context = super(LicenciaSolicitud,self).get_context_data(**kwargs)
+        context['list_url'] = reverse_lazy('licencias:licencias_solicitud')
+        context['url'] = reverse_lazy('licencias:licencias_historico')
         return context
 
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.user = self.request.user
-        obj.save()
-        return super(LicenciaSolicitud, self).form_valid(form)
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = self.get_form()
+            if form.is_valid():
+                with transaction.atomic():
+                    object = form.save(commit=False)
+                    object.user = self.request.user
+                    object.save()
+                    data['pdf_url'] = reverse_lazy(
+                        'licencias:licencias_pdf', kwargs={'pk': object.pk})
+                data['success_message'] = 'Solicitud de licencia creada exitosamente'
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
-class LicenciaEditar(SuccessMessageMixin,UpdateView):
+class LicenciaUpdate(UpdateView):
     model = Licencia
     form_class = FormLicencia
     context_object_name = 'licencia'
     template_name = 'licencias/licencia.html'
-    success_url = reverse_lazy('licencias:licencias_historico')
-    success_message = "La solicitud de licencia ha sido actualizada correctamente"
+
+    """Con esto evito que se cree un nuevo registro en la base de datos"""
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['list_url'] = reverse_lazy('licencias:licencias_historico')
-        context['title'] = 'Cancelar'
-        context['method'] = 'GET'
-        context['target'] = '_self'
-        context['atr'] = 'btn-danger'
-        context['icon'] = 'fas fa-times'
+        context = super(LicenciaUpdate, self).get_context_data(**kwargs)
+        context['list_url'] = reverse_lazy('licencias:licencias_editar', kwargs={'pk': self.object.pk})
+        context['url'] = reverse_lazy('licencias:licencias_historico')
         return context
-    
-    def get_object(self): #and you have to override a get_object method
-        pk=self.kwargs.get(self.pk_url_kwarg)
-        return get_object_or_404(Licencia, pk=pk)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = self.get_form()
+            if form.is_valid():
+                with transaction.atomic():
+                    object = form.save()
+                    data['pdf_url'] = reverse_lazy(
+                        'licencias:licencias_pdf', kwargs={'pk': object.pk})
+                    data['success_message'] = 'Cambios realizados con éxito'
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 
 class HistoricoLicencias(ListView):
@@ -116,7 +135,7 @@ class ReportePdfLicencia(View):
         logotipo = "static/dist/img/escudo.jpeg"
 
         formatoFecha = time.ctime()
-        nombreCompleto = self.request.user.last_name +' '+ request.user.first_name
+        nombreCompleto = self.request.user.last_name + ' ' + request.user.first_name
 
         imagen = Image(os.path.realpath(logotipo), 1 * inch, 1 * inch)
         Story.append(imagen)
@@ -163,7 +182,7 @@ class ReportePdfLicencia(View):
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, 60))
 
-        texto = licencia.ciudad.ciudad +', ' + str(fecha_solicitud)
+        texto = licencia.ciudad.ciudad + ', ' + str(fecha_solicitud)
         Story.append(Paragraph(texto, estilos["Normal"]))
         Story.append(Spacer(1, -8))
 
@@ -247,7 +266,7 @@ class ReportePdfLicencia(View):
             fecha_fin = request.POST['fecha_fin']
             fecha_reintegro = request.POST['fecha_reintegro']
             ciudad = Ciudad.objects.get(id_ciudad=request.POST['ciudad'])
-            
+
             buffer = BytesIO()
             response = HttpResponse(content_type='application/pdf')
 
@@ -258,7 +277,7 @@ class ReportePdfLicencia(View):
             logotipo = "static/dist/img/escudo.jpeg"
 
             formatoFecha = time.ctime()
-            nombreCompleto = self.request.user.last_name +' '+ request.user.first_name
+            nombreCompleto = self.request.user.last_name + ' ' + request.user.first_name
 
             imagen = Image(logotipo, 1 * inch, 1 * inch)
             Story.append(imagen)
@@ -293,7 +312,7 @@ class ReportePdfLicencia(View):
 
             fecha = date.today().strftime("%d/%m/%Y")
 
-            texto = str(ciudad) +', ' + str(fecha)
+            texto = str(ciudad) + ', ' + str(fecha)
             Story.append(Paragraph(texto, estilos["Normal"]))
             Story.append(Spacer(1, -8))
 
@@ -368,4 +387,4 @@ class ReportePdfLicencia(View):
             return response
         else:
             form = FormLicencia(request.POST)
-            return render(request,self.template_name,{'form':form})
+            return render(request, self.template_name, {'form': form})

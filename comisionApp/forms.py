@@ -15,6 +15,10 @@ class DatePickerInput(DatePickerInput):
         "locale": "es"
     }
 
+class TimeInput(forms.TimeInput):
+    input_type = "time"
+
+
 
 class SolicitudForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -79,10 +83,19 @@ class RendicionForm(forms.ModelForm):
         }
 
 class ItinerarioForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ItinerarioForm, self).__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+        
     
     class Meta:
-        model = Itineraio
-        exclude = ('id_itinerario','anticipo')
+        model = Itinerario
+        fields = '__all__'
+        widgets = {
+            'hora_salida': TimeInput(),
+            'hora_llegada': TimeInput(),
+        }
 
 
 class DetalleTrabajoForm(forms.ModelForm):
@@ -135,3 +148,6 @@ SolicitudFormSet = inlineformset_factory(Solicitud, Integrantes_x_Solicitud,
 
 RendicionFormSet = inlineformset_factory(Anticipo, Integrantes_x_Anticipo,
                                               form=CollectionUserForm, can_delete=True, extra=1)
+
+ItinerarioFormSet = inlineformset_factory(Anticipo, Itinerario,
+                                              form=ItinerarioForm, can_delete=True, extra=10)

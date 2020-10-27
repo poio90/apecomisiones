@@ -27,6 +27,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from django.core import serializers
+import json
+
 
 
 class ReportePdfSolicitud(View):
@@ -132,7 +134,7 @@ class ReportePdfAnticipo(View):
 
     def get(self, request, *args, **kwargs):
         anticipo = Anticipo.objects.get(pk=kwargs['pk'])
-        #itineraio = Itineraio.objects.filter(anticipo_id=kwargs['pk'])
+        itineraio = Itinerario.objects.filter(anticipo_id=kwargs['pk'])
         det_trabajo = DetalleTrabajo.objects.get(anticipo_id=kwargs['pk'])
         int_x_ant = Integrantes_x_Anticipo.objects.filter(
             anticipo_id=kwargs['pk'])
@@ -207,7 +209,7 @@ class ReportePdfAnticipo(View):
         styleN.fontSize = 7
 
         # tabla.contenico
-        """comisiones = []
+        comisiones = []
         for i in range(len(itineraio)):
             comisiones.append({'name': itineraio[i].nombre_afiliado, 'b1': itineraio[i].dia, 'b2': itineraio[i].mes, 'b3': itineraio[i].salida,
                                'b4': itineraio[i].hora_salida, 'b5': itineraio[i].llegada, 'b6': itineraio[i].hora_llegada, })
@@ -228,7 +230,7 @@ class ReportePdfAnticipo(View):
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black), ]))
 
         table.wrapOn(c, width, height)
-        table.drawOn(c, 30, hight1)"""
+        table.drawOn(c, 30, hight1)
 
         # informe de comision
         c.setFont('Helvetica', 16)
@@ -290,11 +292,10 @@ class ReportePdfAnticipo(View):
 
 
 """ Esta vista podria escribirla como la de update pero asi anda bien """
-class SolicitudAnticipoCreate(SuccessMessageMixin, CreateView):
+class SolicitudAnticipoCreate(CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
-    success_message = "Solicitud de anticipo creada exitosamente"
 
     def get_context_data(self, **kwargs):
         data = super(SolicitudAnticipoCreate, self).get_context_data(**kwargs)
@@ -320,8 +321,9 @@ class SolicitudAnticipoCreate(SuccessMessageMixin, CreateView):
                         self.object = form.save()
                         users.instance = self.object
                         users.save()
-                    data['pdf_url'] = reverse_lazy(
-                        'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
+                        data['pdf_url'] = reverse_lazy(
+                            'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
+                        data['success_message'] = 'Solicitud de anticipo creada exitosamente'
                 else:
                     data['error'] = 'Está intentando cargar algún usuario más de una vez.'
             else:
@@ -334,11 +336,10 @@ class SolicitudAnticipoCreate(SuccessMessageMixin, CreateView):
         return reverse_lazy('comisiones:historico_comisiones')
 
 
-class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
+class SolicitudAnticipoUpdate(UpdateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
     form_class = SolicitudForm
-    success_message = "Solicitud de anticipo editada exitosamente"
 
     def get_context_data(self, **kwargs):
         data = super(SolicitudAnticipoUpdate, self).get_context_data(**kwargs)
@@ -365,6 +366,7 @@ class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
                     users.save()
                     data['pdf_url'] = reverse_lazy(
                         'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
+                    data['success_message'] = 'Cambios realizados con éxito'
             else:
                 data['error'] = 'Está intentando cargar algún usuario más de una vez.'
         except Exception as e:
@@ -372,51 +374,59 @@ class SolicitudAnticipoUpdate(SuccessMessageMixin, UpdateView):
         return JsonResponse(data)
 
     def form_invalid(self, form):
-        return JsonResponse(form.errors)
+        data = {}
+        data['error'] = form.errors
+        return JsonResponse(data)
 
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
 
 
-class RendicionAnticipoCreate(SuccessMessageMixin, CreateView):
+class RendicionAnticipoCreate(CreateView):
     model = Anticipo
     template_name = 'comisiones/rendicion.html'
     form_class = RendicionForm
-    success_message = "Rendición de anticipo creada exitosamente"
 
     def get_context_data(self, **kwargs):
         data = super(RendicionAnticipoCreate, self).get_context_data(**kwargs)
         if self.request.POST:
             data['users'] = RendicionFormSet(self.request.POST)
             data['detalle'] = DetalleTrabajoForm(self.request.POST)
+            data['itinerario'] = ItinerarioFormSet(self.request.POST)
         else:
             data['users'] = RendicionFormSet()
             data['single_user'] = CollectionUserForm()
             data['detalle'] = DetalleTrabajoForm()
+            data['itinerario'] = ItinerarioFormSet()
             data['list_url'] = reverse_lazy('comisiones:rendicion_anticipo')
             data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
     
     def form_valid(self, form):
         context = self.get_context_data()
-        users = context['users']
-        detalle = context['detalle']
-        print(detalle)
         data = {}
         try:
+            users = context['users']
+            itinerario = context['itinerario']
+            detalle = context['detalle']
             if users.is_valid():
-                if detalle.is_valid():
-                    with transaction.atomic():
-                        self.object = form.save()
-                        users.instance = self.object
-                        users.save()
-                        d = detalle.save(commit=False)
-                        d.anticipo = self.object
-                        d.save()
-                        data['pdf_url'] = reverse_lazy(
+                if itinerario.is_valid():
+                    if detalle.is_valid():
+                        with transaction.atomic():
+                            self.object = form.save()
+                            users.instance = self.object
+                            detalle.instance.anticipo = self.object
+                            itinerario.instance = self.object
+                            users.save()
+                            itinerario.save()
+                            detalle.save()
+                            data['pdf_url'] = reverse_lazy(
                             'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
+                            data['success_message'] = 'Rendición de anticipo creada exitosamente'
+                    else:
+                        data['error'] = 'Revise los campos del informe de anticipo.'
                 else:
-                    data['error'] = 'Revise los campos del informe de anticipo.'
+                    data['error'] = 'Error de itinerario'
             else:
                 data['error'] = 'Está intentando cargar algún usuario más de una vez.'
         except Exception as e:
@@ -480,10 +490,12 @@ class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
         if self.request.POST:
             data['users'] = RendicionFormSet(self.request.POST,instance=self.object)
             data['detalle'] = DetalleTrabajoForm(self.request.POST,instance=self.object.detalletrabajo)
+            data['itinerario'] = ItinerarioFormSet(self.request.POST,instance=self.object)
         else:
             data['users'] = RendicionFormSet(instance=self.object)
             data['single_user'] = CollectionUserForm()
             data['detalle'] = DetalleTrabajoForm(instance=self.object.detalletrabajo)
+            data['itinerario'] = ItinerarioFormSet(instance=self.object)
             data['list_url'] = reverse_lazy('comisiones:anticipo_editar', kwargs={'pk': self.object.pk})
             data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
@@ -491,23 +503,29 @@ class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
     
     def form_valid(self, form):
         context = self.get_context_data()
-        users = context['users']
-        detalle = context['detalle']
         data = {}
         try:
+            users = context['users']
+            itinerario = context['itinerario']
+            detalle = context['detalle']
             if users.is_valid():
-                if detalle.is_valid():
-                    with transaction.atomic():
-                        self.object = form.save()
-                        users.instance = self.object
-                        users.save()
-                        d = detalle.save(commit=False)
-                        d.anticipo = self.object
-                        d.save()
-                        data['pdf_url'] = reverse_lazy(
-                            'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
+                if itinerario.is_valid():
+                    if detalle.is_valid():
+                        with transaction.atomic():
+                            self.object = form.save()
+                            users.instance = self.object
+                            detalle.instance.anticipo = self.object
+                            itinerario.instance = self.object
+                            users.save()
+                            itinerario.save()
+                            detalle.save()
+                            data['pdf_url'] = reverse_lazy(
+                                'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
+                            data['success_message'] = 'Cambios realizados con éxito'
+                    else:
+                        data['error'] = itinerario.errors
                 else:
-                    data['error'] = 'Revise los campos del informe de anticipo.'
+                    data['error'] = itinerario.errors
             else:
                 data['error'] = 'Está intentando cargar algún usuario más de una vez.'
         except Exception as e:
@@ -515,7 +533,9 @@ class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
         return JsonResponse(data)
 
     def form_invalid(self, form):
-        return JsonResponse(form.errors)
+        data = {}
+        data['error'] = form.errors
+        return JsonResponse(data)
     
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')

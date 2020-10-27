@@ -20,29 +20,6 @@
   </div><!-- /.container-fluid -->
 </section>
 
-<!-- errores -->
-<section class="content">
-  <div class="container-fluid">
-    {% if form.errors %}
-    <div class="alert alert-danger" role="alert">
-      <i class="icon fas fa-exclamation-triangle"></i>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <ul class="errorlist">
-        {% for error in form.fech_inicio.errors %}
-        <li><b>Fecha de inicio:</b> {{ error }}</li>
-        {% endfor %}
-        {% for error in form.fech_fin.errors %}
-        <li><b>Fecha de finalización:</b> {{ error }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-  </div>
-</section>
-<!-- fin errores -->
-
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -137,12 +114,16 @@
               <!--- Tabla para el armado del itinenario--->
               <div class="form-group">
                 <div class="card-body">
+                  {{ itinerario.management_form }}
                   <div id="table" class="table-editable">
-                    <span class="table-add float-right mb-3 mr-2">
+                    <label for="inputAfiliado" class="col-form-label">
+                      <h4>Itinerario de viaje:</h4>
+                    </label>
+                    <!--<span class="table-add float-right mb-3 mr-2">
                       <a style="cursor:pointer;" class="btn text-success">
                         <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
                       </a>
-                    </span>
+                    </span>-->
                     <table class="table table-bordered table-responsive-md table-striped text-center">
                       <thead>
                         <tr>
@@ -157,34 +138,39 @@
                         </tr>
                       </thead>
                       <tbody>
+                        {% for f in itinerario %}
                         <tr>
+                          <td class="d-none d-print-block">{{ f.id_itinerario }}</td>
                           <td class="pt-3-half">
-                            <input id="input-name" name="name[]" class="input_edit" required />
+                            {{ f.nombre_afiliado }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-dia" name="dia[]" class="input_edit" required />
+                            {{ f.dia }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-mes" name="mes[]" class="input_edit" required />
+                            {{ f.mes }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-salida" name="salida[]" class="input_edit" required />
+                            {{ f.salida }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-hora1" type="time" name="hora_salida[]" class="input_edit" required />
+                            {{ f.hora_salida }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-llegada" name="llegada[]" class="input_edit" required />
+                            {{ f.llegada }}
                           </td>
                           <td class="pt-3-half">
-                            <input id="input-hora2" type="time" name="hora_llegada[]" class="input_edit" required />
+                            {{ f.hora_llegada }}
                           </td>
                           <td>
-                            <span class="table-remove"><button disabled="true" type="button"
-                                class="btn btn-danger btn-rounded btn-sm my-0">Remover</button></span>
+                            <span >
+                              {{ f.DELETE }}
+                              {{ f.DELETE.label }}
+                            </span>
 
                           </td>
                         </tr>
+                        {% endfor %}
                         <!-- This is our clonable table line -->
                         <!-- This is our clonable table line -->
                       </tbody>
@@ -242,9 +228,9 @@
 <script>
 
   $('.form-wrapper label').hide()
-  $('input[type=checkbox]').hide()
+  $('.form-wrapper input[type=checkbox]').hide()
 
-  function resizable(el, factor) {
+  /*function resizable(el, factor) {
     var int = Number(factor) || 7.7;
     function resize() { el.style.width = ((el.value.length + 1) * int) + 'px' }
     var e = 'keyup,keypress,focus,blur,change'.split(',');
@@ -257,6 +243,6 @@
   resizable(document.getElementById('input-salida'), 7);
   resizable(document.getElementById('input-hora1'), 7);
   resizable(document.getElementById('input-llegada'), 7);
-  resizable(document.getElementById('input-hora2'), 7);
+  resizable(document.getElementById('input-hora2'), 7);*/
 </script>
 {% endblock %}
