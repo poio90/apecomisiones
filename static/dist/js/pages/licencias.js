@@ -55,7 +55,6 @@ $(document).ready(function () {
         var parametros = $(this).serializeArray();
         var div = document.getElementById(this.id);
         var url = div.getAttribute("data-url");
-        console.log(parametros);
         $.ajax({
             url: div.getAttribute("data-validate-url"),
             type: 'POST',
@@ -63,7 +62,6 @@ $(document).ready(function () {
             dataType: 'json',
         }).done(function (response) {
             /** mas adelante acomodar todo en una sola función*/
-            console.log(response)
             if (!response.hasOwnProperty('success_message')) {
                 message_error(response.error,);
             } else {
@@ -72,7 +70,6 @@ $(document).ready(function () {
         })
     })
 
-    const table_licencia; 
 
 
     $('#example tbody').on('click','a[rel="delete"]' ,function () {

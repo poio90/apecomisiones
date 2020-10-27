@@ -33,7 +33,7 @@ class LicenciaSolicitud(CreateView):
     template_name = 'licencias/licencia.html'
 
     def get_context_data(self, **kwargs):
-        context = super(LicenciaSolicitud,self).get_context_data(**kwargs)
+        context = super(LicenciaSolicitud, self).get_context_data(**kwargs)
         context['list_url'] = reverse_lazy('licencias:licencias_solicitud')
         context['url'] = reverse_lazy('licencias:licencias_historico')
         return context
@@ -64,13 +64,15 @@ class LicenciaUpdate(UpdateView):
     template_name = 'licencias/licencia.html'
 
     """Con esto evito que se cree un nuevo registro en la base de datos"""
+
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(LicenciaUpdate, self).get_context_data(**kwargs)
-        context['list_url'] = reverse_lazy('licencias:licencias_editar', kwargs={'pk': self.object.pk})
+        context['list_url'] = reverse_lazy(
+            'licencias:licencias_editar', kwargs={'pk': self.object.pk})
         context['url'] = reverse_lazy('licencias:licencias_historico')
         return context
 
@@ -89,7 +91,6 @@ class LicenciaUpdate(UpdateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
 
 
 class HistoricoLicencias(ListView):
