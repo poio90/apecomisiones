@@ -133,7 +133,7 @@ class CollectionUserForm(forms.ModelForm):
             self.fields[myField].widget.attrs['class'] = 'form-control'
             self.fields[myField].label = ''
 
-        self.fields['user'].queryset = User.objects.all().order_by('last_name')
+        self.fields['user'].queryset = User.objects.all().order_by('last_name').filter(is_active=1)
         self.fields['user'].widget.attrs['class'] = 'sel'
         self.fields['user'].widget.attrs['data-placeholder'] = 'Apellido y Nombre'
         self.fields['user'].widget.attrs['required'] = 'true'
@@ -150,4 +150,4 @@ RendicionFormSet = inlineformset_factory(Anticipo, Integrantes_x_Anticipo,
                                               form=CollectionUserForm, can_delete=True, extra=1)
 
 ItinerarioFormSet = inlineformset_factory(Anticipo, Itinerario,
-                                              form=ItinerarioForm, can_delete=True, extra=10)
+                                              form=ItinerarioForm, can_delete=True, extra=1)

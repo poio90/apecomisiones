@@ -205,7 +205,7 @@ class Integrantes_x_Anticipo(models.Model):
 
 class Itinerario(models.Model):
     id_itinerario = models.AutoField(primary_key=True)
-    nombre_afiliado = models.CharField(max_length=150)
+    nombre_afiliado = models.CharField(max_length=150,blank=True,null=True)
     dia = models.CharField(max_length=10)
     mes = models.CharField(max_length=10)
     hora_salida = models.TimeField()

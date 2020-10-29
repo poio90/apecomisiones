@@ -150,6 +150,83 @@ $(document).ready(function () {
                 allowEnterKey: false,
             });
         }
-    })
+    });
+
+    $("#myTable").dynamicTable({
+        //definimos las columnas iniciales    
+        columns: [{
+              text: "Apellido y Nombre",
+              key: "name"
+          },
+          {
+              text: "Día",
+              key: "dia"
+          },
+          {
+              text: "Mes",
+              key: "mes"
+          },
+          {
+              text: "Salida de:",
+              key: "salida"
+          },
+          {
+            text: "hora",
+            key: "hora_s"
+        },
+        {
+            text: "Llegada a:",
+            key: "llegada"
+        },
+        {
+            text: "hora",
+            key: "hora_l"
+        },      
+        ],
+ 
+        //carga de datos
+        data: [{
+              name: 'José Perez',
+              age: 30,
+              gender: 'M',
+              pais: 'Colombia'    
+          },
+          {
+              name: 'María Pía',
+              age: 24,
+              gender: 'F',
+              pais: 'Brasil'
+          },
+          {
+              name: 'Pedro',
+              age: 31,
+              gender: 'M',
+              pais: 'Perú'
+          }
+        ],
+
+        //definición de botones
+        buttons: {
+            addButton: '<input type="button" value="Nuevo" class="btn btn-success" />',
+            cancelButton: '<button  type="button" class="btn btn-danger btn-rounded btn-sm my-0" ><i class="fas fa-times"></i></button>',
+            deleteButton: '<button  type="button" class="btn btn-danger btn-rounded btn-sm my-0" ><i class="fas fa-trash"></i></button>',
+            editButton: '<button type="button" class="btn btn-primary btn-rounded btn-sm my-0"><i class="fas fa-edit"></i></button>',
+            saveButton: '<button type="button" class="btn btn-success btn-rounded btn-sm my-0"><i class="fas fa-save"></i></button>',
+        },
+        showActionColumn: true,
+        //condicionales
+        getControl: function (columnKey) {
+            if (columnKey == "age") {
+              return '<input type="number" class="form-control" />';
+            }
+
+            if (columnKey == "gender") {
+              return '<select class="form-control"><option value="M">Masculino</option><option value="F">Femenino</option></select>';
+            }
+
+            return '<input type="text" class="form-control" />';
+        }
+
+    });
 
 });

@@ -173,20 +173,20 @@
                                             <td>{{ anticipo.fecha_inicio }}</td>
                                             <td>{{ anticipo.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span class="table-remove" data-toggle="tooltip" title="Ver">
+                                                <span  data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfAnticipo' anticipo.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span >
                                                     <a href="{% url 'comisiones:anticipo_editar' anticipo.pk %}"
                                                         class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove" data-toggle="tooltip" title="Eliminar">
+                                                <span  data-toggle="tooltip" title="Eliminar">
                                                     <a href="{% url 'comisiones:eliminar_anticipo' anticipo.pk %}"
                                                         class="btn btn-danger btn-rounded btn-sm my-0" >
                                                         <i class="fas fa-trash"></i>
