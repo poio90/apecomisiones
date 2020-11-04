@@ -30,7 +30,6 @@ from django.core import serializers
 import json
 
 
-
 class ReportePdfSolicitud(View):
     """Regresa Pdf"""
 
@@ -127,7 +126,6 @@ class ReportePdfSolicitud(View):
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = titulo
         return response
-
 
 
 class ReportePdfAnticipo(View):
@@ -292,6 +290,8 @@ class ReportePdfAnticipo(View):
 
 
 """ Esta vista podria escribirla como la de update pero asi anda bien """
+
+
 class SolicitudAnticipoCreate(CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
@@ -401,7 +401,7 @@ class RendicionAnticipoCreate(CreateView):
             data['list_url'] = reverse_lazy('comisiones:rendicion_anticipo')
             data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
-    
+
     def form_valid(self, form):
         context = self.get_context_data()
         data = {}
@@ -421,12 +421,12 @@ class RendicionAnticipoCreate(CreateView):
                             itinerario.save()
                             detalle.save()
                             data['pdf_url'] = reverse_lazy(
-                            'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
+                                'comisiones:reportePdfAnticipo', kwargs={'pk': self.object.pk})
                             data['success_message'] = 'Rendición de anticipo creada exitosamente'
                     else:
                         data['error'] = 'Revise los campos del informe de anticipo.'
                 else:
-                    data['error'] = 'Error de itinerario'
+                    data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
                 data['error'] = 'Está intentando cargar algún usuario más de una vez.'
         except Exception as e:
@@ -435,10 +435,9 @@ class RendicionAnticipoCreate(CreateView):
 
     def form_invalid(self, form):
         return JsonResponse(form.errors)
-    
+
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
-       
 
     """def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
@@ -479,28 +478,31 @@ class RendicionAnticipoCreate(CreateView):
             return render(request, self.template_name, context)"""
 
 
-class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
+class RendicionAnticipoUpdate(UpdateView):
     model = Anticipo
     template_name = 'comisiones/rendicion.html'
     form_class = RendicionForm
-    success_message = "Rendición de anticipo editado exitosamente"
 
     def get_context_data(self, **kwargs):
         data = super(RendicionAnticipoUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['users'] = RendicionFormSet(self.request.POST,instance=self.object)
-            data['detalle'] = DetalleTrabajoForm(self.request.POST,instance=self.object.detalletrabajo)
-            data['itinerario'] = ItinerarioFormSet(self.request.POST,instance=self.object)
+            data['users'] = RendicionFormSet(
+                self.request.POST, instance=self.object)
+            data['detalle'] = DetalleTrabajoForm(
+                self.request.POST, instance=self.object.detalletrabajo)
+            data['itinerario'] = ItinerarioFormSet(
+                self.request.POST, instance=self.object)
         else:
             data['users'] = RendicionFormSet(instance=self.object)
             data['single_user'] = CollectionUserForm()
-            data['detalle'] = DetalleTrabajoForm(instance=self.object.detalletrabajo)
+            data['detalle'] = DetalleTrabajoForm(
+                instance=self.object.detalletrabajo)
             data['itinerario'] = ItinerarioFormSet(instance=self.object)
-            data['list_url'] = reverse_lazy('comisiones:anticipo_editar', kwargs={'pk': self.object.pk})
+            data['list_url'] = reverse_lazy(
+                'comisiones:anticipo_editar', kwargs={'pk': self.object.pk})
             data['url'] = reverse_lazy('comisiones:historico_comisiones')
         return data
-    
-    
+
     def form_valid(self, form):
         context = self.get_context_data()
         data = {}
@@ -525,7 +527,7 @@ class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
                     else:
                         data['error'] = itinerario.errors
                 else:
-                    data['error'] = itinerario.errors
+                    data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
                 data['error'] = 'Está intentando cargar algún usuario más de una vez.'
         except Exception as e:
@@ -536,9 +538,10 @@ class RendicionAnticipoUpdate(SuccessMessageMixin, UpdateView):
         data = {}
         data['error'] = form.errors
         return JsonResponse(data)
-    
+
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
+
 
 class Historicos(ListView):
     model = Anticipo

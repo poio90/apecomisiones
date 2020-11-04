@@ -9,10 +9,10 @@
  * @example
  */
 
-; (function($) {
+; (function ($) {
     'use strict';
 
-    $.fn.dynamicTable = function(options) {
+    $.fn.dynamicTable = function (options) {
         var settings = $.extend({}, {
             showActionColumn: true,
             buttons: {
@@ -24,13 +24,13 @@
             },
             columns: [],
             data: [],
-            getControl: function(columnKey) {
+            getControl: function (columnKey) {
                 return '<input type="text" class="form-control" />';
             },
         }, options);
 
-        var populateActionButtons = function(tableRow, addButton, cancelButton, deleteButton, editButton, saveButton) {
-            var showHideButtons = function(tableCell, localFlags) {
+        var populateActionButtons = function (tableRow, addButton, cancelButton, deleteButton, editButton, saveButton) {
+            var showHideButtons = function (tableCell, localFlags) {
                 var theButtons = {
                     cancelButton: $(tableCell).find('*[data-codeapi-cancelcommand]'),
                     deleteButton: $(tableCell).find('*[data-codeapi-deletecommand]'),
@@ -81,8 +81,8 @@
                 $(tableCell).append(' ');
                 $(tableCell).append($(localButton));
 
-                $(localButton).click(function() {
-                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function() {
+                $(localButton).click(function () {
+                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function () {
                         var inputControl = $(this);
                         var spanControl = $(inputControl).parent().find('span[data-codeapi-displaykey="' + $(inputControl).attr('data-codeapi-inputkey') + '"]');
                         $(spanControl).attr('data-codeapi-value', encodeURIComponent($(inputControl).val()));
@@ -111,8 +111,8 @@
                 $(tableCell).append(' ');
                 $(tableCell).append($(localButton));
 
-                $(localButton).click(function() {
-                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function() {
+                $(localButton).click(function () {
+                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function () {
                         var inputControl = $(this);
                         var spanControl = $(inputControl).parent().find('span[data-codeapi-displaykey="' + $(inputControl).attr('data-codeapi-inputkey') + '"]');
 
@@ -137,7 +137,7 @@
                 $(tableCell).append(' ');
                 $(tableCell).append($(localButton));
 
-                $(localButton).click(function() {
+                $(localButton).click(function () {
                     var table = $(this).parents("table:first");
                     $(this).parents('tr:first').replaceWith('');
                     resetSrNoColumn(table);
@@ -151,8 +151,8 @@
                 $(tableCell).append(' ');
                 $(tableCell).append($(localButton));
 
-                $(localButton).click(function() {
-                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function() {
+                $(localButton).click(function () {
+                    $(this).parents('tr:first').find('*[data-codeapi-inputkey]').each(function () {
                         var inputControl = $(this);
                         var spanControl = $(inputControl).parent().find('span[data-codeapi-displaykey="' + $(inputControl).attr('data-codeapi-inputkey') + '"]');
 
@@ -172,13 +172,13 @@
             }
         };
 
-        var resetSrNoColumn = function(table) {
-            $(table).find("td[data-codeapi-srno]").not(':first').each(function(index, element) {
+        var resetSrNoColumn = function (table) {
+            $(table).find("td[data-codeapi-srno]").not(':first').each(function (index, element) {
                 $(this).text((index + 1));
             });
         };
 
-        return this.each(function() {
+        return this.each(function () {
             var addButton = settings.buttons.addButton;
             var cancelButton = settings.buttons.cancelButton;
             var deleteButton = settings.buttons.deleteButton;
@@ -229,11 +229,11 @@
                     $(tableRow).append($(tableCell));
 
                     var localButton = $($(addButton).clone());
-                    
+
                     $(tableCell).append(' ');
                     $(tableCell).append($(localButton));
 
-                    $(localButton).click(function() {
+                    $(localButton).click(function () {
                         var table = $(this).parents("table:first");
                         var currentRow = $(this).parents('tr:first');
                         var newRow = $('<tr></tr>');
@@ -242,7 +242,7 @@
                         var newTableCell = $('<td data-codeapi-srno="0"></td>');
                         $(newRow).append($(newTableCell));
 
-                        currentRow.find('td').not(':first,:last').each(function() {
+                        currentRow.find('td').not(':first,:last').each(function () {
                             var tableCell = $(this);
                             var key = $(tableCell).find('*[data-codeapi-inputkey]').attr('data-codeapi-inputkey');
                             var newTableCell = $('<td></td>');
@@ -314,14 +314,14 @@
         });
     };
 
-    $.fn.getTableData = function() {
+    $.fn.getTableData = function () {
         var data = [];
 
-        $(this).find("tr").each(function() {
+        $(this).find("tr").each(function () {
             if ($(this).find('span[data-codeapi-displaykey]').length > 0) {
                 var objModel = {};
 
-                $(this).find('span[data-codeapi-displaykey]').each(function() {
+                $(this).find('span[data-codeapi-displaykey]').each(function () {
                     var key = 'data-codeapi-displaykey';
                     var valueKey = 'data-codeapi-value';
                     objModel[$(this).attr(key)] = decodeURIComponent($(this).attr(valueKey));

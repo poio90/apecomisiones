@@ -47,39 +47,38 @@
                 <div id="form-repaet" class="form-repaet">
                   {% for f in users %}
                   <div class="form-row">
-                    <div class="col-md-6 mt-2 col">
+                    <div class="col-md-6 mt-2">
                       {{ f }}
                     </div>
-                    <div class="col-md-5 mt-2 col">
+                    <div class="col-md-5 mt-2">
                       <input type="text" class="form-control" placeholder="Número de afiliado a SEMPRE" readonly>
                     </div>
                     <div class="col-md-1 mt-2">
-                      <span class="mb-3 mr-2">
-                        <button type="button" class="remove btn btn-danger">Remover</button>
-                      </span>
+                      <span>
+                      {% if forloop.first %}
+                        <button id="add-more-anticipo" type="button" class="btn btn-success btn-block">Agregar</i></button>
+                      {% else %}
+                        <button type="button" class="remove btn btn-danger btn-block">Quitar</button>                      
+                      {% endif %}
+                    </span>
                     </div>
                   </div>
                   {% endfor %}
                 </div>
               </div>
-              <div class="form-row">
-                <div class="col-md-4 mt-2">
-                  <button id="add-more-anticipo" type="button" class="btn btn-success">Agregar
-                    usuario</i></button>
-                </div>
-              </div>
+              <br>
               <div class="copy d-none d-print-block">
                 <div class="form-row">
-                  <div class="col-md-6 mt-2 col">
+                  <div class="col-md-6 mt-2">
                     {{ single_user }}
                   </div>
                   <input type="checkbox" style="display: none;">
-                  <div class="col-md-5 mt-2 col">
+                  <div class="col-md-5 mt-2">
                     <input type="text" class="form-control" placeholder="Número de afiliado a SEMPRE" readonly>
                   </div>
                   <div class="col-md-1 mt-2">
-                    <span class="mb-3 mr-2">
-                      <button type="button" class="remove btn btn-danger">Remover</button>
+                    <span>
+                      <button type="button" class="remove btn btn-danger btn-block">Quitar</button>
                     </span>
                   </div>
                 </div>
@@ -114,19 +113,15 @@
               <!--- Tabla para el armado del itinenario--->
               <div class="form-group">
                 <div class="card-body">
-                  <label for="inputAfiliado" class="col-form-label">
-                    <h4>Itinerario de viaje:</h4>
-                  </label>
                   {{ itinerario.management_form }}
-                  <table id="myTable" class="table table-responsive-md table-striped"></table> 
-                  <!--<div id="table" class="table-editable">
+                  <div id="table" class="table-editable">
                     <label for="inputAfiliado" class="col-form-label">
                       <h4>Itinerario de viaje:</h4>
                     </label>
                     <span class="table-add float-right mb-3 mr-2">
-                      <a style="cursor:pointer;" class="btn text-success">
-                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                      </a>
+                      <button type="button" class="btn btn-success">
+                        Nuevo
+                      </button>
                     </span>
                     <table class="table table-bordered table-responsive-md table-striped text-center">
                       <thead>
@@ -169,18 +164,18 @@
                           <td>
                             <span class="d-none d-print-block">
                               {{ f.DELETE }}
+                            </span>                            
+                            <span class="table-remove"><button type="button"
+                                class="btn btn-danger btn-rounded btn-sm my-0">Remover</button>
                             </span>
-                            <span class="table-remove"><button disabled="true" type="button"
-                              class="btn btn-danger btn-rounded btn-sm my-0">Remover</button></span>
-
                           </td>
                         </tr>
                         {% endfor %}
-                         This is our clonable table line 
-                         This is our clonable table line 
+                        <!--This is our clonable table line 
+                         This is our clonable table line-->
                       </tbody>
                     </table>
-                  </div>-->
+                  </div>
                 </div>
               </div>
               <div class="form-group">

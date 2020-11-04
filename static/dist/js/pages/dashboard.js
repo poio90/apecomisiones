@@ -123,56 +123,61 @@ $(document).ready(function () {
   const $tableID = $('#table');
   const $BTN = $('#export-btn');
   const $EXPORT = $('#export');
-  const newTr = `<tr class="hide">
-                  <td class="pt-3-half">
-                    <input id="input-name" class="input_edit"/>
+  
+  $('.table-add').on('click', 'button', () => {
+    //const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
+    var form = document.querySelector('#id_itinerario_set-TOTAL_FORMS');
+    const newTr = `<tr>
+                  <td class="d-none d-print-block">
+                    <input type="hidden" name="itinerario_set-`+ form.value +`-id_itinerario" id="id_itinerario_set-`+ form.value +`-id_itinerario">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-dia" class="input_edit"/>
+                    <input type="text" name="itinerario_set-`+ form.value +`-nombre_afiliado" maxlength="150" class="form-control" id="id_itinerario_set-`+ form.value +`-nombre_afiliado">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-mes" class="input_edit"/>
+                    <input type="text" name="itinerario_set-`+ form.value +`-dia" maxlength="10" class="form-control" id="id_itinerario_set-`+ form.value +`-dia">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-salida" class="input_edit"/>
+                    <input type="text" name="itinerario_set-`+ form.value +`-mes" maxlength="10" class="form-control" id="id_itinerario_set-`+ form.value +`-mes">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-hora1" class="input_edit"/>
+                    <input type="text" name="itinerario_set-`+ form.value +`-salida" maxlength="45" class="form-control" id="id_itinerario_set-`+ form.value +`-salida">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-llegada" class="input_edit"/>
+                    <input type="time" name="itinerario_set-`+ form.value +`-hora_salida" class="form-control" id="id_itinerario_set-`+ form.value +`-hora_salida">
                   </td>
                   <td class="pt-3-half">
-                    <input id="input-hora2" class="input_edit"/>
-                    </td>
+                    <input type="text" name="itinerario_set-`+ form.value +`-llegada" maxlength="45" class="form-control" id="id_itinerario_set-`+ form.value +`-llegada">
+                  </td>
+                  <td class="pt-3-half">
+                    <input type="time" name="itinerario_set-`+ form.value +`-hora_llegada" class="form-control" id="id_itinerario_set-`+ form.value +`-hora_llegada">
+                  </td>
                   <td>
-                    <span class="table-remove">
-                      <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
-                    </span>
-                  </td>
+                    <span class="d-none d-print-block">
+                      <input type="checkbox" name="itinerario_set-`+ form.value +`-DELETE" id="id_itinerario_set-`+ form.value +`-DELETE">
+                    </span>      
+                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remover</button>
+                      </span>   
+                    </td>
                 </tr>`;
-
-  $('.table-add').on('click', 'i', () => {
-
-    const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
-
-    if ($tableID.find('tbody tr').length === 0) {
+    
+    form.value = parseInt(form.value) + 1
+    /*if ($tableID.find('tbody tr').length === 0) {
       $('tbody').append(newTr);
-    }
-    $clone.find('button').attr("disabled", false);
-    //$clone.find('input').prop('required',true);
-    $tableID.find('table').append($clone);
+    }*/
+    //$clone.find('button').attr("disabled", false);
+    $tableID.find('table').append(newTr);
   });
 
   $tableID.on('click', '.table-remove', function () {
-
-    $(this).parents('tr').detach();
+    console.log($tableID.find('tbody tr').length);
+    console.log($(this).parents('td').find('input[type="checkbox"]').attr('checked',true));
+    $(this).parents('tr').hide();
   });
 
   $tableID.on('click', '.table-up', function () {
 
     const $row = $(this).parents('tr');
-
     if ($row.index() === 1) {
       return;
     }

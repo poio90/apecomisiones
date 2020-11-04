@@ -27,7 +27,10 @@ $(document).ready(function () {
             showCancelButton: true,
             confirmButtonText: 'Si',
             cancelButtonText: 'No',
-            reverseButtons: true
+            reverseButtons: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
         }).then((result) => {
             if (result.isConfirmed) {
                 window.open(pdf_url);

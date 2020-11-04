@@ -82,34 +82,32 @@
                                                 <input type="text" class="form-control"
                                                     placeholder="Número de afiliado a SEMPRE" readonly>
                                             </div>
-                                            <div class="col-md mt-2">
-                                                <span class="mb-3 mr-2">
-                                                    <button type="button" class="remove btn btn-danger">Remover</button>
+                                            <div class="col-md-1 mt-2">
+                                                <span>
+                                                    {% if forloop.first %}
+                                                    <button id="add-more" type="button" class="btn btn-success btn-block">Agregar</i></button>
+                                                    {% else %}
+                                                    <button type="button" class="remove btn btn-danger btn-block">Quitar</button>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                         </div>
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="col-md-4 mt-2">
-                                        <button id="add-more" type="button" class="btn btn-success">Agregar
-                                            usuario</i></button>
-                                    </div>
-                                </div>
                                 <div class="copy d-none d-print-block">
                                     <div class="form-row">
-                                        <div class="col-md-6 mt-2 col">
+                                        <div class="col-md-6 mt-2">
                                             {{ single_user }}
                                         </div>
                                         <input type="checkbox" style="display: none;">
-                                        <div class="col-md-5 mt-2 col">
+                                        <div class="col-md-5 mt-2">
                                             <input type="text" class="form-control"
                                                 placeholder="Número de afiliado a SEMPRE" readonly>
                                         </div>
                                         <div class="col-md-1 mt-2">
-                                            <span class="mb-3 mr-2">
-                                                <button type="button" class="remove btn btn-danger">Remover</button>
+                                            <span>
+                                                <button type="button" class="remove btn btn-danger btn-block">Quitar</button>
                                             </span>
                                         </div>
                                     </div>
