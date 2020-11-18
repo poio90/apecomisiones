@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Número de licencia <strong>{{ licencia.pk }}</strong></h3>
+                        <h3 class="card-title">Número de solicitud <strong>{{ form.pk }}</strong></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -36,8 +36,8 @@
                                     {% csrf_token %}
                                     <div class="alert alert-warning alert-dismissible">
                                         <h4><i class="icon fas fa-ban"></i> Cuidado!</h4>
-                                        <h5>¿Seguro desea eliminar la licencia solicitada el día
-                                            {{ licencia.fecha_solicitud }}?</h5>
+                                        <h5>¿Seguro desea eliminar la solicitud de compras y servicios ordenada el día
+                                            {{ form.fecha_pedidio }}?</h5>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">

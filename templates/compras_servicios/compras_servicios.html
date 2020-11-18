@@ -1,0 +1,122 @@
+{% extends "index.html" %}
+
+{% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{{ form.media }}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Confeccionar solicitud de compras y servicios</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'usuarios:index' %}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Confeccionar solicitud de compras y serv.</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data"
+                    data-validate-url="{{ list_url }}" data-url="{{ url }}">
+                    {% csrf_token %}
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <label class="card-title">Solicitud de compras y servicios</label>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="inputAfiliado" class="col-form-label">Fecha de solicitud</label>
+                                    </div>
+                                    <div class="col">
+                                        <!--<input class="form-control">-->
+                                        <label class="col-form-label">{% now "j F Y" %}</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputSolicitante" class="col-sm-3 col-form-label">Requiriente</label>
+                                <div class="col">
+                                    <label
+                                        class="full_name form-control col-form-label">{{ user.get_full_name }}</label>
+                                </div>
+                            </div>
+                            <label for="inputAfiliado" class=" col-form-label">
+                                <h4>Detalle de lo requerido</h4>
+                            </label>
+
+                            <!-- Carga dinamica de lo requerido-->                            
+                            <div id="form-wrapper" class="form-wrapper">
+                                {{ requerido.management_form }}
+                                <div id="form-repaet" class="form-repaet">
+                                    {% for f in requerido %}
+                                    <div class="form-row">
+                                        <div class="d-none d-print-block">{{ f.id_detalle }}</div>
+                                        <div class="col-md-6 mt-2">
+                                            {{ f.detalle_requerido }}
+                                        </div>
+                                        <div class="col-md-5 mt-2">
+                                            {{ f.monto }}
+                                        </div>
+                                        <div class="col-md-1 mt-2">
+                                            <span class="d-none d-print-block">
+                                                {{ f.DELETE }}
+                                              </span>
+                                            <span>
+                                                {% if forloop.first %}
+                                                <button id="requerido-add" type="button"
+                                                    class="btn btn-success btn-block">Agregar</i></button>
+                                                {% else %}
+                                                <button type="button"
+                                                    class="requerido-remove btn btn-danger btn-block">Quitar</button>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <br>
+                            {% bootstrap_form form %}
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-archive"></i>
+                                    Guardar
+                                </button>
+                            </div>
+                            <a type="button" class="btn btn-danger" href="{{ url }}">
+                                <i class="fas fa-times"></i> Cancelar</a>
+                            <!--<button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Descartar</button>-->
+                        </div>
+                </form>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+<script>
+    //$('.form-wrapper label').hide()
+    //$('input[type=checkbox]').hide()
+</script>
+{% endblock %}

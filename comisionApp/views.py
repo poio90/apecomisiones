@@ -66,7 +66,10 @@ class ReportePdfSolicitud(View):
 
         fecha = date.today().strftime("%d/%m/%Y")
 
-        c.drawString(400, 700, 'Fecha de pedido: ' + str(fecha))
+        fecha_pedido = datetime.strptime(
+            str(solicitud.fecha_pedido), "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        c.drawString(400, 700, 'Fecha de pedido: ' + str(fecha_pedido))
 
         alto = 675
         for i in range(len(integrantes)):
@@ -438,44 +441,6 @@ class RendicionAnticipoCreate(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('comisiones:historico_comisiones')
-
-    """def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        detalle = DetalleTrabajoForm(request.POST)
-        if form.is_valid() and detalle.is_valid():
-            f = form.save()
-            d = detalle.save(commit=False)
-            d.anticipo = f
-            d.save()
-            # Itinerario -> remplazar por formset mas adelante al igual que users
-            nombres = request.POST.getlist('name[]')
-            dias = request.POST.getlist('dia[]')
-            meses = request.POST.getlist('mes[]')
-            salidas = request.POST.getlist('salida[]')
-            llegadas = request.POST.getlist('llegada[]')
-            horas_salida = request.POST.getlist('hora_salida[]')
-            horas_llegada = request.POST.getlist('hora_llegada[]')
-
-            for i in range(len(nombres)):
-                Itineraio.objects.create(
-                    anticipo=f, nombre_afiliado=nombres[i], dia=dias[i], mes=meses[i],
-                    hora_salida=horas_salida[i], hora_llegada=horas_llegada[i], salida=salidas[i], llegada=llegadas[i])
-
-            Integrantes_x_Anticipo.objects.create(
-                anticipo=f, user=self.request.user)
-
-            pk_users = self.request.POST.getlist('afiliado[]')
-            for i in range(len(pk_users)-1):
-                Integrantes_x_Anticipo.objects.create(
-                    anticipo=f, user_id=pk_users[i])
-            return self.form_valid(form)
-        else:
-            self.object = None
-            context = self.get_context_data(**kwargs)
-            context['form'] = form
-            context['detalle'] = detalle
-            return render(request, self.template_name, context)"""
 
 
 class RendicionAnticipoUpdate(UpdateView):

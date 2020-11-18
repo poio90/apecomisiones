@@ -170,8 +170,7 @@ $(document).ready(function () {
   });
 
   $tableID.on('click', '.table-remove', function () {
-    console.log($tableID.find('tbody tr').length);
-    console.log($(this).parents('td').find('input[type="checkbox"]').attr('checked',true));
+    $(this).parents('td').find('input[type="checkbox"]').attr('checked',true)
     $(this).parents('tr').hide();
   });
 

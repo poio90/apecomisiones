@@ -17,8 +17,6 @@ class CiudadAdmin(admin.ModelAdmin):
     search_fields = ['ciudad']
 
 
-admin.site.register(Itinerario)
-
 admin.site.register(Ciudad, CiudadAdmin)
 admin.site.register(Provincia)
 admin.site.register(Transporte, TransporteAdmin)

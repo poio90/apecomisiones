@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include(('usuarios.urls', 'usuarios'), namespace='usuarios')),
     path('', include(('comisionApp.urls', 'comisiones'), namespace='comisiones')),
     path('', include(('licencias.urls', 'licencias'), namespace='licencias')),
+    path('', include(('compras_servicios.urls', 'compras_servicios'), namespace='compras_servicios')),
 ]
 
 handler404 = Error404View.as_view()
