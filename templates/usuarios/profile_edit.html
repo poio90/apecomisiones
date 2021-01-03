@@ -35,12 +35,11 @@
             <div class="tab-content">
               <!-- /.tab-pane -->
               <div id="settings">
-                <form method="POST" class="form-horizontal" 
-                  enctype="multipart/form-data">
+                <form method="POST" class="form-horizontal" enctype="multipart/form-data">
                   {% csrf_token %}
-                  
-                  {% bootstrap_form form layout='horizontal' %}        
-                  
+
+                  {% bootstrap_form form layout='horizontal' %}
+
                   <div class="card-footer">
                     <div class="float-right">
                       <button type="submit" class="btn btn-success">
@@ -64,17 +63,10 @@
   </div><!-- /.container-fluid -->
 </section>
 <script>
-  if ($('#id_reemplazo').is(':checked') ) {
-        $( "#id_categoria_reemplazo").prop( "disabled", false);
-     } else {
-        $( "#id_categoria_reemplazo" ).prop( "disabled", true );
-    }
-    $('#id_reemplazo').on('change', function() {
-        if ($(this).is(':checked') ) {
-           $( "#id_categoria_reemplazo").prop( "disabled", false);
-        } else {
-           $( "#id_categoria_reemplazo" ).prop( "disabled", true );
-       }
-   });
+  if ($('#id_reemplazo').is(':checked')) {
+    $("#id_categoria_reemplazo").prop("disabled", false);
+  } else {
+    $("#id_categoria_reemplazo").prop("disabled", true);
+  }
 </script>
 {% endblock %}

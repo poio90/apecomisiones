@@ -36,4 +36,17 @@ $(document).ready(function () {
         $(this).parents('.form-row').hide();
     });
 
+    $('#id_vehículo').on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#id_rep_vehículo").prop("disabled", false);
+            $("#id_transporte").prop("disabled", false);
+            $("#id_transporte").prop("required", true);
+        } else {
+            $("#id_rep_vehículo").prop("disabled", true);
+            $("#id_rep_vehículo").val("")
+            $("#id_transporte").prop("disabled", true);
+            $('#id_transporte').val(null).trigger('change');
+        }
+    });
+
 });

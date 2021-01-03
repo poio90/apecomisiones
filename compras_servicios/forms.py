@@ -7,15 +7,21 @@ from usuarios.models import User
 class ComprasServiciosForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ComprasServiciosForm, self).__init__(*args, **kwargs)
-        for myField in self.fields:
-            self.fields[myField].widget.attrs['class'] = 'form-control'
 
         self.fields['localidad'].widget.attrs['class'] = 'sel'
         self.fields['localidad'].widget.attrs['data-placeholder'] = 'Localidad'
 
+        self.fields['transporte'].widget.attrs['class'] = 'sel'
+        self.fields['transporte'].widget.attrs['data-placeholder'] = 'Unidad de legajo y Patente'
+
     class Meta:
         model = ComprasServicios
-        fields = ['motivo', 'destino', 'localidad']
+        fields = ['motivo', 'destino', 'localidad','vehículo','rep_vehículo','transporte']
+        widget = {
+            'vehículo': forms.ChoiceField(
+                widget=forms.CheckboxSelectMultiple,
+            )
+        }
 
 
 class DetalleRequeridoForm(forms.ModelForm):

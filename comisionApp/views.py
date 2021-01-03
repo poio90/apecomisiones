@@ -328,7 +328,7 @@ class SolicitudAnticipoCreate(CreateView):
                             'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
                         data['success_message'] = 'Solicitud de anticipo creada exitosamente'
                 else:
-                    data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+                    data['error'] = 'Está intentando cargar algún usuario de más.'
             else:
                 data = form.errors
         except Exception as e:
@@ -371,7 +371,7 @@ class SolicitudAnticipoUpdate(UpdateView):
                         'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
                     data['success_message'] = 'Cambios realizados con éxito'
             else:
-                data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+                data['error'] = 'Está intentando cargar algún usuario de más.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -431,7 +431,7 @@ class RendicionAnticipoCreate(CreateView):
                 else:
                     data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
-                data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+                data['error'] = 'Está intentando cargar algún usuario de más.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -494,7 +494,7 @@ class RendicionAnticipoUpdate(UpdateView):
                 else:
                     data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
-                data['error'] = 'Está intentando cargar algún usuario más de una vez.'
+                data['error'] = 'Está intentando cargar algún usuario de más.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

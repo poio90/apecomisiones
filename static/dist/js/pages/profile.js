@@ -1,5 +1,15 @@
 $(document).ready(function () {
 
+
+    $('#id_reemplazo').on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#id_categoria_reemplazo").prop("disabled", false);
+        } else {
+            $("#id_categoria_reemplazo").prop("disabled", true);
+            $('#id_categoria_reemplazo').val(null).trigger('change');
+        }
+    });
+
     /*-----------------------Notifica que el perfil se acualizo correctamente-------------*/
     /*$(document).on('submit', '#updateProfile', function (e) {
         e.preventDefault();

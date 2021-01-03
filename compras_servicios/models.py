@@ -1,5 +1,5 @@
 from django.db import models
-from comisionApp.models import Ciudad
+from comisionApp.models import Ciudad, Transporte
 from usuarios.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -13,7 +13,7 @@ class ComprasServicios(models.Model):
         null=True,
     )
 
-    motivo = models.TextField(_('Motivo del Requerimiento'))
+    motivo = models.TextField(_('Motivo del Requerimiento'), max_length=352)
 
     destino = models.CharField(
         _('Destino'), max_length=100, blank=True, null=True)
@@ -26,7 +26,28 @@ class ComprasServicios(models.Model):
         null=True,
     )
 
+    transporte = models.ForeignKey(
+        Transporte,
+        on_delete=models.SET_NULL,
+        null=True,
+        db_column='id_transporte',
+        blank=True,
+    )
+
     fecha_pedido = models.DateField(auto_now_add=True)
+
+    #
+    vehículo = models.BooleanField(
+        _('vehículo'),
+        default=False,
+        help_text=_(
+            'Sólo para reparación de vehículos'
+        ),
+        blank=True,
+    )
+
+    rep_vehículo = models.TextField(
+        _('Detalles de reparación'), max_length=122, blank=True,)
 
     class Meta:
         verbose_name = _('Compras y Servicios')

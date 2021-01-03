@@ -149,7 +149,8 @@ class ReporteComprasServicios(View):
     def get(self, request, *args, **kwargs):
 
         compras_servicios = ComprasServicios.objects.get(pk=kwargs['pk'])
-        detalle = DetalleRequerido.objects.filter(compras_servicios_id=kwargs['pk'])
+        detalle = DetalleRequerido.objects.filter(
+            compras_servicios_id=kwargs['pk'])
 
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
@@ -198,15 +199,15 @@ class ReporteComprasServicios(View):
 
         # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
         j = 0
-        n = 87
+        n = 88
         story = ''
         for i in range(len(compras_servicios.motivo)):
             if compras_servicios.motivo[i] == '\n':
-                n = i + 86
+                n = i + 88
             if i == n:
                 story = story + compras_servicios.motivo[j:n] + '\n'
                 j = n
-                n = n + 86
+                n = n + 88
         story = story + \
             compras_servicios.motivo[j:len(compras_servicios.motivo)]
 
@@ -223,27 +224,36 @@ class ReporteComprasServicios(View):
         c.drawString(35, 655, 'Sólo para reparación de vehículos:')
 
         # Funcion que agrega saltos de linea a 'motivo' para que se pinte en el pdf
-        """j = 0
+        j = 0
         n = 61
         story = ''
-        for i in range(len(compras_servicios.motivo)):
-            if compras_servicios.motivo[i] == '\n':
-                n = i + 60
+        for i in range(len(compras_servicios.rep_vehículo)):
+            if compras_servicios.rep_vehículo[i] == '\n':
+                n = i + 61
             if i == n:
-                story = story + compras_servicios.motivo[j:n] + '\n'
+                story = story + compras_servicios.rep_vehículo[j:n] + '\n'
                 j = n
-                n = n + 60
-        story = story + compras_servicios.motivo[j:len(compras_servicios.motivo)]
+                n = n + 61
+        story = story + \
+            compras_servicios.rep_vehículo[j:len(
+                compras_servicios.rep_vehículo)]
 
         # Texto que va contenido dentro de los detalles de trabajo
         textobject = c.beginText()
         textobject.setTextOrigin(198, 655)
         textobject.setFont("Courier", 10)
         textobject.textLines(story)
-        c.drawText(textobject)"""
+        c.drawText(textobject)
 
-        c.drawString(200, 632, 'N° de legajo:')
-        c.drawString(380, 632, 'Dominio:')
+        c.setFont('Helvetica', 10)
+        if compras_servicios.transporte:
+            c.drawString(200, 632, 'N° de legajo: ' +
+                         compras_servicios.transporte.num_legajo)
+            c.drawString(380, 632, 'Dominio: ' +
+                         compras_servicios.transporte.patente)
+        else:
+            c.drawString(200, 632, 'N° de legajo: ')
+            c.drawString(380, 632, 'Dominio: ')
 
         # tabla.encabezado
         styles = getSampleStyleSheet()
@@ -263,10 +273,10 @@ class ReporteComprasServicios(View):
         # tabla.contenico
         contenido = []
         # El rango determina la cantidad de cuadros que se pintan en el documento
-        for i in range(11):
+        for i in range(13):
             contenido.append({'name': '', 'b1': '', })
 
-        hight1 = 607 # comienzo de la tabla
+        hight1 = 607  # comienzo de la tabla
 
         for part in contenido:
             this_part = [part['name'], part['b1'], ]
@@ -293,32 +303,33 @@ class ReporteComprasServicios(View):
             c.drawString(460, hight1, str(detalle[i].monto))
             hight1 = hight1 - delta
             monto_total = monto_total + detalle[i].monto
-        
+
         c.setFont('Helvetica', 10)
-        c.drawString(355, 415, 'TOTAL $ IVA incluido')
-        c.drawString(460, 415, str("{:.2f}".format(monto_total + (monto_total * 0.21))))
+        c.drawString(355, 378, 'TOTAL $ IVA incluido')
+        c.drawString(460, 378, str("{:.2f}".format(
+            monto_total + (monto_total * 0.21))))
 
-        # Destino.localidad.requirente        
-        c.drawString(147, 385, 'DESTINO: ')
-        c.drawString(210, 385, compras_servicios.destino)
-        c.line(200, 400, 570, 400)  # l.horizontal
-        c.line(570, 400, 570, 380)  # l.vertical
-        c.line(570, 380, 200, 380)  # l.horizontal
-        c.line(200, 380, 200, 400)  # l.vertical
-
-        c.drawString(135, 355, 'LOCALIDAD: ')
-        c.drawString(210, 355, compras_servicios.localidad.ciudad)
+        # Destino.localidad.requirente
+        c.drawString(147, 355, 'DESTINO: ')
+        c.drawString(210, 355, compras_servicios.destino)
         c.line(200, 370, 570, 370)  # l.horizontal
         c.line(570, 370, 570, 350)  # l.vertical
         c.line(570, 350, 200, 350)  # l.horizontal
-        c.line(200, 350, 200, 370)  # l.vertical
+        c.line(200, 370, 200, 350)  # l.vertical
 
-        c.drawString(126, 325, 'REQUIRENTE:')
-        c.drawString(210, 325, compras_servicios.user.get_full_name())
-        c.line(200, 340, 570, 340)  # l.horizontal
-        c.line(570, 340, 570, 320)  # l.vertical
-        c.line(570, 320, 200, 320)  # l.horizontal
-        c.line(200, 320, 200, 340)  # l.vertical
+        c.drawString(135, 330, 'LOCALIDAD: ')
+        c.drawString(210, 330, compras_servicios.localidad.ciudad)
+        c.line(200, 342, 570, 342)  # l.horizontal
+        c.line(570, 342, 570, 322)  # l.vertical
+        c.line(570, 322, 200, 322)  # l.horizontal
+        c.line(200, 322, 200, 342)  # l.vertical
+
+        c.drawString(126, 300, 'REQUIRENTE:')
+        c.drawString(210, 300, compras_servicios.user.get_full_name())
+        c.line(200, 315, 570, 315)  # l.horizontal
+        c.line(570, 315, 570, 295)  # l.vertical
+        c.line(570, 295, 200, 295)  # l.horizontal
+        c.line(200, 295, 200, 315)  # l.vertical
 
         # Firmas
         firm = 'Nombre y firma jefe departamento'

@@ -14,6 +14,7 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from .forms import FormLogin, FormRegistro, FormUpdateProfile, UserForm
+from comisionManager import settings
 
 
 class Inicio(TemplateView):
@@ -64,9 +65,6 @@ class LoginUsuario(FormView):
         return super(LoginUsuario, self).form_valid(form)
 
     def get_success_url(self):
-        # if you are passing 'pk' from 'urls' to 'UpdateView' for user
-        # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
-        #user_pk = self.request.user.pk
         return reverse_lazy('usuarios:index')
 
 

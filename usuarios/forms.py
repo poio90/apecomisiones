@@ -50,10 +50,10 @@ class FormUpdateProfile(forms.ModelForm):
         self.fields['categoria'].widget.attrs['required'] = 'true'
         self.fields['categoria_reemplazo'].widget.attrs['class'] = 'sel'
         self.fields['categoria_reemplazo'].label = 'Categoría de reemplazo'
-        
+
     class Meta:
         model = User
-        fields = ['num_afiliado','last_name', 'first_name', 'dni',
+        fields = ['num_afiliado', 'last_name', 'first_name', 'dni',
                   'email', 'num_tel', 'categoria', 'reemplazo', 'categoria_reemplazo']
         widget = {
             'reemplazo': forms.ChoiceField(

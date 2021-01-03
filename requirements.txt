@@ -6,3 +6,4 @@ django-bootstrap4
 django-bootstrap-datepicker-plus==3.0.5
 reportlab
 django_extensions
+django-import-export

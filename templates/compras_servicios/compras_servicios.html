@@ -58,7 +58,7 @@
                                 <h4>Detalle de lo requerido</h4>
                             </label>
 
-                            <!-- Carga dinamica de lo requerido-->                            
+                            <!-- Carga dinamica de lo requerido-->
                             <div id="form-wrapper" class="form-wrapper">
                                 {{ requerido.management_form }}
                                 <div id="form-repaet" class="form-repaet">
@@ -74,7 +74,7 @@
                                         <div class="col-md-1 mt-2">
                                             <span class="d-none d-print-block">
                                                 {{ f.DELETE }}
-                                              </span>
+                                            </span>
                                             <span>
                                                 {% if forloop.first %}
                                                 <button id="requerido-add" type="button"
@@ -116,7 +116,12 @@
 </section>
 <!-- /.content -->
 <script>
-    //$('.form-wrapper label').hide()
-    //$('input[type=checkbox]').hide()
+    if ($('#id_vehículo').is(':checked')) {
+        $("#id_rep_vehículo").prop("disabled", false);
+        $("#id_transporte").prop("disabled", false);
+    } else {
+        $("#id_rep_vehículo").prop("disabled", true);
+        $("#id_transporte").prop("disabled", true);
+    }
 </script>
 {% endblock %}

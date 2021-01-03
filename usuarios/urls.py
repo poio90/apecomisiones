@@ -13,6 +13,7 @@ urlpatterns = [
          view=views.RegistroUsuario.as_view(),
          name='register'),
 
+
     path(route='logout',
          view=login_required(views.LogoutUsuario.as_view()),
          name='logout'),

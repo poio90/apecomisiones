@@ -87,27 +87,27 @@
               <div class="form-group">
                 <div class="form-row">
                   <div class="col">
-                    <label for="inputTransporte" class="col-form-label">Fecha de inicio:</label>
+                    <label for="inputTransporte" class="col-form-label">Fecha de inicio</label>
                     {{ form.fecha_inicio }}
                   </div>
                   <div class="col">
-                    <label for="inputTransporte" class="col-form-label">Fecha de finalización:</label>
+                    <label for="inputTransporte" class="col-form-label">Fecha de finalización</label>
                     {{ form.fecha_fin }}
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                {{ form.ciudad.label_tag }}
+                <label for="id_ciudad">Lugar de residencia durante la comisión</label>
                 {{ form.ciudad }}
               </div>
               <div class="form-group">
                 <label for="inputTransporte" class="col-form-label">Medio de
-                  transporte:</label>
+                  transporte</label>
                 {{ form.transporte }}
                 <small class="form-text text-muted">Puede filtrar por número de lagajo o patente</small>
               </div>
               <div class="form-group">
-                {{ form.gastos.label_tag }}
+                <label for="id_gastos">Gastos</label>
                 {{ form.gastos }}
               </div>
               <!--- Tabla para el armado del itinenario--->
@@ -116,7 +116,7 @@
                   {{ itinerario.management_form }}
                   <div id="table" class="table-editable">
                     <label for="inputAfiliado" class="col-form-label">
-                      <h4>Itinerario de viaje:</h4>
+                      <h4>Itinerario de viaje</h4>
                     </label>
                     <span class="table-add float-right mb-3 mr-2">
                       <button type="button" class="btn btn-success">
@@ -180,7 +180,7 @@
               </div>
               <div class="form-group">
                 <label for="inputAfiliado" class="col-form-label">
-                  <h4>Informe de Anticipo:</h4>
+                  <h4>Informe de Anticipo</h4>
                 </label>
               </div>
               <div class="form-group">
