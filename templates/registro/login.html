@@ -1,4 +1,4 @@
-{% extends "usuarios/loginPrincipal.html" %}
+{% extends "registro/loginPrincipal.html" %}
 {% load staticfiles %}
 
 {% block content %}
@@ -51,10 +51,10 @@
   </form>
   <!-- /.social-auth-links -->
   <p class="mb-1">
-    <a href="#">Olvidé mí contraseña</a>
+    <a href="{% url 'registro:password_reset' %}">Olvidé mí contraseña</a>
   </p>
   <p class="mb-0">
-    <a href="{% url 'usuarios:register' %}" class="text-center">Registrarme</a>
+    <a href="{% url 'registro:register' %}" class="text-center">Registrarme</a>
   </p>
 </div>
 
