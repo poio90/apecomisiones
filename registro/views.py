@@ -53,8 +53,9 @@ class LogoutUsuario(LogoutView):
 # Metodo sobreescrito para que aplique los estilos
 class PasswordReset(PasswordResetView):
     template_name = 'registration/password_reset_form.html'
+    html_email_template_name='registration/html_password_reset_email.html'
     subject_template_name = 'registration/password_reset_subject.txt'
-    email_template_name = 'registration/password_reset_email.html'
+    #email_template_name = 'registration/password_reset_email.html'
     success_url = reverse_lazy('password_reset_done')
 
     def get_form(self, form_class=None):
