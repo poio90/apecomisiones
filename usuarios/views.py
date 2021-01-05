@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
-from usuarios.models import User
+from .models import User
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -43,40 +43,6 @@ class EditarPerfil(SuccessMessageMixin, UpdateView):
         # capture that 'pk' as user_pk and pass it to 'reverse_lazy()' function
         user_pk = self.request.user.pk
         return reverse_lazy('usuarios:perfil', kwargs={'pk': user_pk})
-
-
-class LoginUsuario(FormView):
-    template_name = 'usuarios/login.html'
-    form_class = FormLogin
-
-    # medidas de seguridad
-    @method_decorator(csrf_protect)  # evita bulneravilidades comunes
-    # no se almacena en cache la informacion correspondiente
-    @method_decorator(never_cache)
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return super(LoginUsuario, self).dispatch(request, *args, **kwargs)
-
-    # llega el formulario y antes de llamar al metodo POST pasa por form_valid y se valida lo que deseamos
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return super(LoginUsuario, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('usuarios:index')
-
-
-class RegistroUsuario(CreateView):
-    model = User
-    form_class = FormRegistro
-    template_name = 'usuarios/registroUser.html'
-    success_url = reverse_lazy('usuarios:login')
-
-
-class LogoutUsuario(LogoutView):
-    next_page = 'accounts/login/'
 
 
 """https://ccbv.co.uk/projects/Django/3.0/django.views.generic.edit/DeletionMixin/"""

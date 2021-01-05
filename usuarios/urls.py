@@ -5,19 +5,6 @@ from usuarios import views
 
 urlpatterns = [
 
-    path(route='accounts/login/',
-         view=views.LoginUsuario.as_view(),
-         name='login'),
-
-    path(route='accounts/register/',
-         view=views.RegistroUsuario.as_view(),
-         name='register'),
-
-
-    path(route='logout',
-         view=login_required(views.LogoutUsuario.as_view()),
-         name='logout'),
-
     path(route='',
          view=login_required(views.Inicio.as_view()),
          name='index'),

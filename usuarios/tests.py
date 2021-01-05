@@ -10,7 +10,7 @@ from usuarios.models import User
 
 email_destino = "germanv09@gmail.com"
 
-html = render_to_string('usuarios/email_pass.html',
+html = render_to_string('registro/email_pass.html',
                         {'user': User.objects.get(pk=1)})
 
 
