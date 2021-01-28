@@ -15,9 +15,9 @@ class DatePickerInput(DatePickerInput):
         "locale": "es"
     }
 
+
 class TimeInput(forms.TimeInput):
     input_type = "time"
-
 
 
 class SolicitudForm(forms.ModelForm):
@@ -82,13 +82,13 @@ class RendicionForm(forms.ModelForm):
             'fecha_fin': DatePickerInput().end_of('event days'),
         }
 
+
 class ItinerarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItinerarioForm, self).__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
-        
-    
+
     class Meta:
         model = Itinerario
         fields = '__all__'
@@ -120,7 +120,7 @@ class TransporteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
-    
+
     class Meta:
         model = Transporte
         fields = ['num_legajo', 'patente']
@@ -133,7 +133,8 @@ class CollectionUserForm(forms.ModelForm):
             self.fields[myField].widget.attrs['class'] = 'form-control'
             self.fields[myField].label = ''
 
-        self.fields['user'].queryset = User.objects.all().order_by('last_name').filter(is_active=1)
+        self.fields['user'].queryset = User.objects.all().order_by(
+            'last_name').filter(is_active=1)
         self.fields['user'].widget.attrs['class'] = 'sel'
         self.fields['user'].widget.attrs['data-placeholder'] = 'Apellido y Nombre'
         self.fields['user'].widget.attrs['required'] = 'true'
@@ -144,10 +145,10 @@ class CollectionUserForm(forms.ModelForm):
 
 
 SolicitudFormSet = inlineformset_factory(Solicitud, Integrantes_x_Solicitud,
-                                              form=CollectionUserForm, can_delete=True, extra=1)
+                                         form=CollectionUserForm, can_delete=True, extra=1)
 
 RendicionFormSet = inlineformset_factory(Anticipo, Integrantes_x_Anticipo,
-                                              form=CollectionUserForm, can_delete=True, extra=1)
+                                         form=CollectionUserForm, can_delete=True, extra=1)
 
 ItinerarioFormSet = inlineformset_factory(Anticipo, Itinerario,
-                                              form=ItinerarioForm, can_delete=True, extra=1)
+                                          form=ItinerarioForm, can_delete=True, extra=1)

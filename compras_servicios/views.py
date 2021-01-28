@@ -119,6 +119,7 @@ class ComprasServiciosUpdate(UpdateView):
 
 class ComprasServiciosDelete(DeleteView):
     model = ComprasServicios
+    context_object_name = 'compras_servicios'
     template_name = 'compras_servicios/eliminar_compras_servicios.html'
     success_url = reverse_lazy('compras_servicios:compras_servicios_historico')
     success_message = "Solicitud de compras y servicios eliminada exitosamente"

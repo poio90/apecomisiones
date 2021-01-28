@@ -1,8 +1,8 @@
-{% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+  {% load staticfiles %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block titulo %}Administración Provincial de Energía{% endblock titulo %}</title>
@@ -22,8 +22,6 @@
   <!--DataTable-->
   <link rel="stylesheet" href="{% static 'plugins/datatables/datatables.min.css' %}">
   <link rel="stylesheet" href="{% static 'plugins/datatables/DataTables-1.10.20/css/dataTables.bootstrap4.min.css' %}">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="{% static 'plugins/jqvmap/jqvmap.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
   <!-- overlayScrollbars -->
@@ -73,13 +71,10 @@
   <!-- Select2 -->
   <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
   <!-- InputMask -->
-  <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
   <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
   <!--DataTable-->
   <script src="{% static 'plugins/datatables/datatables.min.js' %}"></script>
   <script src="{% static 'dist/js/pages/datatable.js' %}"></script>
-  <!-- Summernote -->
-  <script src="{% static 'plugins/summernote/summernote-bs4.min.js' %}"></script>
   <!-- overlayScrollbars -->
   <script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
   <!-- Sweetalert2 -->

@@ -6,13 +6,12 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView, CreateView
-from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView
-from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
-)
+from django.contrib.auth.views import (
+    LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView )
 from django.contrib.auth.decorators import login_required
 from .forms import FormLogin, FormRegistro
 from usuarios.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 from comisionManager import settings
 
 
@@ -39,10 +38,11 @@ class LoginUsuario(FormView):
         return reverse_lazy('usuarios:index')
 
 
-class RegistroUsuario(CreateView):
+class RegistroUsuario(SuccessMessageMixin, CreateView):
     model = User
     form_class = FormRegistro
     template_name = 'registro/registroUser.html'
+    success_message = "Su registro se ha completado con éxito, inicie sesión para continuar"
     success_url = reverse_lazy('registro:login')
 
 
@@ -50,10 +50,12 @@ class LogoutUsuario(LogoutView):
     next_page = 'login/'
 
 
-# Metodo sobreescrito para que aplique los estilos
 class PasswordReset(PasswordResetView):
+    """
+    Metodo sobreescrito para que aplique los estilos
+    """
     template_name = 'registration/password_reset_form.html'
-    html_email_template_name='registration/html_password_reset_email.html'
+    html_email_template_name = 'registration/html_password_reset_email.html'
     subject_template_name = 'registration/password_reset_subject.txt'
     #email_template_name = 'registration/password_reset_email.html'
     success_url = reverse_lazy('password_reset_done')
@@ -67,8 +69,10 @@ class PasswordReset(PasswordResetView):
         return form
 
 
-# Metodo sobreescrito para que aplique los estilos
 class PasswordResetConfirm(PasswordResetConfirmView):
+    """
+    Metodo sobreescrito para que aplique los estilos
+    """
 
     def get_form(self, form_class=None):
         if form_class is None:

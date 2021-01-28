@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 
+{% load filter_user %}
+
 {% block content %}
 {% load bootstrap4 %}
 {{ form.media }}
@@ -22,7 +24,6 @@
 
 <!-- errores -->
 <section class="content">
-
     <div class="container-fluid">
         {% if form.errors  or users.errors %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -79,8 +80,8 @@
                                                 {{ f }}
                                             </div>
                                             <div class="col-md-5 mt-2">
-                                                <input type="text" class="form-control"
-                                                    placeholder="Número de afiliado a SEMPRE" readonly>
+                                                <!--num_af_solicitud es un templatetag que recupera el numero de afiliado-->
+                                                {{ f.id.value | num_af_solicitud }}
                                             </div>
                                             <div class="col-md-1 mt-2">
                                                 <span>
