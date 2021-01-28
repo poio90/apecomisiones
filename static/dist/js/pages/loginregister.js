@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
 
 
-    $('#mostrar_pass1').on('click', function () {
+    $('#pass1').on('click', function () {
         if($('#id_new_password1').attr('type')=='password'){
             $(this).addClass('fa-eye').removeClass('fa-eye-slash');
             $('#id_new_password1').attr('type','text');
@@ -41,7 +41,7 @@ $(document).ready(function () {
         }
     });
     
-    $('#mostrar_pass2').on('click', function () {
+    $('#pass2').on('click', function () {
         if($('#id_new_password2').attr('type')=='password'){
             $(this).addClass('fa-eye').removeClass('fa-eye-slash');
             $('#id_new_password2').attr('type','text');

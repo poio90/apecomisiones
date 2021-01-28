@@ -30,7 +30,11 @@ class FormRegistro(UserCreationForm):
         self.fields['num_afiliado'].widget.attrs['placeholder'] = 'Número de Afiliado'
         self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirmar contraseña'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Nombre'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Apellido'
 
     class Meta:
         model = User
-        fields = ['username', 'num_afiliado', 'dni', 'password1', 'password2']
+        fields = ['username', 'num_afiliado', 'dni', 'password1',
+                  'password2', 'email', 'last_name', 'first_name']

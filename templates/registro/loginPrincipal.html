@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
@@ -21,20 +21,8 @@
 </head>
 
 <body class="hold-transition login-page">
-  <div class="login-box">
-    <div class="login-logo">
-      <a href="https://ape.lapampa.gob.ar/" target="blank"><b>Administración Povincial de Energía</b></a>
-    </div>
-
-    <!-- /.login-logo -->
-    <div class="card">
-      {% block content %}
-      
-      {% endblock %}
-    </div>
-  </div>
-  <!-- /.login-box -->
-
+  {% block content %}   
+  {% endblock %}
   <!-- Ajax -->
   <script src="{% static 'dist/js/djangoAjax.js' %}"></script>
   <!-- AdminLTE App -->

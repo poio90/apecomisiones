@@ -22,8 +22,9 @@ $(document).ready(function () {
         var data = e.params.data;
         var form = $(this)
         var id = e.target.attributes
-        //var div = document.getElementById('after-add-more');
-        console.log(e.target);
+        var div = document.getElementById('after-add-more');
+        //console.log(div.getAttribute("data-validate-afiliado-url"))
+        console.log(id);
         /*$.get(div.getAttribute("data-validate-afiliado-url"),{ pk : data.element.value}, function(response){
             $('#afiliado' + id).val(response.data[0].num_afiliado);
         })*/
@@ -122,7 +123,7 @@ $(document).ready(function () {
         buttonsStyling: false
     })
 
-    /*esta funcion envia los datos del formulario de solicitud y rendicion de anticipo*/
+    /*esta función envia los datos del formulario de solicitud y rendicion de anticipo*/
     $('#myform').on('submit', function (e) {
         e.preventDefault();
         var parametros = $(this).serializeArray();
@@ -144,4 +145,12 @@ $(document).ready(function () {
         })
     });
 
+    /** Esta función cambia la url destino Nueva solicitud y su titulo en historico de 
+     * comisiones y anticipos
+     */
+    $('#anticipo').on('click', function () {
+        let new_url = $('#url_rendicion').prop('href');
+        $("#url_destino").attr("href", new_url);
+        $("#url_destino").text("Nueva Rendición");
+    });
 });

@@ -6,57 +6,76 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 {{ form.media }}
-<div class="card-body login-card-body">
-  <p class="login-box-msg">Inicia sesión para comenzar</p>
-  <form method="post" action=".">
-    <input type="hidden" name="next" value="{{ next }}">
-    {% csrf_token %}
-    {% if form.errors %}<div class="alert alert-danger" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <i class="icon fas fa-exclamation-triangle"></i>
-      {{ form.get_invalid_login_error }}
-    </div>
-    {% endif %}
-    <div class="input-group mb-3">
-      {{ form.username }}
-      <div class="input-group-append">
-        <div class="input-group-text">
-          <span class="fas fa-id-card"></span>
-        </div>
-      </div>
-    </div>
-    <div class="input-group mb-3">
-      {{ form.password }}
-      <div class="input-group-append">
-        <div class="input-group-text">
-          <span id="mostrar" class="fas fa-eye-slash" style="cursor:pointer;"></span>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-8">
-        <div class="icheck-primary">
-          <input type="checkbox" id="remember">
-          <label for="remember">
-            Recordarme
-          </label>
-        </div>
-      </div>
-      <!-- /.col -->
-      <div class="col-4">
-        <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-      </div>
-      <!-- /.col -->
-    </div>
-  </form>
-  <!-- /.social-auth-links -->
-  <p class="mb-1">
-    <a href="{% url 'registro:password_reset' %}">Olvidé mí contraseña</a>
-  </p>
-  <p class="mb-0">
-    <a href="{% url 'registro:register' %}" class="text-center">Registrarme</a>
-  </p>
-</div>
+<div class="login-box">
+  <div class="login-logo">
+    <a href="https://ape.lapampa.gob.ar/" target="blank"><b>Administración Povincial de Energía</b></a>
+  </div>
 
-<!-- /.login-card-body -->
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Inicia sesión para comenzar</p>
+      <form method="post" action=".">
+        <input type="hidden" name="next" value="{{ next }}">
+        {% csrf_token %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <p>{{ message }}</p>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if form.errors %}<div class="alert alert-danger" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <i class="icon fas fa-exclamation-triangle"></i>
+          {{ form.get_invalid_login_error }}
+        </div>
+        {% endif %}
+        <div class="input-group mb-3">
+          {{ form.username }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-id-card"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          {{ form.password }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span id="mostrar" class="fas fa-eye-slash" style="cursor:pointer;"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember">
+              <label for="remember">
+                Recordarme
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+      <!-- /.social-auth-links -->
+      <p class="mb-1">
+        <a href="{% url 'registro:password_reset' %}">Olvidé mí contraseña</a>
+      </p>
+      <p class="mb-0">
+        <a href="{% url 'registro:register' %}" class="text-center">Registrarme</a>
+      </p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
 {% endblock %}

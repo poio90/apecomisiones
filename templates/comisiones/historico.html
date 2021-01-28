@@ -40,17 +40,33 @@
             <div class="col-md-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#solicitudes" data-toggle="tab">Solicitudes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#solicitudes2" data-toggle="tab">Pedidas por mi</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#anticipos" data-toggle="tab">Anticipos</a>
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#solicitudes" data-toggle="tab">Solicitudes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#solicitudes2" data-toggle="tab">Pedidas por mi</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#anticipos" data-toggle="tab"
+                                            id="anticipo">Anticipos</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-2">
+                                <ul class="nav justify-content-end">
+                                    <li class="nav-item">
+                                        <a id="url_destino" href="{% url 'comisiones:solicitud_anticipo' %}"
+                                            class="btn btn-success btn-rounded my-0" data-toggle="tooltip" title="Nuevo">
+                                            Nueva solicitud
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -80,10 +96,10 @@
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span data-toggle="tooltip" title="Editar">
                                                     <a href="{% url 'comisiones:solicitud_editar' solicitud.pk %}"
-                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
-                                                       <i class="fas fa-edit"></i>
+                                                        class="btn btn-primary btn-rounded btn-sm my-0">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
                                                 <span class="table-remove" data-toggle="tooltip" title="Eliminar">
@@ -124,17 +140,18 @@
                                             <td>{{ solicitud.fecha_inicio }}</td>
                                             <td>{{ solicitud.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span class="table-remove" data-toggle="tooltip" title="Ver">
+                                                <span data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfSolicitud' solicitud.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span class="table-remove">
+                                                <span data-toggle="tooltip" title="Editar">
                                                     <a href="{% url 'comisiones:solicitud_editar' solicitud.pk %}"
-                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
-                                                       <i class="fas fa-edit"></i>
+                                                        class="btn btn-primary btn-rounded btn-sm my-0"
+                                                        data-toggle="tooltip" title="Editar">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
                                                 <span class="table-remove" data-toggle="tooltip" title="Eliminar">
@@ -173,22 +190,22 @@
                                             <td>{{ anticipo.fecha_inicio }}</td>
                                             <td>{{ anticipo.ciudad.ciudad }}</td>
                                             <td class="text-center">
-                                                <span  data-toggle="tooltip" title="Ver">
+                                                <span data-toggle="tooltip" title="Ver">
                                                     <a target="_blank"
                                                         href="{% url 'comisiones:reportePdfAnticipo' anticipo.pk %}"
                                                         class="btn btn-success btn-rounded btn-sm my-0">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </span>
-                                                <span >
+                                                <span data-toggle="tooltip" title="Editar">
                                                     <a href="{% url 'comisiones:anticipo_editar' anticipo.pk %}"
-                                                        class="btn btn-primary btn-rounded btn-sm my-0" data-toggle="tooltip" title="Editar">
-                                                       <i class="fas fa-edit"></i>
+                                                        class="btn btn-primary btn-rounded btn-sm my-0">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
-                                                <span  data-toggle="tooltip" title="Eliminar">
+                                                <span data-toggle="tooltip" title="Eliminar">
                                                     <a href="{% url 'comisiones:eliminar_anticipo' anticipo.pk %}"
-                                                        class="btn btn-danger btn-rounded btn-sm my-0" >
+                                                        class="btn btn-danger btn-rounded btn-sm my-0">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </span>
@@ -196,7 +213,7 @@
                                         </tr>
                                         {% endfor %}
                                     </tbody>
-                                    <tfoot >
+                                    <tfoot>
                                         <tr>
                                             <th>Fecha de inicio </th>
                                             <th>Localidad</th>

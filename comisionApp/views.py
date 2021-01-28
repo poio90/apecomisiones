@@ -292,9 +292,7 @@ class ReportePdfAnticipo(View):
         return response
 
 
-""" Esta vista podria escribirla como la de update pero asi anda bien """
-
-
+# Esta vista podria escribirla como la de update pero asi anda bien
 class SolicitudAnticipoCreate(CreateView):
     model = Solicitud
     template_name = 'comisiones/solicitud.html'
@@ -359,9 +357,9 @@ class SolicitudAnticipoUpdate(UpdateView):
 
     def form_valid(self, form):
         context = self.get_context_data()
-        users = context['users']
         data = {}
         try:
+            users = context['users']
             if users.is_valid():
                 with transaction.atomic():
                     self.object = form.save()
@@ -399,6 +397,8 @@ class RendicionAnticipoCreate(CreateView):
         else:
             data['users'] = RendicionFormSet()
             data['single_user'] = CollectionUserForm()
+            data['single_user'].fields['user'].queryset = User.objects.all().order_by(
+                'last_name').filter(is_active=1).exclude(pk=self.request.user.pk)
             data['detalle'] = DetalleTrabajoForm()
             data['itinerario'] = ItinerarioFormSet()
             data['list_url'] = reverse_lazy('comisiones:rendicion_anticipo')

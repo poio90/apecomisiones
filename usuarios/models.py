@@ -18,7 +18,10 @@ class User(AbstractUser):
         unique=True,
         error_messages={
             'unique': _('Ya existe un usuario con este número de afiliado')
-        }
+        },
+        help_text=_(
+            _('Ejemplo: 70305/1 o 70305')
+        ),
     )
 
     regex_dni = RegexValidator(

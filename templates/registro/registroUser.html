@@ -1,76 +1,116 @@
 {% extends "registro/loginPrincipal.html" %}
-
-
 {% block content %}
 {% load bootstrap4 %}
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 {{ form.media }}
-<div class="card-body register-card-body">
-    <p class="login-box-msg">Registrarme</p>
-    {% if form.errors %}<div class="alert alert-danger" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <i class="icon fas fa-exclamation-triangle"></i>
-        {% for field in form.visible_fields %}
-            {{ field.errors }}
-        {% endfor %}
+<div>
+    <div class="login-logo">
+        <a href="https://ape.lapampa.gob.ar/" target="blank"><b>Administración Povincial de Energía</b></a>
     </div>
-    {% endif %}
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-            {{ form.username }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-user"></span>
-                </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Registrarme</p>
+            {% if form.errors %}<div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon fas fa-exclamation-triangle"></i>
+                {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {% endfor %}
             </div>
-        </div>
-        <div class="input-group mb-3">
-            {{ form.num_afiliado }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-id-card-alt"></span>
-                </div>
-            </div>
-        </div>
+            {% endif %}
 
-        <div class="input-group mb-3">
-            {{ form.dni }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-address-card"></span>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            {{ form.first_name }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{ form.username }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-badge"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{ form.dni }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-address-card"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{ form.password1 }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span id="mostrar_pass1" class="fas fa-eye-slash" style="cursor:pointer;"></span>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            {{ form.last_name }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{ form.num_afiliado }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card-alt"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{ form.email }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            {{ form.password2 }}
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span id="mostrar_pass2" class="fas fa-eye-slash" style="cursor:pointer;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            {{ form.password1 }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span id="mostrar_pass1" class="fas fa-eye-slash" style="cursor:pointer;"></span>
+                <div class="row">
+                    <div class="col-7">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-5">
+                        <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+                    </div>
+                    <!-- /.col -->
                 </div>
-            </div>
+            </form>
+            <a href="{% url 'registro:login' %}" class="text-center">Ya tengo una cuenta</a>
         </div>
-        <div class="input-group mb-3">
-            {{ form.password2 }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span id="mostrar_pass2" class="fas fa-eye-slash" style="cursor:pointer;"></span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-7">
-            </div>
-            <!-- /.col -->
-            <div class="col-5">
-                <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
-            </div>
-            <!-- /.col -->
-        </div>
-    </form>
-    <a href="{% url 'registro:login' %}" class="text-center">Ya tengo una cuenta</a>
+        <!-- /.form-box -->
+    </div>
 </div>
-<!-- /.form-box -->
+<!-- /.login-box -->
 {% endblock %}
