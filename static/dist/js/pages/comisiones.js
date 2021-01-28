@@ -145,12 +145,25 @@ $(document).ready(function () {
         })
     });
 
-    /** Esta función cambia la url destino Nueva solicitud y su titulo en historico de 
+    /** Estas funciones cambian la url destino Nueva solicitud y su titulo en historico de 
      * comisiones y anticipos
      */
     $('#anticipo').on('click', function () {
         let new_url = $('#url_rendicion').prop('href');
         $("#url_destino").attr("href", new_url);
-        $("#url_destino").text("Nueva Rendición");
+        $("#url_destino").text("Nueva rendición");
     });
+
+    $('#solicitud').on('click', function () {
+        let new_url = $('#url_solicitud').prop('href');
+        $("#url_destino").attr("href", new_url);
+        $("#url_destino").text("Nueva solicitud");
+    });
+
+    $('#solicitud2').on('click', function () {
+        let new_url = $('#url_solicitud').prop('href');
+        $("#url_destino").attr("href", new_url);
+        $("#url_destino").text("Nueva solicitud");
+    });
+
 });
