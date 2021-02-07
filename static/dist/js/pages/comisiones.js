@@ -18,16 +18,14 @@ $(document).ready(function () {
 
 
 
-    $('.form-repaet').on('select2:select', function (e) {
-        var data = e.params.data;
-        var form = $(this)
-        var id = e.target.attributes
-        var div = document.getElementById('after-add-more');
-        //console.log(div.getAttribute("data-validate-afiliado-url"))
-        console.log(id);
-        /*$.get(div.getAttribute("data-validate-afiliado-url"),{ pk : data.element.value}, function(response){
-            $('#afiliado' + id).val(response.data[0].num_afiliado);
-        })*/
+    $('.form-row').on('select2:select', function (e) {
+        const id = e.target.value;
+        const div = document.getElementById('form-wrapper');
+        var child = this; 
+        console.log(child.firstElementChild.nextElementSibling.children[0].value);
+        $.get(div.getAttribute("get-num-afiliado-url"),{ pk : id }, function(response){
+            child.firstElementChild.nextElementSibling.children[0].value = response.num_afiliado[0].num_afiliado;
+        })
     });
 
     /*$('#after-add-more select').each(function () {
@@ -47,14 +45,6 @@ $(document).ready(function () {
             allowClear: Boolean($(this).data('allow-clear')),
         });
     });
-
-    $("#transporte").change(function () {
-        var form = $(this).closest("#transporte");
-        var div = document.getElementById(this.id);
-        $.get(div.getAttribute("data-validate-transporte-url"), form.serialize(), function (response) {
-            $('#patente').val(response.data[0].patente);
-        })
-    })
 
 
     $('input[name="km_salida"]').change(function () {
@@ -92,7 +82,7 @@ $(document).ready(function () {
     function message_succes(message, pdf_url, url) {
         swalWithBootstrapButtons.fire({
             title: message,
-            text: "Desea imprimir el documento?",
+            text: "¿Desea imprimir el documento?",
             icon: 'success',
             showCancelButton: true,
             confirmButtonText: 'Si',
@@ -114,7 +104,7 @@ $(document).ready(function () {
         })
     }
 
-    /* Estilos de los botones cuando pregunta si desea imprimir el docuemnto*/
+    /** Estilos de los botones cuando pregunta si desea imprimir el docuemnto*/
     const swalWithBootstrapButtons = swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success ml-2',
@@ -123,7 +113,8 @@ $(document).ready(function () {
         buttonsStyling: false
     })
 
-    /*esta función envia los datos del formulario de solicitud y rendicion de anticipo*/
+    /** Esta función envia los datos del 
+     * formulario de solicitud y rendicion de anticipo */
     $('#myform').on('submit', function (e) {
         e.preventDefault();
         var parametros = $(this).serializeArray();

@@ -71,7 +71,7 @@
                                 <label for="inputAfiliado" class=" col-form-label">
                                     <h4>Personal afectado a la comisión</h4>
                                 </label>
-                                <div id="form-wrapper" class="form-wrapper">
+                                <div id="form-wrapper" class="form-wrapper" get-num-afiliado-url="{% url 'comisiones:get_num_afiliado' %}">
                                     {{ users.management_form }}
                                     <div id="form-repaet" class="form-repaet">
                                         {% for f in users %}
