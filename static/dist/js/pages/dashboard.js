@@ -28,7 +28,7 @@ $(document).ready(function () {
     //Toma el id de full name para
     var form = document.querySelector('#id_integrantes_x_solicitud_set-TOTAL_FORMS');
     var select = $('.copy div').first().clone();
-    //console.log("select")
+
     //accede al primer elemento del objeto select
     select[0].firstElementChild.firstElementChild.id = "id_integrantes_x_solicitud_set-" + form.value + "-user"
     select[0].firstElementChild.firstElementChild.name = "integrantes_x_solicitud_set-" + form.value + "-user"
@@ -67,8 +67,6 @@ $(document).ready(function () {
 
   // select the target node (con esto se logra que los select sean funcionales)
   var target = document.getElementById('form-repaet');
-
-  //console.log(target)
 
   if (target) {
     // create an observer instance

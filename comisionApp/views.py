@@ -13,6 +13,7 @@ from django.http import HttpResponse, JsonResponse, request
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .forms import *
+from comisionManager.settings import STATICFILES_DIRS
 from usuarios.forms import UserForm
 from usuarios.models import User
 from django.contrib.auth.decorators import login_required
@@ -42,7 +43,7 @@ class ReportePdfSolicitud(View):
         c = canvas.Canvas(buffer, pagesize=A4)
 
         # Header
-        logo = ImageReader('static/dist/img/logoApe.png')
+        logo = ImageReader(STATICFILES_DIRS[0] + '/dist/img/logoApe.png')
         c.drawImage(logo, 30, 750,  1 * inch, 1 * inch)
 
         text = 'Administración Provincial de Energía de La Pampa'
@@ -143,7 +144,7 @@ class ReportePdfAnticipo(View):
         buffer = BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
 
-        logo = ImageReader('static/dist/img/logoApe.png')
+        logo = ImageReader(STATICFILES_DIRS[0] + '/dist/img/logoApe.png')
         c.drawImage(logo, 30, 788,  0.45 * inch, 0.45 * inch)
 
         c.setFont('Helvetica', 8)
@@ -326,7 +327,7 @@ class SolicitudAnticipoCreate(CreateView):
                             'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
                         data['success_message'] = 'Solicitud de anticipo creada exitosamente'
                 else:
-                    data['error'] = 'Está intentando cargar algún usuario de más.'
+                    data['error'] = 'Está intentando cargar un usuario más de una vez.'
             else:
                 data = form.errors
         except Exception as e:
@@ -369,7 +370,7 @@ class SolicitudAnticipoUpdate(UpdateView):
                         'comisiones:reportePdfSolicitud', kwargs={'pk': self.object.pk})
                     data['success_message'] = 'Cambios realizados con éxito'
             else:
-                data['error'] = 'Está intentando cargar algún usuario de más.'
+                data['error'] = 'Está intentando cargar usuario más de una vez.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -431,7 +432,7 @@ class RendicionAnticipoCreate(CreateView):
                 else:
                     data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
-                data['error'] = 'Está intentando cargar algún usuario de más.'
+                data['error'] = 'Está intentando cargar un usuario más de una vez.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -494,7 +495,7 @@ class RendicionAnticipoUpdate(UpdateView):
                 else:
                     data['error'] = 'Revise los campos del itinerario de viaje.'
             else:
-                data['error'] = 'Está intentando cargar algún usuario de más.'
+                data['error'] = 'Está intentando cargar un usuario más de una vez.'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -591,6 +592,11 @@ def get_patente(request):
 
 @login_required
 def get_num_afiliado(request):
-    pk = request.GET.get('pk')
-    data = list(User.objects.filter(pk=pk).values('num_afiliado'))
-    return JsonResponse({'data': data})
+    data = {}
+    try:
+        pk = request.GET.get('pk')
+        data['num_afiliado'] = list(
+            User.objects.filter(pk=pk).values('num_afiliado'))
+    except Exception as e:
+        data['error'] = str(e)
+    return JsonResponse(data)

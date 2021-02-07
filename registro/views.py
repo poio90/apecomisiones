@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from .forms import FormLogin, FormRegistro
 from usuarios.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from comisionManager import settings
 
 
 class LoginUsuario(FormView):

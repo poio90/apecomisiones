@@ -23,6 +23,7 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from .models import *
 from .forms import *
+from comisionManager.settings import STATICFILES_DIRS
 
 
 class ComprasServiciosCreate(CreateView):
@@ -160,7 +161,7 @@ class ReporteComprasServicios(View):
         PAGE_HEIGHT = defaultPageSize[1]
 
         # Header
-        logo = ImageReader('static/dist/img/logoApe.png')
+        logo = ImageReader(STATICFILES_DIRS[0] + '/dist/img/logoApe.png')
         c.drawImage(logo, 30, 757,  0.75 * inch, 0.75 * inch)
 
         text = 'Administracion Provincial de Energia'

@@ -1,4 +1,5 @@
 import smtplib
+import os
 from django.test import TestCase
 from django.core.mail import send_mail
 from email.mime.multipart import MIMEMultipart
@@ -6,10 +7,11 @@ from email.mime.text import MIMEText
 from comisionManager import settings
 from django.template.loader import render_to_string
 from usuarios.models import User
+from comisionManager.settings import BASE_DIR, STATIC_URL, STATICFILES_DIRS
 
 
 email_destino = "germanv09@gmail.com"
-
+'''
 html = render_to_string('registro/email_pass.html',
                         {'user': User.objects.get(pk=1)})
 
@@ -38,6 +40,15 @@ def send_email():
 
     except Exception as e:
         print(e)
+'''
 
+# send_email()
 
-send_email()
+# La función os.getcwd() devuelve el directorio de trabajo actual.
+#print(os.getcwd())
+
+filePath = __file__
+#print("This script file path is ", filePath)
+
+print(BASE_DIR)
+print(STATICFILES_DIRS[0])
